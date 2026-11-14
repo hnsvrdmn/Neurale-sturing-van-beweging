@@ -73,6 +73,8 @@ button {
   display: grid;
   grid-template-rows: 50px 1fr 196px;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 100dvh;
   overflow: hidden;
 }
@@ -86,11 +88,15 @@ button {
   background: var(--panel);
   border-bottom: 1px solid var(--border);
   gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .view-tabs {
   display: flex;
   gap: 6px;
+  min-width: 0;
 }
 
 .view-tab {
@@ -105,6 +111,8 @@ button {
   color: var(--muted);
   background: transparent;
   border: 1px solid transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .view-tab.is-active {
@@ -191,7 +199,7 @@ button {
   }
 
   .view-tabs {
-    gap: 4px;
+    gap: 3px;
     min-width: 0;
     flex-shrink: 1;
   }
@@ -200,11 +208,24 @@ button {
     padding: 0 7px;
     font-size: 0.72rem;
     gap: 4px;
-    height: 34px;
+    height: 32px;
+  }
+
+  #btn-speak span:last-child,
+  #btn-speak-stop span:last-child {
+    display: none;
+  }
+
+  #btn-speak,
+  #btn-speak-stop,
+  #btn-dyslexia {
+    height: 32px;
+    padding: 0 8px;
+    font-size: 0.75rem;
   }
 
   body.has-audio .view-tab {
-    padding: 0 8px;
+    padding: 0 7px;
   }
 
   body.has-audio .view-tab span:last-child {
@@ -212,23 +233,52 @@ button {
   }
 
   .audio-topic-pill {
-    max-width: 112px;
+    max-width: 102px;
     padding: 0 6px;
-    font-size: 0.7rem;
-  }
-
-  body.has-audio #btn-speak span:last-child,
-  body.has-audio #btn-speak-stop span:last-child {
-    display: none;
-  }
-
-  body.has-audio #btn-speak,
-  body.has-audio #btn-speak-stop {
-    padding: 0 7px;
+    font-size: 0.69rem;
   }
 
   .audio-step-btn {
     width: 26px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 420px) {
+  .top-bar {
+    padding: 0 5px;
+    gap: 3px;
+  }
+
+  .view-tabs {
+    gap: 2px;
+  }
+
+  .view-tab {
+    padding: 0 6px;
+    font-size: 0.68rem;
+    gap: 3px;
+    height: 30px;
+    border-radius: 8px;
+  }
+
+  .top-bar .svg-ico svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .top-actions {
+    gap: 3px;
+  }
+
+  #btn-speak,
+  #btn-speak-stop,
+  #btn-dyslexia {
+    height: 30px;
+    min-width: 28px;
+    padding: 0 6px;
+    font-size: 0.72rem;
+    border-radius: 8px;
   }
 }
 
@@ -360,6 +410,8 @@ button {
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 100%;
   overflow: hidden;
 }
@@ -367,49 +419,13 @@ button {
 .stimulus-bar {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 6px 8px;
+  flex-wrap: nowrap;
+  gap: 8px;
   padding: 6px 10px;
   background: rgba(19, 27, 48, 0.94);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
-}
-
-.dir-legend {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-.dir-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 7px;
-  border-radius: 6px;
-  font-size: 0.71rem;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.dir-chip.is-aff {
-  background: rgba(56, 189, 248, 0.14);
-  border: 1px solid rgba(56, 189, 248, 0.55);
-  color: #7dd3fc;
-}
-
-.dir-chip.is-eff {
-  background: rgba(249, 115, 22, 0.14);
-  border: 1px solid rgba(249, 115, 22, 0.55);
-  color: #fdba74;
-}
-
-.stim-bar-label {
-  font-size: 0.78rem;
-  font-weight: 800;
-  color: var(--muted);
-  white-space: nowrap;
+  min-width: 0;
 }
 
 .stim-select {
@@ -431,16 +447,11 @@ button {
   outline: 2px solid var(--accent);
 }
 
-.stim-clear-btn {
-  height: 32px;
-  padding: 0 10px;
-  border-radius: 8px;
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid var(--red);
-  color: #fca5a5;
-  font-size: 0.76rem;
-  font-weight: 800;
-  white-space: nowrap;
+.route-play-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  flex-shrink: 0;
 }
 
 .route-stepper {
@@ -452,11 +463,14 @@ button {
   background: #101729;
   border-bottom: 2px solid var(--accent);
   flex-shrink: 0;
+  min-width: 0;
 }
 
 .route-step-text {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 700;
+  min-width: 0;
+  line-height: 1.35;
 }
 
 .step-pill {
@@ -465,17 +479,22 @@ button {
   border-radius: 6px;
   color: #08101f;
   font-weight: 900;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   margin-right: 5px;
 }
 
 .route-step-controls {
   display: flex;
+  align-items: center;
   gap: 5px;
   flex-shrink: 0;
 }
 
 .step-ctrl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
   height: 30px;
   padding: 0 9px;
   border-radius: 7px;
@@ -484,22 +503,80 @@ button {
   font-weight: 800;
 }
 
+.step-ctrl-btn .svg-ico svg {
+  width: 15px;
+  height: 15px;
+}
+
 .step-ctrl-btn.primary {
   background: var(--accent);
   color: #08101f;
 }
 
 .bodymap-svg-wrap {
+  position: relative;
   flex: 1;
   min-height: 0;
   min-width: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+.bodymap-svg-wrap:active {
+  cursor: grabbing;
+}
+
+.bodymap-transform {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: auto;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.bodymap-zoom-bar {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 15;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   padding: 4px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+}
+
+.map-zoom-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 6px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid rgba(51, 65, 85, 0.7);
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.map-zoom-btn:hover {
+  border-color: var(--accent);
+}
+
+.map-zoom-pct {
+  min-width: 44px;
 }
 
 .bodymap-svg {
@@ -882,7 +959,7 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
   line-height: 1.8;
 }
 
-/* ================= VASTE ONDER-DOCK (VEROORZAAKT NOOIT layout-shift) ================= */
+/* ================= VASTE / UITSCHUIFBARE DOCK ================= */
 .info-dock {
   background: var(--panel);
   border-top: 2px solid var(--border);
@@ -890,12 +967,41 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
   grid-template-rows: minmax(0, 1fr) 42px;
   min-height: 0;
   min-width: 0;
+  max-width: 100%;
   overflow: hidden;
+}
+
+.dock-drawer-handle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 22px;
+  cursor: ns-resize;
+  touch-action: none;
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.dock-handle-pill {
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: #64748b;
+  transition: background 0.15s ease, width 0.15s ease;
+}
+
+.dock-drawer-handle:hover .dock-handle-pill,
+.dock-drawer-handle:active .dock-handle-pill {
+  background: var(--accent);
+  width: 56px;
 }
 
 .dock-card {
   padding: 10px 14px;
   min-height: 0;
+  min-width: 0;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -909,6 +1015,26 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
   gap: 8px;
   margin-bottom: 6px;
   flex-wrap: wrap;
+  min-width: 0;
+}
+
+.dock-step-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+.dock-step-btn .svg-ico svg {
+  width: 15px;
+  height: 15px;
 }
 
 .quote-toggle-btn {
@@ -1058,6 +1184,145 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
   color: #f59e0b;
 }
 
+/* ================= MOBIEL & TABLET (< 900px): ZWEVENDE ONDER-LADE ================= */
+@media (max-width: 899px) {
+  .app-shell {
+    grid-template-rows: 48px 1fr;
+    grid-template-columns: 1fr;
+  }
+
+  .floating-3d-bar {
+    bottom: 112px;
+    left: 6px;
+    right: 6px;
+    gap: 4px;
+  }
+
+  .hud-chip {
+    height: 29px;
+    padding: 0 8px;
+    font-size: 0.70rem;
+    gap: 4px;
+    border-radius: 9px;
+  }
+
+  .bodymap-zoom-bar {
+    bottom: 114px;
+    right: 8px;
+  }
+
+  .quiz-pane-inner {
+    padding: 10px 10px 124px;
+  }
+
+  .info-dock {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 45;
+    height: 104px;
+    max-height: calc(100dvh - 54px);
+    background: rgba(19, 27, 48, 0.97);
+    backdrop-filter: blur(12px);
+    border-top: 2px solid rgba(56, 189, 248, 0.42);
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.55);
+    grid-template-rows: 22px minmax(0, 1fr) 38px;
+    transition: height 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .info-dock.is-dragging {
+    transition: none;
+  }
+
+  .info-dock.is-open {
+    height: 54dvh;
+  }
+
+  .dock-drawer-handle {
+    display: flex;
+  }
+
+  .quick-strip {
+    padding: 0 8px;
+  }
+
+  .strip-pill {
+    height: 26px;
+    padding: 0 9px;
+    font-size: 0.72rem;
+  }
+
+  .info-dock.is-collapsed .dock-card {
+    padding: 2px 8px 4px;
+    overflow: hidden;
+  }
+
+  .info-dock.is-collapsed .dock-header {
+    margin-bottom: 0;
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+
+  .info-dock.is-collapsed .dock-title-wrap {
+    flex: 1;
+    min-width: 0;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 5px;
+    overflow: hidden;
+  }
+
+  .info-dock.is-collapsed .mod-tag {
+    padding: 1px 5px;
+    font-size: 0.66rem;
+    flex-shrink: 0;
+  }
+
+  .info-dock.is-collapsed .dock-title {
+    font-size: 0.90rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  .info-dock.is-collapsed .dock-sub,
+  .info-dock.is-collapsed .dock-bullets,
+  .info-dock.is-collapsed .dock-quote-box,
+  .info-dock.is-collapsed #btn-toggle-quote,
+  .info-dock.is-collapsed #btn-header-fullscreen {
+    display: none;
+  }
+
+  .info-dock.is-collapsed .dock-header-actions {
+    flex-wrap: nowrap;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .info-dock.is-collapsed .dock-header-actions .quote-toggle-btn {
+    height: 28px;
+    min-width: 28px;
+    padding: 0 6px;
+  }
+
+  .info-dock.is-collapsed #btn-dock-speak span:last-child,
+  .info-dock.is-collapsed #btn-dock-speak-stop span:last-child,
+  .info-dock.is-collapsed #btn-dock-to-3d span:last-child {
+    display: none;
+  }
+
+  .info-dock.is-open .dock-card {
+    padding: 4px 12px 10px;
+  }
+
+  .info-dock.is-open .dock-header-actions {
+    gap: 5px;
+  }
+}
+
 /* ================= DESKTOP BREEDBEELD (>= 900px) ================= */
 @media (min-width: 900px) {
   .app-shell {
@@ -1082,6 +1347,11 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
     grid-template-rows: minmax(0, auto) minmax(175px, 1fr);
     min-height: 0;
     overflow: hidden;
+  }
+
+  .dock-drawer-handle,
+  .dock-mobile-only {
+    display: none !important;
   }
 
   .dock-card {

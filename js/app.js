@@ -10,6 +10,8 @@
     selectedId: "frontale-kwab",
     dyslexia: false,
     showQuote: false,
+    drawerOpen: false,
+    drawerHeight: null,
     modalOpen: false,
     modalTopicId: null,
     viewer3D: null,
@@ -121,6 +123,7 @@
 
     setupTopBar();
     setupModal();
+    setupDockDrawer();
     renderQuickStrip();
     renderDockCard();
     updateSpeakButtons();
@@ -186,6 +189,131 @@
     document.getElementById("pane-map").classList.toggle("is-active", v === "map");
     document.getElementById("pane-quiz").classList.toggle("is-active", v === "quiz");
     renderDockCard();
+    if (v === "map" && state.bodyMap && typeof state.bodyMap.onShow === "function") {
+      state.bodyMap.onShow();
+    }
+  }
+
+  function stepTopic(delta) {
+    if (!DATA.topics || DATA.topics.length === 0) return;
+    const idx = DATA.topics.findIndex((t) => t.id === state.selectedId);
+    const cur = idx >= 0 ? idx : 0;
+    const next = (cur + delta + DATA.topics.length) % DATA.topics.length;
+    selectTopic(DATA.topics[next].id, true);
+  }
+
+  function syncDockDrawer() {
+    const dock = document.getElementById("info-dock");
+    if (!dock) return;
+    const isDesktop = window.innerWidth >= 900;
+    if (isDesktop) {
+      dock.classList.remove("is-open", "is-collapsed", "is-dragging");
+      dock.style.height = "";
+    } else {
+      dock.classList.toggle("is-open", state.drawerOpen);
+      dock.classList.toggle("is-collapsed", !state.drawerOpen);
+      if (state.drawerOpen && state.drawerHeight) {
+        const maxH = Math.max(240, window.innerHeight - 56);
+        const clamped = Math.min(maxH, Math.max(180, state.drawerHeight));
+        dock.style.height = clamped + "px";
+      } else {
+        dock.style.height = "";
+      }
+    }
+    const toggleBtn = document.getElementById("btn-drawer-toggle");
+    if (toggleBtn) {
+      toggleBtn.title = state.drawerOpen ? "Klap lade in" : "Klap lade uit";
+      toggleBtn.setAttribute("aria-label", state.drawerOpen ? "Klap lade in" : "Klap lade uit");
+      toggleBtn.innerHTML = `<span class="svg-ico">${state.drawerOpen ? ICONS.chevronDown : ICONS.chevronUp}</span>`;
+    }
+  }
+
+  function setupDockDrawer() {
+    const dock = document.getElementById("info-dock");
+    const handle = document.getElementById("dock-drawer-handle");
+    if (!dock || !handle) return;
+
+    let dragging = false;
+    let moved = false;
+    let startY = 0;
+    let startH = 104;
+    let suppressClick = false;
+
+    const toggleDrawer = () => {
+      state.drawerOpen = !state.drawerOpen;
+      state.drawerHeight = null;
+      syncDockDrawer();
+    };
+
+    handle.addEventListener("pointerdown", (e) => {
+      if (window.innerWidth >= 900) return;
+      dragging = true;
+      moved = false;
+      startY = e.clientY;
+      startH = dock.getBoundingClientRect().height || (state.drawerOpen ? 360 : 104);
+      if (typeof handle.setPointerCapture === "function") {
+        try { handle.setPointerCapture(e.pointerId); } catch (_) {}
+      }
+    });
+
+    handle.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const dy = startY - e.clientY;
+      if (!moved && Math.abs(dy) > 6) {
+        moved = true;
+        dock.classList.add("is-dragging");
+      }
+      if (!moved) return;
+      const minH = 104;
+      const maxH = Math.max(260, window.innerHeight - 56);
+      const nextH = Math.round(Math.max(minH, Math.min(maxH, startH + dy)));
+      dock.style.height = nextH + "px";
+      const liveOpen = nextH > 152;
+      dock.classList.toggle("is-open", liveOpen);
+      dock.classList.toggle("is-collapsed", !liveOpen);
+    });
+
+    const endDrag = () => {
+      if (!dragging) return;
+      dragging = false;
+      dock.classList.remove("is-dragging");
+      if (!moved) {
+        suppressClick = true;
+        toggleDrawer();
+        return;
+      }
+      suppressClick = true;
+      const rectH = dock.getBoundingClientRect().height || 104;
+      if (rectH < 152) {
+        state.drawerOpen = false;
+        state.drawerHeight = null;
+      } else {
+        state.drawerOpen = true;
+        state.drawerHeight = Math.round(rectH);
+      }
+      syncDockDrawer();
+    };
+
+    handle.addEventListener("pointerup", endDrag);
+    handle.addEventListener("pointercancel", endDrag);
+
+    handle.addEventListener("click", () => {
+      if (suppressClick) {
+        suppressClick = false;
+        return;
+      }
+      toggleDrawer();
+    });
+
+    handle.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleDrawer();
+      }
+    });
+
+    window.addEventListener("resize", syncDockDrawer);
+    syncDockDrawer();
   }
 
   function viewTopicIn3D(topicId) {
@@ -583,8 +711,14 @@
     dock.innerHTML = `
       <div class="dock-header">
         <div class="dock-title-wrap">
+          <button type="button" class="dock-step-btn dock-mobile-only" id="btn-prev-topic" title="Vorige onderdeel" aria-label="Vorige onderdeel">
+            <span class="svg-ico">${ICONS.chevronLeft}</span>
+          </button>
           <span class="mod-tag" style="background:${t.color};">${t.module}</span>
           <h2 class="dock-title">${escapeHtml(t.title)}</h2>
+          <button type="button" class="dock-step-btn dock-mobile-only" id="btn-next-topic" title="Volgende onderdeel" aria-label="Volgende onderdeel">
+            <span class="svg-ico">${ICONS.chevronRight}</span>
+          </button>
           <span class="dock-sub">${escapeHtml(t.tag)}</span>
         </div>
         <div class="dock-header-actions">
@@ -610,6 +744,9 @@
             <span class="svg-ico">${ICONS.fullscreen}</span>
             <span>Volledig scherm</span>
           </button>
+          <button type="button" class="quote-toggle-btn dock-mobile-only" id="btn-drawer-toggle" title="${state.drawerOpen ? "Klap lade in" : "Klap lade uit"}" aria-label="${state.drawerOpen ? "Klap lade in" : "Klap lade uit"}">
+            <span class="svg-ico">${state.drawerOpen ? ICONS.chevronDown : ICONS.chevronUp}</span>
+          </button>
         </div>
       </div>
       <ul class="dock-bullets">
@@ -631,6 +768,20 @@
       ` : ""}
     `;
 
+    const prevTopicBtn = document.getElementById("btn-prev-topic");
+    if (prevTopicBtn) prevTopicBtn.addEventListener("click", () => stepTopic(-1));
+    const nextTopicBtn = document.getElementById("btn-next-topic");
+    if (nextTopicBtn) nextTopicBtn.addEventListener("click", () => stepTopic(1));
+
+    const drawerToggleBtn = document.getElementById("btn-drawer-toggle");
+    if (drawerToggleBtn) {
+      drawerToggleBtn.addEventListener("click", () => {
+        state.drawerOpen = !state.drawerOpen;
+        state.drawerHeight = null;
+        syncDockDrawer();
+      });
+    }
+
     const to3dBtn = document.getElementById("btn-dock-to-3d");
     if (to3dBtn) {
       to3dBtn.addEventListener("click", () => viewTopicIn3D(t.id));
@@ -643,6 +794,11 @@
 
     document.getElementById("btn-toggle-quote").addEventListener("click", () => {
       state.showQuote = !state.showQuote;
+      if (state.showQuote && window.innerWidth < 900) {
+        state.drawerOpen = true;
+        state.drawerHeight = null;
+        syncDockDrawer();
+      }
       renderDockCard();
     });
 

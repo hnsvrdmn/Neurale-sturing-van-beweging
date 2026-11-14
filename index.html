@@ -90,8 +90,11 @@
       </section>
     </main>
 
-    <!-- Vaste informatie-dock (verspringt nooit) -->
-    <aside class="info-dock">
+    <!-- Vaste / uitschuifbare informatie-dock (onder-lade op mobiel, zijpaneel op desktop) -->
+    <aside class="info-dock is-collapsed" id="info-dock">
+      <div class="dock-drawer-handle" id="dock-drawer-handle" role="button" tabindex="0" aria-label="Trek lade omhoog of omlaag" title="Tik of sleep om details te openen of sluiten">
+        <span class="dock-handle-pill"></span>
+      </div>
       <div class="dock-card" id="dock-card"></div>
       <div class="quick-strip" id="quick-strip"></div>
     </aside>

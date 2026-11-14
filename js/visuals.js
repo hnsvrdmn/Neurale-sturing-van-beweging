@@ -91,25 +91,30 @@ window.NeuroVisuals = (function () {
     let speakingStatus = "idle";
     let activeRoute = null;
     let routeStepIdx = 0;
-    const brainIco = (window.NEURO_ICONS && window.NEURO_ICONS.brain) || "";
+    let routePlaying = false;
+    let routeTimer = null;
+    let mapZoom = 1;
+    let mapPanX = 0;
+    let mapPanY = 0;
+    let lastGestureTime = 0;
+    const icons = window.NEURO_ICONS || {};
+    const playIco = icons.play || "";
+    const pauseIco = icons.pause || "";
+    const prevIco = icons.chevronLeft || "&lsaquo;";
+    const nextIco = icons.chevronRight || "&rsaquo;";
+    const zoomInIco = icons.zoomIn || "+";
+    const zoomOutIco = icons.zoomOut || "-";
 
     container.innerHTML = `
       <div class="bodymap-layout">
-        <!-- Strakke prikkel-dropdown + Afferent/Efferent legenda + Bekijk in 3D -->
+        <!-- Minimale prikkel-dropdown + icoon Play/Pause voor automatisch doorlopen -->
         <div class="stimulus-bar">
-          <label for="stim-select" class="stim-bar-label">Prikkel:</label>
           <select id="stim-select" class="stim-select" aria-label="Kies een prikkel om over de metrokaart te volgen">
             <option value="">Kies prikkel om te volgen...</option>
             ${data.signalRoutes.map((r) => `<option value="${r.id}">${r.label}</option>`).join("")}
           </select>
-          <button type="button" class="stim-clear-btn" id="btn-clear-route" style="display:none;">Reset</button>
-          <div class="dir-legend" title="Blauw = Afferent (naar CZS) • Oranje = Efferent (uit CZS)">
-            <span class="dir-chip is-aff">▲ Afferent</span>
-            <span class="dir-chip is-eff">▼ Efferent</span>
-          </div>
-          <button type="button" class="step-ctrl-btn primary map-3d-btn" id="btn-map-to-3d" title="Bekijk geselecteerd onderdeel in 3D">
-            <span class="svg-ico">${brainIco}</span>
-            <span>Bekijk in 3D</span>
+          <button type="button" class="icon-btn route-play-btn" id="btn-route-play" title="Prikkel automatisch afspelen of pauzeren" aria-label="Speel prikkel af of pauzeer" style="display:none;">
+            <span class="svg-ico">${pauseIco}</span>
           </button>
         </div>
 
@@ -117,28 +122,219 @@ window.NeuroVisuals = (function () {
         <div class="route-stepper" id="route-stepper" style="display:none;">
           <div class="route-step-text" id="route-step-text"></div>
           <div class="route-step-controls">
-            <button type="button" class="step-ctrl-btn" id="btn-prev-step">Vorige</button>
-            <button type="button" class="step-ctrl-btn primary" id="btn-next-step">Volgende</button>
-            <button type="button" class="step-ctrl-btn" id="btn-step-to-3d" title="Bekijk deze stap in 3D">In 3D</button>
+            <button type="button" class="step-ctrl-btn" id="btn-prev-step" title="Vorige stap" aria-label="Vorige stap"><span class="svg-ico">${prevIco}</span></button>
+            <button type="button" class="step-ctrl-btn primary" id="btn-next-step" title="Volgende stap" aria-label="Volgende stap"><span class="svg-ico">${nextIco}</span></button>
+            <button type="button" class="step-ctrl-btn" id="btn-step-to-3d" title="Bekijk deze stap in 3D">3D</button>
           </div>
         </div>
 
-        <!-- SVG Menselijk Lichaam + Brein Metrokaart -->
-        <div class="bodymap-svg-wrap" id="bodymap-svg-wrap"></div>
+        <!-- Zoombare & swipebare SVG Lichaams-Metrokaart -->
+        <div class="bodymap-svg-wrap" id="bodymap-svg-wrap">
+          <div class="bodymap-zoom-bar">
+            <button type="button" class="map-zoom-btn" id="btn-map-zoom-out" title="Uitzoomen" aria-label="Uitzoomen"><span class="svg-ico">${zoomOutIco}</span></button>
+            <button type="button" class="map-zoom-btn map-zoom-pct" id="btn-map-zoom-reset" title="Reset kaartzoom" aria-label="Reset zoom">100%</button>
+            <button type="button" class="map-zoom-btn" id="btn-map-zoom-in" title="Inzoomen" aria-label="Inzoomen"><span class="svg-ico">${zoomInIco}</span></button>
+          </div>
+          <div class="bodymap-transform" id="bodymap-transform"></div>
+        </div>
       </div>
     `;
 
     const stimSelect = container.querySelector("#stim-select");
-    const clearBtn = container.querySelector("#btn-clear-route");
+    const routePlayBtn = container.querySelector("#btn-route-play");
     const stepper = container.querySelector("#route-stepper");
     const stepText = container.querySelector("#route-step-text");
     const svgWrap = container.querySelector("#bodymap-svg-wrap");
+    const transformEl = container.querySelector("#bodymap-transform");
+    const zoomResetBtn = container.querySelector("#btn-map-zoom-reset");
 
-    container.querySelector("#btn-map-to-3d").addEventListener("click", () => {
-      if (onViewIn3D) onViewIn3D(selectedTopicId);
-    });
+    function updateTransform(instant) {
+      if (!transformEl) return;
+      mapZoom = Math.max(1.0, Math.min(3.2, Number(mapZoom.toFixed(2))));
+      const W = svgWrap.clientWidth || 390;
+      const H = svgWrap.clientHeight || 520;
+      if (mapZoom <= 1.02) {
+        mapZoom = 1.0;
+        mapPanX = 0;
+        mapPanY = 0;
+      } else {
+        const maxPanX = W * 0.55 * mapZoom;
+        const maxPanY = H * 0.55 * mapZoom;
+        mapPanX = Math.max(-maxPanX, Math.min(maxPanX, mapPanX));
+        mapPanY = Math.max(-maxPanY, Math.min(maxPanY, mapPanY));
+      }
+      transformEl.style.transition = instant ? "none" : "transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1)";
+      transformEl.style.transform = `translate(${Math.round(mapPanX)}px, ${Math.round(mapPanY)}px) scale(${mapZoom})`;
+      if (zoomResetBtn) zoomResetBtn.textContent = `${Math.round(mapZoom * 100)}%`;
+    }
+
+    function focusStation(topicId, forceMobileZoom) {
+      const st = getStation(topicId);
+      if (!st || !svgWrap) return;
+      const W = svgWrap.clientWidth || 0;
+      const H = svgWrap.clientHeight || 0;
+      if (W <= 0 || H <= 0) return;
+
+      const isCompact = window.innerWidth < 768;
+      if (!isCompact && mapZoom <= 1.05) {
+        updateTransform(false);
+        return;
+      }
+
+      const svgScale = Math.min(W / 820, H / 775);
+      if (svgScale <= 0) return;
+      const cx0 = (st.x - 410) * svgScale;
+      const cy0 = (st.y - 387.5) * svgScale;
+
+      if (isCompact && (forceMobileZoom || mapZoom <= 1.05)) {
+        mapZoom = Math.max(1.85, Math.min(2.45, mapZoom > 1.3 ? mapZoom : 2.05));
+      }
+      const desiredOffY = isCompact ? H * (0.40 - 0.5) : 0;
+      mapPanX = -cx0 * mapZoom;
+      mapPanY = desiredOffY - cy0 * mapZoom;
+      updateTransform(false);
+    }
+
+    function resetAutoTimer() {
+      if (routeTimer) {
+        clearInterval(routeTimer);
+        routeTimer = null;
+      }
+      if (activeRoute && routePlaying) {
+        routeTimer = setInterval(() => {
+          if (!activeRoute || !routePlaying) return;
+          routeStepIdx = (routeStepIdx + 1) % activeRoute.steps.length;
+          syncRouteStep();
+        }, 2400);
+      }
+    }
+
+    function updateRoutePlayBtn() {
+      if (!routePlayBtn) return;
+      routePlayBtn.style.display = activeRoute ? "inline-flex" : "none";
+      routePlayBtn.classList.toggle("is-on", routePlaying);
+      routePlayBtn.innerHTML = `<span class="svg-ico">${routePlaying ? pauseIco : playIco}</span>`;
+      routePlayBtn.setAttribute("aria-label", routePlaying ? "Pauzeer prikkel" : "Speel prikkel af");
+      routePlayBtn.title = routePlaying ? "Pauzeer automatisch afspelen" : "Hervat automatisch afspelen";
+    }
+
     container.querySelector("#btn-step-to-3d").addEventListener("click", () => {
       if (onViewIn3D) onViewIn3D(selectedTopicId);
+    });
+
+    container.querySelector("#btn-map-zoom-in").addEventListener("click", () => {
+      mapZoom = Math.min(3.2, mapZoom + 0.35);
+      focusStation(selectedTopicId, false);
+    });
+    container.querySelector("#btn-map-zoom-out").addEventListener("click", () => {
+      mapZoom = Math.max(1.0, mapZoom - 0.35);
+      updateTransform(false);
+    });
+    zoomResetBtn.addEventListener("click", () => {
+      mapZoom = 1.0;
+      mapPanX = 0;
+      mapPanY = 0;
+      updateTransform(false);
+    });
+
+    // Touch (pinch-to-zoom, 1-vinger swipe/pan, dubbel-tik reset) + Muiswiel/Sleep op desktop
+    let touchPinch = false, tStartDist = 0, tStartZoom = 1, tStartMidX = 0, tStartMidY = 0, tStartPanX = 0, tStartPanY = 0;
+    let tSingle = null, tMoved = false, lastTapTs = 0;
+
+    svgWrap.addEventListener("touchstart", (e) => {
+      if (e.touches.length === 2) {
+        touchPinch = true;
+        tMoved = true;
+        const t1 = e.touches[0], t2 = e.touches[1];
+        tStartDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+        tStartZoom = mapZoom;
+        tStartMidX = (t1.clientX + t2.clientX) / 2;
+        tStartMidY = (t1.clientY + t2.clientY) / 2;
+        tStartPanX = mapPanX;
+        tStartPanY = mapPanY;
+        tSingle = null;
+      } else if (e.touches.length === 1) {
+        touchPinch = false;
+        tMoved = false;
+        tSingle = { x: e.touches[0].clientX, y: e.touches[0].clientY, px: mapPanX, py: mapPanY };
+      }
+    }, { passive: true });
+
+    svgWrap.addEventListener("touchmove", (e) => {
+      if (e.touches.length === 2 && touchPinch && tStartDist > 0) {
+        e.preventDefault();
+        const t1 = e.touches[0], t2 = e.touches[1];
+        const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+        mapZoom = Math.max(1.0, Math.min(3.2, Number((tStartZoom * (dist / tStartDist)).toFixed(2))));
+        const mx = (t1.clientX + t2.clientX) / 2;
+        const my = (t1.clientY + t2.clientY) / 2;
+        mapPanX = tStartPanX + (mx - tStartMidX);
+        mapPanY = tStartPanY + (my - tStartMidY);
+        lastGestureTime = Date.now();
+        updateTransform(true);
+      } else if (e.touches.length === 1 && tSingle) {
+        const dx = e.touches[0].clientX - tSingle.x;
+        const dy = e.touches[0].clientY - tSingle.y;
+        if (Math.hypot(dx, dy) > 8) {
+          e.preventDefault();
+          tMoved = true;
+          mapPanX = tSingle.px + dx;
+          mapPanY = tSingle.py + dy;
+          lastGestureTime = Date.now();
+          updateTransform(true);
+        }
+      }
+    }, { passive: false });
+
+    svgWrap.addEventListener("touchend", (e) => {
+      if (touchPinch) {
+        if (e.touches.length === 0) touchPinch = false;
+        return;
+      }
+      if (!tMoved && tSingle) {
+        const now = Date.now();
+        if (now - lastTapTs < 280) {
+          mapZoom = mapZoom > 1.2 ? 1.0 : 2.1;
+          if (mapZoom <= 1.05) { mapPanX = 0; mapPanY = 0; }
+          updateTransform(false);
+          lastTapTs = 0;
+        } else {
+          lastTapTs = now;
+        }
+      }
+      tSingle = null;
+      tMoved = false;
+    }, { passive: true });
+
+    svgWrap.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const delta = -Math.sign(e.deltaY) * 0.25;
+      mapZoom = Math.max(1.0, Math.min(3.2, Number((mapZoom + delta).toFixed(2))));
+      updateTransform(false);
+    }, { passive: false });
+
+    svgWrap.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "mouse" || e.button !== 0 || mapZoom <= 1.02) return;
+      if (e.target && e.target.closest && e.target.closest(".bodymap-zoom-bar")) return;
+      const sx = e.clientX, sy = e.clientY, px = mapPanX, py = mapPanY;
+      let dragged = false;
+      const onMove = (me) => {
+        const dx = me.clientX - sx, dy = me.clientY - sy;
+        if (Math.hypot(dx, dy) > 5) {
+          dragged = true;
+          mapPanX = px + dx;
+          mapPanY = py + dy;
+          lastGestureTime = Date.now();
+          updateTransform(true);
+        }
+      };
+      const onUp = () => {
+        window.removeEventListener("pointermove", onMove);
+        window.removeEventListener("pointerup", onUp);
+        if (dragged) lastGestureTime = Date.now();
+      };
+      window.addEventListener("pointermove", onMove);
+      window.addEventListener("pointerup", onUp);
     });
 
     stimSelect.addEventListener("change", () => {
@@ -151,35 +347,43 @@ window.NeuroVisuals = (function () {
       if (found) startRoute(found);
     });
 
-    clearBtn.addEventListener("click", () => {
-      stimSelect.value = "";
-      stopRoute();
+    routePlayBtn.addEventListener("click", () => {
+      if (!activeRoute) return;
+      routePlaying = !routePlaying;
+      updateRoutePlayBtn();
+      resetAutoTimer();
     });
 
     container.querySelector("#btn-prev-step").addEventListener("click", () => {
       if (!activeRoute) return;
       routeStepIdx = (routeStepIdx - 1 + activeRoute.steps.length) % activeRoute.steps.length;
       syncRouteStep();
+      resetAutoTimer();
     });
 
     container.querySelector("#btn-next-step").addEventListener("click", () => {
       if (!activeRoute) return;
       routeStepIdx = (routeStepIdx + 1) % activeRoute.steps.length;
       syncRouteStep();
+      resetAutoTimer();
     });
 
     function startRoute(route) {
       activeRoute = route;
       routeStepIdx = 0;
-      clearBtn.style.display = "inline-flex";
+      routePlaying = true;
+      updateRoutePlayBtn();
       stepper.style.display = "flex";
       stepper.style.borderColor = route.color;
       syncRouteStep();
+      resetAutoTimer();
     }
 
     function stopRoute() {
       activeRoute = null;
-      clearBtn.style.display = "none";
+      routePlaying = false;
+      resetAutoTimer();
+      updateRoutePlayBtn();
       stepper.style.display = "none";
       drawSVG();
     }
@@ -193,18 +397,20 @@ window.NeuroVisuals = (function () {
       stepper.style.borderColor = dCol;
       stepText.innerHTML = `<span class="step-pill" style="background:${dCol};">${dLbl} • Stap ${routeStepIdx + 1}/${activeRoute.steps.length}</span> ${step.text}`;
       drawSVG();
+      focusStation(step.topicId, true);
       if (onSelectTopic) onSelectTopic(step.topicId, true);
     }
 
     function drawSVG() {
       const svgNS = "http://www.w3.org/2000/svg";
-      svgWrap.innerHTML = "";
+      const targetRoot = transformEl || svgWrap;
+      targetRoot.innerHTML = "";
 
       const svg = document.createElementNS(svgNS, "svg");
       svg.setAttribute("viewBox", "0 0 820 775");
       svg.setAttribute("class", "bodymap-svg");
 
-      // 1. VERZORGDE ANATOMISCHE ACHTERGRONDTEKENING (Hoofd/Brein, Wervelkolom, Organen, Spieren/Gewricht)
+      // 1. VERZORGDE ANATOMISCHE ACHTERGRONDTEKENING (Vloeiend hoofd-, romp- en wervelsilhouet zonder V-inkeping)
       const bg = document.createElementNS(svgNS, "g");
       bg.innerHTML = `
         <defs>
@@ -223,38 +429,34 @@ window.NeuroVisuals = (function () {
               fill="rgba(56, 189, 248, 0.05)" stroke="rgba(56, 189, 248, 0.28)" stroke-width="1.5" />
         <text x="38" y="443" fill="#7dd3fc" font-size="11.5" font-weight="800">PERIFEER ZENUWSTELSEL (PZS) — 43 paar zenuwen (Afferent vs. Efferent)</text>
 
-        <!-- Menselijk Lichaam & Vergrote Schedel/Brein Silhouet -->
-        <path d="M 245 190
-                 C 220 95, 290 36, 410 36
-                 C 530 36, 600 95, 575 190
-                 C 562 245, 515 295, 455 310
-                 L 455 352
-                 L 595 385
-                 C 655 400, 695 450, 690 545
-                 L 668 748
-                 L 510 748
-                 L 495 570
-                 L 410 645
-                 L 325 570
-                 L 310 748
-                 L 152 748
-                 L 130 545
-                 C 125 450, 165 400, 225 385
-                 L 365 352
-                 L 365 310
-                 C 305 295, 258 245, 245 190 Z"
-              fill="url(#bodyGlow)" stroke="rgba(148, 163, 184, 0.26)" stroke-width="2" />
+        <!-- Vloeiend Menselijk Silhouet (Hoofd, Hals, Schouders, Romp & Armen; gladde basis onderaan) -->
+        <path d="M 240 190
+                 C 214 94, 286 34, 410 34
+                 C 534 34, 606 94, 580 190
+                 C 564 252, 514 294, 452 308
+                 C 448 334, 452 350, 474 362
+                 C 548 380, 628 394, 668 446
+                 C 694 480, 704 548, 694 646
+                 C 686 710, 666 742, 626 750
+                 C 556 762, 484 762, 410 762
+                 C 336 762, 264 762, 194 750
+                 C 154 742, 134 710, 126 646
+                 C 116 548, 126 480, 152 446
+                 C 192 394, 272 380, 346 362
+                 C 368 350, 372 334, 368 308
+                 C 306 294, 256 252, 240 190 Z"
+              fill="url(#bodyGlow)" stroke="rgba(148, 163, 184, 0.24)" stroke-width="2" />
 
-        <!-- Subtiele Hersen-contour & Hersenwindingen in de achtergrond -->
+        <!-- Subtiele Hersen-contour, Sleutelbeenderen, Binnenromp & Wervelkolom -->
         <path d="M 272 178 C 258 108, 315 58, 410 58 C 505 58, 562 108, 548 178 C 538 228, 490 264, 410 264 C 330 264, 282 228, 272 178 Z"
               fill="rgba(139, 92, 246, 0.08)" stroke="rgba(192, 132, 252, 0.25)" stroke-width="1.5" />
         <path d="M 410 62 L 410 258" stroke="rgba(192, 132, 252, 0.2)" stroke-width="1.5" stroke-dasharray="4 4" />
-
-        <!-- Wervelkolom-segmenten (Ruggenmerg) -->
-        <rect x="394" y="295" width="32" height="145" rx="14"
-              fill="rgba(245, 158, 11, 0.10)" stroke="rgba(245, 158, 11, 0.30)" stroke-width="1.5" />
-
-        <!-- Symmetrische ribbenkast / hart / long-accenten (achtergrond) -->
+        <rect x="396" y="295" width="28" height="162" rx="13"
+              fill="rgba(245, 158, 11, 0.10)" stroke="rgba(245, 158, 11, 0.28)" stroke-width="1.5" />
+        <path d="M 294 398 C 344 378, 382 374, 410 374 C 438 374, 476 378, 526 398"
+              fill="none" stroke="rgba(148, 163, 184, 0.18)" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M 232 496 C 242 560, 242 642, 232 712 M 588 496 C 578 560, 578 642, 588 712"
+              fill="none" stroke="rgba(148, 163, 184, 0.15)" stroke-width="1.5" stroke-linecap="round" />
         <ellipse cx="378" cy="495" rx="28" ry="42" fill="none" stroke="rgba(56, 189, 248, 0.15)" stroke-width="1.5" />
         <ellipse cx="442" cy="495" rx="28" ry="42" fill="none" stroke="rgba(249, 115, 22, 0.15)" stroke-width="1.5" />
 
@@ -432,12 +634,14 @@ window.NeuroVisuals = (function () {
         }
 
         g.addEventListener("click", () => {
+          if (Date.now() - lastGestureTime < 280) return;
           selectedTopicId = st.id;
           if (activeRoute) {
             const idx = routeTopicIds.indexOf(st.id);
             if (idx !== -1) {
               routeStepIdx = idx;
               syncRouteStep();
+              resetAutoTimer();
               return;
             } else {
               stimSelect.value = "";
@@ -445,26 +649,33 @@ window.NeuroVisuals = (function () {
             }
           }
           drawSVG();
+          focusStation(st.id, false);
           if (onSelectTopic) onSelectTopic(st.id, false);
         });
 
         svg.appendChild(g);
       });
 
-      svgWrap.appendChild(svg);
+      targetRoot.appendChild(svg);
     }
 
     drawSVG();
+    updateTransform(true);
 
     return {
       setSelected(topicId) {
         selectedTopicId = topicId;
         drawSVG();
+        focusStation(topicId, false);
       },
       setSpeaking(topicId, status) {
         speakingTopicId = topicId || null;
         speakingStatus = status || "idle";
         drawSVG();
+      },
+      onShow() {
+        drawSVG();
+        focusStation(selectedTopicId, true);
       }
     };
   }

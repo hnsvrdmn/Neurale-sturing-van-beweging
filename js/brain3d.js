@@ -23,7 +23,7 @@ window.Brain3DViewer = (function () {
     "middenhersenen":       { label: "Middenhersenen (Mesencephalon)",   region: "stem",         layer: "stem",  color: 0xf59e0b, hex: "#f59e0b", yaw: -0.58, pitch: -0.02, zoom: 3.3 },
     "pons":                 { label: "Pons",                             region: "stem",         layer: "stem",  color: 0xfbbf24, hex: "#fbbf24", yaw: -0.58, pitch: -0.08, zoom: 3.4 },
     "medulla-oblongata":    { label: "Medulla oblongata (Verlengde merg)", region: "stem",       layer: "stem",  color: 0xfcd34d, hex: "#fcd34d", yaw: -0.58, pitch: -0.14, zoom: 3.5 },
-    "reticulaire-formatie": { label: "Reticulaire formatie",             region: "stem",         layer: "stem",  color: 0xeab308, hex: "#eab308", yaw: -1.10, pitch: -0.08, zoom: 3.6 },
+    "reticulaire-formatie": { label: "Reticulaire formatie",             region: "stem",         layer: "stem",  color: 0xfacc15, hex: "#facc15", yaw: -1.15, pitch: -0.05, zoom: 3.3 },
     "ruggenmerg":           { label: "Ruggenmerg",                       region: "stem",         layer: "stem",  color: 0xd97706, hex: "#d97706", yaw: -0.75, pitch: -0.18, zoom: 4.8 },
     "pzs-overzicht":        { label: "PZS (12 craniale + 31 spinale)",   region: "stem",         layer: "pzs",   color: 0x38bdf8, hex: "#38bdf8", yaw: -0.60, pitch: -0.14, zoom: 4.7 }
   };
@@ -732,20 +732,20 @@ window.Brain3DViewer = (function () {
 
     // 9. RETICULAIRE FORMATIE (Meerdelige kernkolom centraal in de hersenstam langs evalStemAxis)
     const retPts = [];
-    for (let i = 0; i <= 14; i++) {
-      const y = 0.04 - (0.78 * i) / 14;
+    for (let i = 0; i <= 16; i++) {
+      const y = 0.08 - (0.84 * i) / 16;
       const a = evalStemAxis(y);
-      retPts.push(new THREE.Vector3(0, a.y, a.z - 0.025));
+      retPts.push(new THREE.Vector3(0, a.y, a.z - 0.02));
     }
     const retCurve = new THREE.CatmullRomCurve3(retPts);
-    registerMesh(new THREE.Mesh(new THREE.TubeGeometry(retCurve, 26, 0.048, 12, false), makeMat("reticulaire-formatie")), "reticulaire-formatie", [0, -0.16, -0.18]);
+    registerMesh(new THREE.Mesh(new THREE.TubeGeometry(retCurve, 28, 0.055, 14, false), makeMat("reticulaire-formatie")), "reticulaire-formatie", [0, -0.16, -0.22]);
 
-    // Beaded nuclei nodes along reticular formation for anatomical look
-    [0.0, -0.22, -0.44, -0.64].forEach((ny) => {
+    // Kernknopen langs het verloop van de reticulaire formatie
+    [0.06, -0.10, -0.28, -0.46, -0.66].forEach((ny) => {
       const a = evalStemAxis(ny);
-      const node = new THREE.Mesh(new THREE.SphereGeometry(0.060, 12, 10), makeMat("reticulaire-formatie"));
-      node.position.set(0, a.y, a.z - 0.025);
-      registerMesh(node, "reticulaire-formatie", [0, -0.16, -0.18]);
+      const node = new THREE.Mesh(new THREE.SphereGeometry(0.068, 14, 12), makeMat("reticulaire-formatie"));
+      node.position.set(0, a.y, a.z - 0.02);
+      registerMesh(node, "reticulaire-formatie", [0, -0.16, -0.22]);
     });
 
     // 10. RUGGENMERG (Sluit op y=-0.78..-0.84 naadloos aan op medulla oblongata langs evalStemAxis)
@@ -897,7 +897,10 @@ window.Brain3DViewer = (function () {
 
       rootGroup.rotation.y = state.yaw;
       rootGroup.rotation.x = state.pitch;
-      camera.position.z = state.zoom;
+      const aspect = camera.aspect || 1;
+      const portraitFit = aspect < 0.85 ? Math.min(1.52, 0.88 / Math.max(0.45, aspect)) : 1.0;
+      rootGroup.position.y = aspect < 0.85 ? 0.14 : 0;
+      camera.position.z = state.zoom * portraitFit;
 
       const selectedMeta = TOPIC_META[state.selectedId];
       const selectedIsDeepCerebrum = Boolean(selectedMeta && selectedMeta.region === "cerebrum" && selectedMeta.layer === "deep");
@@ -925,11 +928,19 @@ window.Brain3DViewer = (function () {
           visible = ud.region === "cerebellum";
         } else if (state.layerMode === "stem") {
           visible = ud.region === "stem";
+          if (state.selectedId === "reticulaire-formatie" && stemChildIds.has(ud.topicId)) opacity = 0.16;
         } else if (state.layerMode === "xray") {
-          opacity = isOuter ? 0.14 : 1.0;
+          // Zowel buitenste schors als hersenstam-buitenschil halftransparant maken zodat reticulaire formatie & diepe kernen zichtbaar en klikbaar blijven
+          if (isOuter || stemChildIds.has(ud.topicId)) {
+            opacity = 0.15;
+          } else if (ud.topicId === "cerebellum") {
+            opacity = 0.24;
+          } else {
+            opacity = 1.0;
+          }
         } else {
-          // "all": volledig dekkend zodat hardware Z-buffer nul sorteer-gaten toont
-          opacity = 1.0;
+          // "all": volledig dekkend zodat hardware Z-buffer nul sorteer-gaten toont; bij directe keuze op reticulaire-formatie kijkt men door de hersenstam heen
+          opacity = (state.selectedId === "reticulaire-formatie" && stemChildIds.has(ud.topicId)) ? 0.16 : 1.0;
         }
 
         const effectiveOpacity = isSelected ? 1.0 : opacity;

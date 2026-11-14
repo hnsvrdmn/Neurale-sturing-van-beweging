@@ -177,3 +177,22 @@
 - **Live verificatie:**
   - Buildstatus: `built` op `https://hnsvrdmn.github.io/Neurale-sturing-van-beweging/`.
   - Alle `7` app-bestanden (`/`, `/manifest.json`, `/css/style.css`, `/js/data.js`, `/js/visuals.js`, `/js/brain3d.js`, `/js/app.js`) leveren live `HTTP 200` op.
+
+
+
+### [2026-11-14 22:58:00] — Update #18 (Ronde 8): Mobiele bruikbaarheid, - onder-lade, Lichaams-Kaart zoom/autoplay, glad silhouet & Reticulaire formatie in X-Ray
+- **Verbeteringen naar aanleiding van visuele & mobiele feedback:**
+  - [`js/data.js`](js/data.js): custom SVG-iconen (`chevronLeft`, `chevronRight`, `chevronUp`, `chevronDown`, `zoomIn`, `zoomOut`) toegevoegd zonder standaard-emoji's.
+  - [`js/visuals.js`](js/visuals.js) & [`css/style.css`](css/style.css):
+    - De knoppen `Reset`, `▲ Afferent`, `▼ Efferent` en `Bekijk in 3D` zijn uit de bovenbalk van de `Lichaams-Kaart` (`.stimulus-bar`) verwijderd.
+    - Bij een gekozen prikkel verschijnt een icon-only play/pause-knop (`#btn-route-play`) waarmee de prikkelstappen automatisch (`2400ms`) worden doorlopen en gepauzeerd.
+    - De kaart is voorzien van zoom & pan (`#bodymap-transform`, 1-vinger slepen, 2-vinger pinch van `100%` tot `320%`, dubbel-tik reset, knoppen `-` / `%` / `+` en automatische station-focus op smalle schermen `< 768px`).
+    - De vreemde V-inkeping onderaan het achtergrondsilhouet is vervangen door een doorlopend hoofd/nek/schouder/torso-contour.
+  - [`index.html`](index.html), [`css/style.css`](css/style.css) & [`js/app.js`](js/app.js):
+    - Mobiele bovenbalk (`.top-bar`) versmald op `<= 680px` / `<= 420px` met icoon-voorleesknop zodat alle tabs, stemknop en `Aa` zonder afkappen passen binnen `360px`–`390px` (met `min-width: 0; max-width: 100%;` overflow-beveiliging).
+    - Onderdock (`#info-dock`) omgebouwd tot een zwevende, inklapbare onder-lade op mobiel (`< 900px`) met `-`-sleepgreep (`#dock-drawer-handle`), tik-/sleepondersteuning (`104px` ingeklapt, `54dvh` uitgeklapt of op maat gesleept), `<` / `>` onderdeelknoppen en `^` / `v` inklapknop; desktop (`>= 900px`) behoudt het vaste `370px` zijpaneel.
+  - [`js/brain3d.js`](js/brain3d.js):
+    - `Reticulaire formatie` wordt duidelijk zichtbaar en aanklikbaar in `X-Ray`-modus (en bij directe selectie) doordat `middenhersenen`, `pons` en `medulla-oblongata` doorzichtig worden (`opacity: 0.15` in `X-Ray`, `0.16` bij directe selectie), met vergrote heldergele streng en kernen (`0xfacc15`).
+    - Automatische camera-uitlijning voor portret-weergave (`aspect < 0.85`) zodat het hele 3D-brein netjes binnen het mobiele scherm valt boven de zwevende bedieningsknoppen.
+- **Visuele & functionele controle (headless Chrome + lokale simulatie):**
+  - Headless Chrome screenshots vastgelegd en geïnspecteerd op mobiel (`390x844`, `scrollWidth = 390`) voor 3D-Brein ingeklapt/uitgeklapt, 3D `X-Ray` (`Reticulaire formatie`), en `Lichaams-Kaart` (ingezoomde prikkelroute met auto-play-icoon + uitgezoomd silhouet), én op desktop (`1280x800`, `scrollWidth = 1280`).
