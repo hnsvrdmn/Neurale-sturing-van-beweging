@@ -120,3 +120,28 @@
   - Interactieve flows (Node VM + mock-DOM): **Pauze / Verder** van spraak werkt zowel via native `speechSynthesis.pause()/resume()` als via de woordpositie-fallback (`onboundary`) zonder opnieuw te starten; **Bekijk in 3D** werkt vanuit zowel `Lichaams-Kaart`, dockkaart als overhoring; sluiten van de fullscreen lezer laat audio doorlopen; foute quiz-antwoorden tonen directe uitleg en starten **Foute vragen herhalen**.
   - Lokale HTTP-servertest: `HTTP 200` op alle 7 kernbestanden (`index.html`, `manifest.json`, `css/style.css`, `js/data.js`, `js/brain3d.js`, `js/visuals.js`, `js/app.js`).
 - **GitHub-upload:** `.gitignore` (`models/`) aangemaakt en repository `Neurale-sturing-van-beweging` klaargemaakt om te pushen naar `https://github.com/hnsvrdmn/Neurale-sturing-van-beweging`.
+
+
+
+### [2026-11-14 21:58:30] — Update #13 (Ronde 6): Naadloze integratie van sensomotorische integratie, reflexen, proprioceptoren & motor-units
+- **Actie:** Gestart met het naadloos verwerken van alle resterende stof over sensomotorische integratie, integratieniveaus, reflexen, spierspoeltjes, Golgi-peeslichaampjes en de motorische eenheid (motor-unit) in de bestaande **CZS**- en **PZS**-onderdelen (zonder los 'Module 4'-kopje):
+  - `js/data.js`: verrijken van CZS-onderdelen (`czs-overzicht`, `parietale-kwab`, `thalamus`, `cerebellum`, `hersenstam`, `ruggenmerg`), toevoegen van `spierspoeltjes`, `golgi-peeslichaampjes` en `motorische-eenheid` onder `PZS` (`25` onderdelen totaal), uitbreiden van prikkelroutes naar `14` en tentamenvragen naar `32`.
+  - `js/visuals.js`: Lichaams-Kaart symmetrisch uitlijnen met alle 25 stations en actuele CZS/PZS-koppen (0 overlap).
+  - `js/brain3d.js`: toevoegen van 3D-meshes voor `spierspoeltjes`, `golgi-peeslichaampjes` en `motorische-eenheid` aansluitend op de spinale zenuwwortels (`0.000` gat).
+- **Nu mee bezig:** Stap 2 — `js/data.js` bijwerken met exacte brontekst uit `samenvatting-hoofdstuk-3.txt` en `hoofdstuk3.docx`.
+
+
+
+### [2026-11-14 22:04:00] — Update #14 (Ronde 6 afgerond): Naadloze integratie geverifieerd & klaar voor GitHub-push
+- **Doorgevoerd in alle lagen:**
+  - [`js/data.js`](js/data.js): alle resterende onderwerpen uit Module 4 (sensomotorische integratie in 5 stappen, de 5 CZS-integratieniveaus, Wetenschapsperspectief 3.3, spinale motorische reflexen, *spierspoeltjes* + gamma-voorspanning + rekreflex, *Golgi-peeslichaampjes* + autogene inhibitie, en de *motorische eenheid / motor-unit* + innervatieverhoudingen 1:15 vs. 1:2.000+) naadloos ondergebracht onder de bestaande **CZS**- en **PZS**-onderdelen (`25` onderdelen, `14` prikkelroutes incl. terugtrekreflex/rekreflex/autogene inhibitie, `32` tentamenvragen met directe uitleg).
+  - [`js/visuals.js`](js/visuals.js): `Lichaams-Kaart` uitgebreid naar een symmetrisch raster van `25` stations binnen `viewBox="0 0 820 775"` (links *Afferent: 5 receptoren, gewrichtssensoren, spierspoeltjes, Golgi-peeslichaampjes*; rechts *Efferent: Somatisch & Autonoom, Motorische Eenheid, Sympathisch, Parasympathisch*), zonder losse module-labels of overlappende blokjes.
+  - [`js/brain3d.js`](js/brain3d.js): gedetailleerde 3D-eindstructuren (`spierspoeltjes`, `motorische-eenheid`, `golgi-peeslichaampjes`) direct aangesloten op de PZS-spinale zenuwen (`0.000` gat), inclusief 2D-canvas fallback-coördinaten.
+  - [`index.html`](index.html) & [`manifest.json`](manifest.json): paginatitel en manifest gelijkgetrokken naar een uniforme **CZS & PZS**-structuur zonder losse `Module 2/3/4`-labels.
+- **Simulatie & controles (`node --check` + `sim.js`, uitgevoerd na laatste code-edit):**
+  - `node --check` op `js/data.js`, `js/visuals.js`, `js/brain3d.js`, `js/app.js`: allemaal geslaagd.
+  - Brondata & structuur: `25` onderdelen (`CZS`/`PZS` only, alle met volledige `chapterText`), `14` prikkelroutes, `32` quizvragen met `explain` en geldige `topicId`, `0` standaard-emoji's in alle bestanden.
+  - 3D-model: `158` interactieve meshes zonder NaN-waarden, `0.000` anatomisch gat over alle 10 gecontroleerde verbindingen (inclusief `pzs-overzicht` naar `spierspoeltjes`, `golgi-peeslichaampjes` en `motorische-eenheid`), alle regiofilters (**Cerebrum**, **Diencephalon**, **Cerebellum**, **Stam & Ruggenmerg**, **X-Ray**, **Alles**) geverifieerd.
+  - Lichaams-Kaart SVG: exact `25` station-blokjes binnen het `820x775` frame met `0` onderlinge overlap.
+  - App-interacties & server: **Pauze / Verder** audio (`native` + `onboundary`-fallback), **Bekijk in 3D** (vanuit Kaart, Dock en Quiz), inline hoofdstuktekst, fullscreen lezer, quizfout-uitleg + **Foute vragen herhalen**, en `HTTP 200` op alle 7 kernbestanden.
+- **Volgende stap:** Committen en pushen naar `https://github.com/hnsvrdmn/Neurale-sturing-van-beweging`.

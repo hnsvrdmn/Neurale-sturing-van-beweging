@@ -22,23 +22,26 @@ window.NEURO_ICONS = {
 
 window.NEURO_DATA = {
   topics: [
-    // ================= MODULE 2: CZS =================
+    // ================= CENTRAAL ZENUWSTELSEL (CZS) =================
     {
       id: "czs-overzicht",
       module: "CZS",
       layer: "outer",
       color: "#8b5cf6",
       title: "Centraal Zenuwstelsel (CZS)",
-      tag: "Hersenen + Ruggenmerg",
+      tag: "Hersenen + Ruggenmerg • Sensomotorische integratie",
       bullets: [
-        "<b>Hersenen</b> (>100 miljard neuronen) + <b>ruggenmerg</b>",
-        "Vezelbundels in CZS = <b>banen</b> of <b>tractussen</b> (in PZS = <b>zenuwen</b>)"
+        "<b>Hersenen</b> (>100 miljard neuronen) + <b>ruggenmerg</b>; vezelbundels = <b>banen/tractussen</b> (in PZS = <b>zenuwen</b>)",
+        "<b>Sensomotorische integratie (5 stappen)</b>: 1. Receptor → 2. Afferent neuron → 3. CZS-integratie → 4. Efferent α-motorneuron → 5. Spierrespons",
+        "<b>3 motorische responsniveaus</b>: ruggenmerg (simpele reflex) → lagere hersenen (houding/coördinatie) → motorische cortex (complexe beweging)"
       ],
-      exactQuote: "Het CZS omvat de hersenen (meer dan 100 miljard neuronen) en het ruggenmerg. In het CZS heten bundels zenuwvezels banen of tractussen; in het PZS heten ze zenuwen.",
+      exactQuote: "Het CZS omvat de hersenen (meer dan 100 miljard neuronen) en het ruggenmerg. In het CZS heten bundels zenuwvezels banen of tractussen; in het PZS heten ze zenuwen. Sensomotorische integratie (5 stappen): 1. Een sensorische stimulus wordt waargenomen door een specifieke perifere receptor. 2. De actiepotentiaal wordt via een afferent sensorisch neuron naar het CZS geleid. 3. Het CZS (ruggenmerg, hersenstam of hersenen) verwerkt en integreert de inkomende informatie en selecteert een motorische respons. 4. Een motorische actiepotentiaal verlaat het CZS via een efferent alpha-motorneuron. 5. De impuls bereikt de doeleffector (skeletspiervezels) via de motorische eindplaat en de mechanische respons vindt plaats.",
       chapterText: [
-        "Het centrale zenuwstelsel (CZS) omvat de hersenen (meer dan 100 miljard neuronen) en het ruggenmerg. De vier belangrijkste delen van de hersenen zijn het cerebrum, het diencephalon, het cerebellum en de hersenstam.",
+        "Het centrale zenuwstelsel (CZS) omvat de hersenen (meer dan 100 miljard neuronen) en het ruggenmerg. De vier belangrijkste delen van de hersenen zijn het cerebrum, het diencephalon, het cerebellum en de hersenstam. In het CZS heten bundels zenuwvezels banen of tractussen (zoals het corpus callosum tussen de hersenhelften en de corticospinale tractussen naar het ruggenmerg); in het PZS heten ze zenuwen.",
         "De vier buitenste kwabben van het cerebrum (frontale, pariëtale, temporele en occipitale kwab) zijn aan de buitenzijde zichtbaar; de vijfde kwab, de centrale insula, zit diep weggevouwen tussen de temporele kwab en de frontale kwab.",
-        "In het CZS heten bundels zenuwvezels banen of tractussen (zoals het corpus callosum tussen de hersenhelften en de corticospinale tractussen naar het ruggenmerg); in het PZS heten ze zenuwen."
+        "Sensomotorische integratie: hoe laat een sensorische stimulus een motorische respons ontstaan? Hoe weten bijvoorbeeld de spieren in uw hand dat uw vingers moeten wegtrekken bij een hete kachel, of hoe werken de spieren in uw benen samen bij rennen? Om deze taken te vervullen moeten het sensorische en het motorische zenuwstelsel met elkaar communiceren in vijf vaste stappen: (1) Een sensorische stimulus wordt ontvangen door sensorische receptoren (bijvoorbeeld een speldenprik). (2) De sensorische actiepotentiaal wordt over sensorische neuronen naar het CZS geleid. (3) Het CZS interpreteert de inkomende sensorische informatie en bepaalt welke respons het meest geschikt is (of start reflexmatig een motorische reactie). (4) De signalen voor de reactie worden verstuurd vanuit het CZS over α-motorneuronen. (5) De motorische actiepotentialen worden verstuurd naar een spier, en de respons vindt plaats.",
+        "Integratiecentra langs vijf oplopende niveaus: sensorische signalen kunnen eindigen op het wervelniveau in het ruggenmerg (eenvoudigste integratie: simpele spinale motorische reflex), in de lagere hersenstam (complexe onbewuste reacties zoals houdingscontrole bij zitten, staan en lopen), in het cerebellum (onbewuste coördinatie van spiergroepen), op de thalamus (waar sensaties het bewustzijn betreden en grof worden onderscheiden) of op de primaire sensorische cortex (exacte bewuste lokalisatie via de lichaamslandkaart).",
+        "Als het niveau van motorische sturing verschuift van het ruggenmerg (simpele reflex) via lagere hersenregionen naar het motorisch gebied van de cerebrale cortex, neemt de complexiteit toe tot gecompliceerde bewegingen waarvoor basale gedachteprocessen nodig zijn. De basale ganglia en het cerebellum helpen om herhaalde bewegingen te coördineren en bewegingspatronen vloeiender te maken."
       ]
     },
     {
@@ -123,12 +126,12 @@ window.NEURO_DATA = {
       layer: "outer",
       color: "#6366f1",
       title: "Pariëtale kwab",
-      tag: "2e van 5 kwabben • Boven/achter",
+      tag: "2e van 5 kwabben • Primaire sensorische cortex",
       bullets: [
-        "<b>Sensorische input</b> & interpretatie",
-        "<b>Tast</b>, <b>pijn</b>, <b>temperatuur</b> & <b>ruimtelijk inzicht</b>"
+        "<b>Sensorische input</b> & interpretatie (<b>tast</b>, <b>pijn</b>, <b>temperatuur</b> & <b>ruimtelijk inzicht</b>)",
+        "<b>Primaire sensorische cortex</b> (<b>postcentrale gyrus</b>): bevat een <b>'landkaart' van het lichaam</b> voor bewuste, exacte lokalisatie van huid- en proprioceptorprikkels"
       ],
-      exactQuote: "Pariëtale kwab: Sensorische input en interpretatie (tast, pijn, temperatuur, ruimtelijk inzicht).",
+      exactQuote: "Pariëtale kwab: Sensorische input en interpretatie (tast, pijn, temperatuur, ruimtelijk inzicht). Primaire sensorische cortex (postcentrale gyrus van de pariëtale kwab): Bewuste en exacte lokalisatie en discriminatie van zintuigprikkels (sensorische representatie van het lichaam).",
       chapterText: [
         "De pariëtale kwab is een van de vier buitenste lobben van het cerebrum en zorgt voor algemene sensorische input en interpretatie (waaronder tast, pijn, temperatuur en ruimtelijk inzicht). De primaire sensorische cortex in de pariëtale kwab behoort tot de drie belangrijkste cerebrumgebieden voor de inspanningsfysiologie.",
         "Pas wanneer sensorische signalen de cerebrale cortex bereiken, kunt u ze afzonderlijk lokaliseren. De primaire sensorische cortex, gelokaliseerd in de postcentrale gyrus (in de pariëtale kwab), ontvangt algemene sensorische input van receptoren in de huid en van proprioceptoren in de spieren, pezen en gewrichten.",
@@ -208,12 +211,13 @@ window.NEURO_DATA = {
       layer: "deep",
       color: "#e879f9",
       title: "Thalamus (Diencephalon)",
-      tag: "Sensorisch schakelstation",
+      tag: "Sensorisch schakelstation • Bewustzijnsdrempel",
       bullets: [
         "Groot <b>sensorisch schakelstation</b> & integratiecentrum",
-        "Alle opstijgende sensorische banen schakelen hier — <b>behalve het reuksysteem</b>"
+        "Alle opstijgende sensorische banen schakelen hier — <b>behalve het reuksysteem</b>",
+        "<b>Integratieniveau bewustzijnsdrempel</b>: signalen betreden hier het bewustzijn en ruwe sensaties worden onderscheiden"
       ],
-      exactQuote: "Thalamus: Het grote sensorische schakelstation en integratiecentrum. Vrijwel alle opstijgende sensorische zenuwbanen (behalve het reuksysteem) schakelen hier over alvorens de cerebrale cortex te bereiken.",
+      exactQuote: "Thalamus: Het grote sensorische schakelstation en integratiecentrum. Vrijwel alle opstijgende sensorische zenuwbanen (behalve het reuksysteem) schakelen hier over alvorens de cerebrale cortex te bereiken. Integratiepunt waar signalen de drempel van het bewustzijn bereiken en ruwe sensaties worden herkend.",
       chapterText: [
         "Het diencephalon, de tussenhersenen, bevat de thalamus en de hypothalamus. De thalamus is een belangrijk sensorisch integratiecentrum.",
         "Alle sensorische input (behalve de reuk) komt in de thalamus terecht en wordt doorgegeven naar het juiste cortexgebied. De thalamus reguleert de sensorische input die het bewuste brein bereikt en is dus zeer belangrijk voor motorische sturing.",
@@ -246,14 +250,14 @@ window.NEURO_DATA = {
       title: "Cerebellum (Kleine hersenen)",
       tag: "Onder cerebrum, achter hersenstam",
       bullets: [
-        "<b>Coördinatie</b> van snelle, complexe bewegingen (vloeiend & accuraat)",
+        "<b>Coördinatie</b> van snelle, complexe bewegingen; coördineert <b>fijne én grove motoriek</b> samen met <b>basale ganglia</b>",
         "<b>Vergelijkt</b> bewegingsplan (motorcortex) met uitvoering (onbewuste correctie)",
         "Afferente feedback: <b>spierspoeltjes, peeslichaampjes, gewrichten, zicht, evenwichtsorgaan</b>"
       ],
       exactQuote: "Ligt aan de achterzijde, onder het cerebrum en achter de hersenstam. Coördinatiecentrum voor alle snelle en complexe motorische bewegingen. Fungeert als intern vergelijkings- en correctiesysteem: vergelijkt continu het voorgenomen bewegingsplan (vanuit de motorcortex) met de daadwerkelijke uitvoering (via afferente feedback van spierspoeltjes, peeslichaampjes, gewrichten, zicht en evenwichtsorgaan). Initieert onbewuste motorische correcties zodat bewegingen vloeiend, harmonieus en accuraat verlopen.",
       chapterText: [
         "Het cerebellum, de kleine hersenen, bevindt zich achter de hersenstam. Het is verbonden met talrijke delen van de hersenen en speelt een cruciale rol bij het coördineren van beweging.",
-        "Het cerebellum is cruciaal in de besturing van alle snelle en complexe spieractiviteit. Het helpt bij de afstemming van de timing van bewegingen en bij de snelle opvolging van de ene beweging naar de volgende. Het cerebellum houdt de motorische activiteiten in de gaten die door andere delen van de hersenen worden opgewekt en maakt aanpassingen ter verbetering. Het cerebellum assisteert bij het functioneren van zowel de primaire motorcortex als de basale ganglia. Het ondersteunt bewegingspatronen door de bewegingen, die anders schokkerig en ongecontroleerd zouden zijn, ‘glad te strijken’ en vloeiender te maken.",
+        "Het cerebellum is cruciaal in de besturing van alle snelle en complexe spieractiviteit. Het helpt bij de afstemming van de timing van bewegingen en bij de snelle opvolging van de ene beweging naar de volgende. Het cerebellum houdt de motorische activiteiten in de gaten die door andere delen van de hersenen worden opgewekt en maakt aanpassingen ter verbetering. Het cerebellum ondersteunt zowel de primaire motorcortex als de basale ganglia, en coördineert fijne en grove motorische sturing om herhaalde bewegingen en bewegingspatronen ‘glad te strijken’ en vloeiender te maken.",
         "Het cerebellum werkt als een integratiesysteem; het vergelijkt de geprogrammeerde of bedoelde activiteit met de actuele veranderingen die in het lichaam plaatsvinden, waarna het motorische correcties in gang zet. Het ontvangt informatie uit het cerebrum en andere hersendelen, en ook van de sensorische receptoren (proprioceptoren) in de spieren en gewrichten, die informeren over de huidige lichaamshouding. Het cerebellum ontvangt ook visuele informatie en informatie over het evenwicht. Het beschikt dus over informatie over de exacte spanning en positie van alle spieren, gewrichten en pezen en over de huidige positie van het lichaam ten opzichte van de omgeving.",
         "Op basis hiervan bepaalt het cerebellum het beste actieplan om tot de gewenste beweging te komen. Nadat de primaire cortex de beslissing neemt om een beweging uit te voeren, wordt deze beslissing doorgegeven aan het cerebellum. Het cerebellum vergelijkt de werkelijke beweging, op basis van de sensorische feedback van spieren en gewrichten, met het gewenste resultaat. Als de beweging afwijkt van de geplande actie, dan informeert het cerebellum hogere hersencentra over de afwijking, zodat correcties kunnen worden gestart. Zonder de onbewuste sturing door het cerebellum zouden alle bewegingen ongecontroleerd en ongecoördineerd zijn."
       ]
@@ -266,15 +270,16 @@ window.NEURO_DATA = {
       title: "Hersenstam",
       tag: "Boven → beneden: Middenhersenen, Pons, Medulla",
       bullets: [
-        "Volgorde: <b>1. Middenhersenen → 2. Pons → 3. Medulla oblongata</b>",
-        "Oorsprong van <b>10 van de 12 paar hersenzenuwen</b>",
-        "Vitale autonome centra: <b>ademhaling, hartactie & vasomotoriek</b>"
+        "Volgorde: <b>1. Middenhersenen → 2. Pons → 3. Medulla oblongata</b> • Oorsprong van <b>10 van 12 paar hersenzenuwen</b>",
+        "Vitale autonome centra: <b>ademhaling, hartactie & vasomotoriek</b>",
+        "<b>Lagere hersenstam (integratieniveau)</b>: complexe onbewuste reacties zoals <b>houdingscontrole</b> bij zitten, staan en lopen"
       ],
-      exactQuote: "Hersenstam: Bestaat van boven naar beneden uit de middenhersenen, de pons en het medulla oblongata. Verbindt de hersenen met het ruggenmerg; herbergt de oorsprong van 10 van de 12 paar hersenzenuwen. Bevat de vitale autonome reflex- en regelcentra voor ademhaling, hartactie en vasomotoriek.",
+      exactQuote: "Hersenstam: Bestaat van boven naar beneden uit de middenhersenen, de pons en het medulla oblongata. Verbindt de hersenen met het ruggenmerg; herbergt de oorsprong van 10 van de 12 paar hersenzenuwen. Bevat de vitale autonome reflex- en regelcentra voor ademhaling, hartactie en vasomotoriek. Lagere hersenstam: Complexe, automatische reacties (zoals houdingscorrecties bij staan en zitten).",
       chapterText: [
         "De hersenstam, die van boven naar beneden bestaat uit de middenhersenen, de pons en de medulla oblongata (het verlengde merg), verbindt de hersenen met de wervelkolom. Alle sensorische en motorische zenuwen lopen door de hersenstam. Ze geven informatie tussen hersenen en de wervelkolom in beide richtingen door.",
         "Dit is de plaats van oorsprong voor tien van de twaalf paren craniale zenuwen (hersenzenuwen). De hersenstam bevat ook de belangrijkste autonome regulatiecentra die controle uitoefenen over het ademhalings- en cardiovasculaire systeem (ademhaling, hartactie en vasomotoriek).",
-        "Bij sensomotorische integratie hebben sensorische signalen die eindigen in de hersenstam onbewuste motorische reacties van een complexere aard tot gevolg dan simpele spinale reflexen. De houdingscontrole tijdens zitten, staan en lopen is een voorbeeld van dit niveau van sensorische input."
+        "Bij sensomotorische integratie hebben sensorische signalen die eindigen in de lagere hersenstam onbewuste motorische reacties van een complexere aard tot gevolg dan simpele spinale reflexen. De houdingscontrole tijdens zitten, staan en lopen is een voorbeeld van dit niveau van sensorische input.",
+        "Wetenschapsperspectief 3.3 — Hoe afname in bloeddruk verbonden is met valrisico (Fitzgibbon-Collins et al., 2019): Direct na opstaan treedt een tijdelijke afname in bloeddruk op die bij ouderen het valrisico kan verhogen. Onderzoekers onderzochten bij gezonde jongvolwassenen de orthostatische snelheid van de bloedstroom in de middelste cerebrale arterie tijdens diastole (MCAD) en de posturale stabiliteit bij drie liggen-naar-staan transities: gewoon opstaan, deflatie van opgepompte dijmanchetten, en deflatie plus 90 seconden hyperventilatie. Een groter MCAD-verschil was gekoppeld aan meer posturale instabiliteit direct na gaan staan, al was meer dan de helft resistent en liet de zwakker gereguleerde groep progressief grotere dalingen en meer instabiliteit zien (mogelijk door verschillen in vasomotorische tonus, autoregulatie of lokale cerebrale zuurstofvoorziening)."
       ]
     },
     {
@@ -304,17 +309,19 @@ window.NEURO_DATA = {
       tag: "Vanuit medulla oblongata door wervelkanaal",
       bullets: [
         "<b>Opstijgende sensorische</b> & <b>afdalende motorische</b> tractussen",
-        "Schakelcentrum voor <b>spinale motorische reflexen</b>"
+        "<b>Spinale motorische reflexen</b>: snelle, voorgeprogrammeerde, stereotype en onbewuste reactie op een prikkel",
+        "<b>Directe schakeling</b> (monosynaptisch of via <b>interneuronen</b>): spier reageert al <b>vóórdat</b> de prikkel bewust de cortex bereikt (bijv. terugtrekreflex bij hete kachel)"
       ],
-      exactQuote: "Ruggenmerg: Continueert vanuit het medulla oblongata door het wervelkanaal. Bevat opstijgende sensorische tractussen en afdalende motorische tractussen. Dient als schakelcentrum voor spinale motorische reflexen.",
+      exactQuote: "Ruggenmerg: Continueert vanuit het medulla oblongata door het wervelkanaal. Bevat opstijgende sensorische tractussen en afdalende motorische tractussen. Dient als schakelcentrum voor spinale motorische reflexen. Motorische reflex: Een snelle, voorgeprogrammeerde en stereotype motorische reactie op een specifieke sensorische prikkel. Doordat de schakeling direct op ruggenmergniveau plaatsvindt (monosynaptisch of via interneuronen), reageert de spier voordat de hersenen de prikkel bewust hebben waargenomen (bijvoorbeeld de terugtrekreflex bij een hete kachel).",
       chapterText: [
-        "Het laagste deel van de hersenstam, de medulla oblongata (het verlengde merg), is één geheel met het daaronder liggende ruggenmerg in de wervelkolom. Het ruggenmerg bestaat uit bundels van zenuwvezels die geleiding van zenuwimpulsen in twee richtingen mogelijk maken.",
-        "De sensorische (afferente) vezels transporteren neurale signalen van sensoren, zoals die in de spieren en gewrichten, naar de bovenste niveaus van het CZS. Motorische (efferente) vezels vanuit de hersenen of van hoog uit de wervelkolom dalen af naar eindorganen (bijvoorbeeld spieren en klieren).",
-        "Wanneer sensorische actiepotentialen het ruggenmerg bereiken, kunnen ze op dat wervelniveau een lokale reflex teweegbrengen — de eenvoudigste vorm van integratie, met doorgaans een simpele motorische reflex. Bij het aanraken van een hete kachel worden de impulsen in de wervelkolom direct geïntegreerd door interneuronen die sensorische neuronen verbinden met motorneuronen, zodat u de hand terugtrekt zonder eerst op bewuste verwerking in de hersenen te wachten."
+        "Het laagste deel van de hersenstam, de medulla oblongata (het verlengde merg), is één geheel met het daaronder liggende ruggenmerg in de wervelkolom. Het ruggenmerg bestaat uit bundels van zenuwvezels die geleiding van zenuwimpulsen in twee richtingen mogelijk maken. De sensorische (afferente) vezels transporteren neurale signalen van sensoren naar de bovenste niveaus van het CZS; motorische (efferente) vezels dalen af naar eindorganen.",
+        "Sensorische signalen die eindigen onder in de wervelkolom worden hier geïntegreerd. De respons is doorgaans een simpele motorische reflex. Dit is de eenvoudigste vorm van integratie.",
+        "Wat gebeurt er als u per ongeluk uw hand op een hete kachel legt? Eerst worden de signalen van hitte en pijn waargenomen door de thermoreceptoren en nociceptoren in uw hand. Dan worden sensorische impulsen verzonden naar de wervelkolom, waar ze eindigen op het niveau van de wervel van binnenkomst. Eenmaal in de wervelkolom worden deze impulsen direct geïntegreerd door interneuronen die de sensorische neuronen verbinden met motorneuronen. De impuls gaat naar de motorneuronen en bereikt de effectoren, de spieren die het terugtrekken van de hand sturen. Het resultaat is dat u 'in een reflex' uw hand van de hete kachel wegtrekt zonder daarover na te denken.",
+        "Een motorische reflex is een voorgeprogrammeerde reactie; elke keer als uw sensorische zenuwen bepaalde impulsen verzenden, reageert uw lichaam direct en identiek. Tegen de tijd dat u zich bewust wordt van de specifieke stimulus (nadat de sensorische impulsen ook naar uw primaire cortex zijn verzonden) is de reflexactiviteit al ruim onderweg, of al klaar. Alle neurale activiteiten verlopen extreem snel, maar een reflex is de snelste manier van reageren omdat de impuls niet omhoog wordt gezonden door de wervelkolom naar de hersenen vóórdat actie wordt ondernomen. Er is maar één reactie mogelijk, er zijn geen opties die overwogen hoeven te worden."
       ]
     },
 
-    // ================= MODULE 3: PZS =================
+    // ================= PZS =================
     {
       id: "pzs-overzicht",
       module: "PZS",
@@ -344,7 +351,7 @@ window.NEURO_DATA = {
         "<b>Mechano</b> (druk, aanraking, rek, vibratie) • <b>Thermo</b> (warmte, kou) • <b>Noci</b> (pijn)",
         "<b>Foto</b> (licht/netvlies) • <b>Chemo</b> (O2, CO2, pH, glucose, elektrolyten, geur, smaak)"
       ],
-      exactQuote: "1. HET SENSORISCHE (AFFERENTE) DEEL: Vervoert informatie vanuit perifere receptoren naar het CZS. De 5 primaire typen receptoren: 1. Mechanoreceptoren: Reageren op mechanische vervorming (druk, aanraking, rek, vibratie). 2. Thermoreceptoren: Reageren op temperatuurschommelingen (warmte en kou). 3. Nociceptoren: Reageren op weefselbeschadigende stimuli en pijn. 4. Fotoreceptoren: Reageren op licht/elektromagnetische golven (netvlies). 5. Chemoreceptoren: Reageren op chemische stoffen (bloedgassen O2 en CO2, pH, glucose, elektrolyten, geur en smaak).",
+      exactQuote: "Het sensorische (afferente) deel vervoert informatie vanuit perifere receptoren naar het CZS. De 5 primaire typen receptoren: 1. Mechanoreceptoren: Reageren op mechanische vervorming (druk, aanraking, rek, vibratie). 2. Thermoreceptoren: Reageren op temperatuurschommelingen (warmte en kou). 3. Nociceptoren: Reageren op weefselbeschadigende stimuli en pijn. 4. Fotoreceptoren: Reageren op licht/elektromagnetische golven (netvlies). 5. Chemoreceptoren: Reageren op chemische stoffen (bloedgassen O2 en CO2, pH, glucose, elektrolyten, geur en smaak).",
       chapterText: [
         "Het sensorische deel van het perifere zenuwstelsel brengt sensorische informatie naar het centrale zenuwstelsel. Sensorische (afferente) neuronen beginnen in bloedvaten, interne organen, spieren en pezen, de huid en zintuigorganen (smaak, tast, reuk, gehoor, zicht).",
         "Sensorische neuronen in het PZS eindigen in de wervelkolom of in de hersenen. Ze brengen continu informatie naar het CZS over de steeds veranderende toestand, positie en interne en externe omgeving van het lichaam. Sensorische neuronen in het CZS brengen de sensorische input naar de juiste gebieden, waar de informatie kan worden verwerkt en geïntegreerd met andere inkomende informatie.",
@@ -366,8 +373,49 @@ window.NEURO_DATA = {
       chapterText: [
         "Verschillende receptoren zijn belangrijk tijdens inspanning en sport. Gespecialiseerde zenuwuiteinden op spieren en gewrichten zijn er in vele typen en functies; elk type is gevoelig voor een specifieke stimulus.",
         "Vrije zenuwuiteinden detecteren ruwe tast, druk, pijn, warmte en kou. Ze functioneren dus als mechanoreceptoren, nociceptoren en thermoreceptoren. Deze zenuwuiteinden zijn belangrijk voor de preventie van blessures tijdens sportprestaties.",
-        "Kinesthetische (bewegings-)gewrichtssensoren in het gewrichtskapsel zijn gevoelig voor de gewrichtshoek en de veranderingssnelheid van deze hoeken. Ze nemen de positie en elke beweging van gewrichten waar.",
-        "Daarnaast noemt deze sectie spierspoeltjes (bestaan uit 4–20 intrafusale vezels voorgerekt door γ-motorneuronen; registreren de mate van rek op een spier en de snelheid van lengteverandering en wekken bij plotselinge rek via het ruggenmerg een reflectieve contractie van de extrafusale vezels op) en Golgi-peeslichaampjes (ingekapselde receptoren op 5–25 spiervezels bij de pees-spierovergang; werken als rekstrookje en ‘veiligheidsklep’ die bij te hoge peesspanning de contraherende agonistische spier remmen en de antagonist stimuleren)."
+        "Kinesthetische (bewegings-)gewrichtssensoren in het gewrichtskapsel zijn gevoelig voor de gewrichtshoek en de veranderingssnelheid van deze hoeken. Ze nemen de positie en elke beweging van gewrichten waar."
+      ]
+    },
+    {
+      id: "spierspoeltjes",
+      module: "PZS",
+      layer: "pzs",
+      color: "#06b6d4",
+      title: "Spierspoeltjes (Lengte & Rek)",
+      tag: "PZS Proprioceptor • 4–20 intrafusale vezels • Rekreflex",
+      bullets: [
+        "<b>Structuur</b>: <b>4 tot 20 intrafusale vezels</b> (in bindweefselschede) tussen gewone <b>extrafusale vezels</b>; centrale deel kan niet contraheren, alleen uitrekken",
+        "<b>Innervatie</b>: uiteinden voorgerekt (<i>pre-stretch</i>) door <b>γ-motorneuronen</b>; extrafusale vezels door <b>α-motorneuronen</b> (<b>α-γ-coactivatie</b>)",
+        "<b>Rekreflex & terugkoppeling</b>: registreert spierlengte & reksnelheid → activeert <b>α-motorneuron</b> in ruggenmerg (bijv. zwaar gewicht in hand → M. biceps brachii) én stuurt info naar hersenen"
+      ],
+      exactQuote: "Spierspoeltjes (Lengte- en rekbewakers): Structuur: Bevatten 4 tot 20 kleine intrafusale spiervezels ingebed tussen de gewone extrafusale skeletspiervezels. Innervatie: Extrafusale spiervezels worden aangestuurd door grote alpha-motorneuronen; de contractiele uiteinden van intrafusale vezels worden aangestuurd door gamma-motorneuronen (houden het centrale sensorische deel op voorspanning). Functie: Registreren de spierlengte en de snelheid van lengteverandering (rek). Rekreflex: Bij plotselinge, snelle rek vuren sensorische zenuwen signalen naar het ruggenmerg, waar een directe monosynaptische stimulatie van het alpha-motorneuron plaatsvindt. De gerekte spier trekt reflexmatig samen om overstrekking en spierscheuring te voorkomen.",
+      chapterText: [
+        "Het spierspoeltje is een groep gespecialiseerde spiervezels die tussen de skeletspiervezels in liggen. De ‘gewone’ spiervezels worden in dit kader ook wel extrafusale vezels (buiten de spoel) genoemd. Een spierspoel bestaat uit 4-20 kleine intrafusale vezels (binnen de spoel) en uit de sensorische en motorische zenuwuiteinden die verbonden zijn met deze vezels. Een bindweefselschede omhult de spierspoel en is bevestigd aan het endomysium van de extrafusale vezels. De intrafusale vezels worden bestuurd door gespecialiseerde motorneuronen, de γ-motorneuronen. De extrafusale vezels (de ‘gewone’ spiervezels) worden daarentegen bestuurd door α-motorneuronen.",
+        "Het centrale gedeelte van een intrafusale vezel kan niet contraheren, omdat het geen of slechts enkele actine- en myosinefilamenten bezit. Daarom kan het centrale deel alleen worden uitgerekt. Omdat de spierspoel vastzit aan de extrafusale vezels wordt het centrale deel van de spoel gerekt als de spiervezels eromheen worden uitgerekt.",
+        "Sensorische zenuwuiteinden die om het centrale deel van het spierspoeltje zijn gewikkeld, zenden informatie naar het ruggenmerg als dit gebied wordt uitgerekt en informeren het CZS daarmee over de lengte van de spier. In het ruggenmerg synapteert het sensorisch neuron ook op een α-motorneuron, waardoor een reflectieve spiercontractie (in de extrafusale vezels) verdere verlenging tegengaat.",
+        "Voorbeeld (rekreflex): Uw arm is gebogen in de elleboog en uw hand is uitgestoken met de handpalm naar boven. Plotseling plaatst iemand een zwaar gewicht in uw hand. Uw onderarm begint te zakken, waardoor de spiervezels in de bovenarm (bijvoorbeeld in de M. biceps brachii) worden verlengd. Dit rekt op zijn beurt de spierspoel uit. In reactie op die verlenging zenden de sensorische neuronen impulsen naar het ruggenmerg, waar dan α-motorneuronen in dezelfde spier geactiveerd worden. Deze zetten de M. biceps brachii aan tot het verhogen van de krachtproductie en het overwinnen van de rekkracht.",
+        "De γ-motorneuronen stimuleren de intrafusale vezels, waardoor ze licht voorgerekt worden. Ofschoon het midden van de intrafusale vezels niet kan samentrekken, kunnen de uiteinden dat wel. De γ-motorneuronen veroorzaken een lichte samentrekking van de uiteinden van deze vezels, waardoor het centrale deel iets wordt uitgerekt. Deze voorafgaande rekking (pre-stretch) maakt de spierspoel zeer gevoelig voor zelfs een heel klein beetje rek.",
+        "De spierspoel helpt ook bij een normale spierfunctie (α-γ-coactivatie): wanneer α-motorneuronen worden gestimuleerd om de (extrafusale) spiervezels te laten contraheren, worden de γ-motorneuronen ook geactiveerd, zodat de einden van de intrafusale vezels samentrekken. Dit rekt het centrale gedeelte van het spierspoeltje op en verhoogt via sensorische impulsen naar het ruggenmerg de krachtproductie. Bovendien worden impulsen naar hogere delen van het CZS gezonden over exacte spierlengte, contractiele staat en veranderingssnelheid: essentieel voor spiertonus, houding en continue bijsturing van bewegingen."
+      ]
+    },
+    {
+      id: "golgi-peeslichaampjes",
+      module: "PZS",
+      layer: "pzs",
+      color: "#14b8a6",
+      title: "Golgi-peeslichaampjes (Spanning)",
+      tag: "PZS Proprioceptor • 5–25 vezels in serie • Autogene inhibitie",
+      bullets: [
+        "<b>Structuur</b>: ingekapselde receptoren in de spierpezen, net proximaal van de spier-peesovergang, in serie met <b>5 tot 25 spiervezels</b>",
+        "<b>Spanningsbewaker</b>: werkt als rekstrookje voor peesspanning (reageert al op contractie van <b>1 spiervezel</b>)",
+        "<b>Autogene inhibitie ('veiligheidsklep')</b>: remt bij gevaarlijk hoge spanning het <b>α-motorneuron van de agonist</b> en activeert de <b>antagonist</b> (krachttraining kan deze remming verlagen)"
+      ],
+      exactQuote: "Golgi-peeslichaampjes (Spanningsbewakers): Structuur: Ingecapselde sensorische orgaantjes gelegen in de spierpezen, proximaal van de musculotendineuze overgang; staan in serie geschakeld met 5 tot 25 spiervezels. Functie: Registreren de mechanische spanning die op de pees wordt uitgeoefend. Autogene inhibitie: Wanneer de peesspanning gevaarlijk hoog wordt, sturen Golgi-peeslichaampjes krachtige remmende signalen naar het ruggenmerg. Dit inhibeert het alpha-motorneuron van de agonistische spier en activeert de antagonisten, waardoor de spier ontspant en peesrupturen worden voorkomen. Krachttraining kan deze inhibitiedrempel verhogen.",
+      chapterText: [
+        "Golgi-peeslichaampjes zijn ingekapselde sensorische receptoren waardoor een smalle bundel peesvezels loopt. Deze orgaantjes zijn net proximaal gelokaliseerd van de verbinding tussen de peesvezels en de spiervezels. Normaliter zijn ongeveer 5-25 spiervezels verbonden met elk Golgi-peeslichaampje.",
+        "Daar waar spierspoeltjes de lengte van een spier bewaken, zijn Golgi-peeslichaampjes gevoelig voor de spanning in het spier-peescomplex. Ze werken als een rekstrookje, een instrument dat veranderingen in spanning registreert. De gevoeligheid van Golgi-peeslichaampjes is zo groot, dat ze kunnen reageren op de contractie van één spiervezel.",
+        "Deze sensorische receptoren zijn van nature inhibitor; ze hebben een beschermende functie in het reduceren van de kans op blessures. Als ze worden gestimuleerd, inhiberen deze receptoren de contraherende (agonistische) spieren en stimuleren ze de antagonistische spieren. Golgi-peeslichaampjes werken als ‘veiligheidsklep’ bij krachtinspanningen om te voorkomen dat een spier te veel kracht produceert en spier- of peesweefsel beschadigd raakt.",
+        "Sommige wetenschappers denken dat het reduceren van de invloed van de Golgi-peeslichaampjes minder inhibitie van de actieve spieren betekent, waardoor een krachtiger spieractie mogelijk wordt. Dit mechanisme kan, in elk geval deels, de toename in kracht verklaren die optreedt bij krachttraining."
       ]
     },
     {
@@ -381,11 +429,31 @@ window.NEURO_DATA = {
         "<b>Somatisch</b>: <b>willekeurig</b> → <b>skeletspieren</b> via <b>alpha-motorneuronen</b>",
         "<b>Autonoom (vegetatief)</b>: <b>onwillekeurig</b> → <b>glad spierweefsel, hartspier & klieren</b>"
       ],
-      exactQuote: "2. HET MOTORISCHE (EFFERENTE) DEEL: Geleidt opdrachten vanuit het CZS naar de doelorgaanweefsels (effectoren). Twee functionele divisies: Somatisch zenuwstelsel: Willekeurige aansturing van skeletspieren via alpha-motorneuronen. Autonoom (vegetatief) zenuwstelsel: Onwillekeurige, automatische regulatie van glad spierweefsel, hartspierweefsel en klieren.",
+      exactQuote: "Het motorische (efferente) deel geleidt opdrachten vanuit het CZS naar de doelorgaanweefsels (effectoren). Twee functionele divisies: Somatisch zenuwstelsel: Willekeurige aansturing van skeletspieren via alpha-motorneuronen. Autonoom (vegetatief) zenuwstelsel: Onwillekeurige, automatische regulatie van glad spierweefsel, hartspierweefsel en klieren.",
       chapterText: [
         "Het centrale zenuwstelsel verstuurt door het motorische of efferente deel van het perifere zenuwstelsel informatie naar verschillende delen van het lichaam. Als het CZS de informatie heeft verwerkt die het ontvangt uit het sensorische deel, wordt beslist hoe het lichaam zal moeten reageren op die input. Vanuit de hersenen en de wervelkolom loopt een complex netwerk van neuronen naar alle delen van het lichaam. Deze neuronen voorzien de doelgebieden (voor de inspanningsfysiologie zijn dat vooral de spieren) van gedetailleerde instructies.",
-        "Bij willekeurige aansturing van skeletspieren (somatisch) gaat de impuls over de lengte van één α-motorneuron naar de neuromusculaire eindplaat en verspreidt zich naar alle geïnnerveerde spiervezels (samen één motor-unit, altijd homogeen qua vezeltype I of II). Spieren voor fijne oogbewegingen (extraoculaire spieren) hebben een innervatieverhouding van 1:15 (één α-motorneuron op 15 vezels), terwijl spieren met een algemenere krachtfunctie in het onderbeen (M. gastrocnemius en M. tibialis anterior) bijna 1:2.000 bereiken.",
+        "Bij willekeurige aansturing van skeletspieren (het somatische zenuwstelsel) stuurt een α-motorneuron signalen vanuit het CZS naar de motorische eindplaat (neuromusculaire overgang) van skeletspiervezels.",
         "Het autonome zenuwstelsel wordt vaak beschouwd als een onderdeel van het motorische deel van het PZS en stuurt de onbewuste interne functies in het lichaam, waaronder hartfrequentie, bloeddruk, bloedverdeling en ademhaling (glad spierweefsel, hartspierweefsel en klieren). Het heeft twee belangrijke delen — het sympathische en het parasympathische zenuwstelsel — die voortkomen uit verschillende delen van het ruggenmerg en de hersenstam. Hun effecten zijn vaak tegengesteld, maar beide systemen werken altijd gezamenlijk."
+      ]
+    },
+    {
+      id: "motorische-eenheid",
+      module: "PZS",
+      layer: "pzs",
+      color: "#fb923c",
+      title: "Motorische eenheid (Motor-unit)",
+      tag: "Somatisch PZS • α-motorneuron + spiervezels • 1:15 vs. 1:2.000",
+      bullets: [
+        "<b>Motor-unit</b>: <b>één enkel α-motorneuron</b> + alle spiervezels die het via de neuromusculaire eindplaat innerveert",
+        "<b>Homogeen vezeltype</b>: alle spiervezels binnen één motor-unit hebben exact <b>hetzelfde vezeltype</b> (type I óf type II, bepaald door het α-motorneuron)",
+        "<b>Innervatieverhouding</b>: <b>1 : 15</b> bij fijne motoriek (<b>extraoculaire oogspieren</b>) vs. bijna <b>1 : 2.000</b> bij grote krachtspieren (<b>M. gastrocnemius & M. tibialis anterior</b>)"
+      ],
+      exactQuote: "Motorische eenheid (motor-unit): Één enkel alpha-motorneuron en alle spiervezels die daardoor direct worden geïnnerveerd. Uniformiteit: Alle spiervezels binnen één motor-unit bezitten identieke eigenschappen en hetzelfde vezeltype. Innervatieverhouding: Kleine verhouding: 1 alpha-motorneuron op circa 15 spiervezels; aanwezig in spieren die uiterst nauwkeurige sturing vereisen (bijv. extraoculaire oogspieren). Grote verhouding: 1 alpha-motorneuron op 2.000 of meer spiervezels; aanwezig in grote krachtspieren (bijv. M. gastrocnemius of M. tibialis anterior).",
+      chapterText: [
+        "Als een actiepotentiaal een α-motorneuron bereikt, gaat de impuls over de lengte van het neuron naar de neuromusculaire eindplaat. Daar verspreidt de impuls zich naar alle door dat motorneuron geïnnerveerde spiervezels. Eén α-motorneuron en alle spiervezels die het innerveert vormen één motor-unit (motorische eenheid).",
+        "Elke spiervezel wordt geïnnerveerd door één α-motorneuron, maar elk α-motorneuron innerveert tot maximaal enkele duizenden spiervezels, afhankelijk van de functie van de spier. Spieren die fijne bewegingen controleren, zoals de spieren die de ogen sturen (extraoculaire spieren), hebben een innervatieverhouding van 1:15: één α-motorneuron bedient slechts vijftien spiervezels.",
+        "Spieren met een meer algemene krachtfunctie hebben veel meer vezels per α-motorneuron: de M. gastrocnemius en de M. tibialis anterior in het onderbeen hebben een verhouding van bijna 1:2.000.",
+        "De spiervezels in een specifieke motorische eenheid zijn homogeen wat betreft vezeltype. U zult geen motorische eenheid kunnen vinden die zowel type II- als type I-vezels heeft. Algemeen wordt aangenomen dat de eigenschappen van het α-motorneuron het vezeltype in die motor-unit bepalen."
       ]
     },
     {
@@ -500,7 +568,7 @@ window.NEURO_DATA = {
     },
     {
       id: "bewuste-spieractie",
-      label: "7. Bewuste Spieractie (Motorcortex → Skeletspier)",
+      label: "7. Bewuste Spieractie (Motorcortex → Motor-unit)",
       color: "#c084fc",
       steps: [
         { topicId: "frontale-kwab", text: "1. Frontale kwab verzorgt planning en motorische sturing." },
@@ -508,7 +576,8 @@ window.NEURO_DATA = {
         { topicId: "primaire-motorcortex", text: "3. Primaire motorcortex (piramidale cellen) besluit tot willekeurige beweging." },
         { topicId: "ruggenmerg", text: "4. Corticospinale tractussen dalen af naar motorneuronen in het ruggenmerg." },
         { topicId: "pzs-overzicht", text: "5. Spinale zenuwen (PZS) verlaten het CZS naar de periferie." },
-        { topicId: "efferent-divisies", text: "6. Somatisch zenuwstelsel (efferent): alpha-motorneuronen sturen skeletspieren aan." }
+        { topicId: "efferent-divisies", text: "6. Somatisch zenuwstelsel (efferent): alpha-motorneuronen sturen skeletspieren aan." },
+        { topicId: "motorische-eenheid", text: "7. Motorische eenheid (motor-unit): één α-motorneuron innerveert homogene skeletspiervezels." }
       ]
     },
     {
@@ -520,7 +589,8 @@ window.NEURO_DATA = {
         { topicId: "primaire-motorcortex", text: "2. Motorcortex zendt opdrachten via corticospinale tractussen." },
         { topicId: "ruggenmerg", text: "3. Ruggenmerg schakelt door naar motorneuronen." },
         { topicId: "pzs-overzicht", text: "4. PZS spinale zenuwen vervoeren het signaal." },
-        { topicId: "efferent-divisies", text: "5. Somatisch (efferent): skeletspieren voeren de beweging uit." }
+        { topicId: "efferent-divisies", text: "5. Somatisch (efferent): α-motorneuronen bereiken de doelspieren." },
+        { topicId: "motorische-eenheid", text: "6. Motorische eenheid: homogene spiervezels voeren het repeterende patroon uit." }
       ]
     },
     {
@@ -556,6 +626,42 @@ window.NEURO_DATA = {
         { topicId: "pzs-overzicht", text: "3. Efferente PZS-zenuwen naar hart, bronchiën en maag-darmstelsel." },
         { topicId: "efferent-divisies", text: "4. Autonoom (vegetatief) zenuwstelsel." },
         { topicId: "parasympathisch", text: "5. Parasympathisch (ACh): hart/bloeddruk ↓, coronairvaten/bronchiën nauwer, vertering/peristaltiek/uitscheiding ↑." }
+      ]
+    },
+    {
+      id: "terugtrekreflex-kachel",
+      label: "12. Terugtrekreflex: Hete kachel (Spinale reflex)",
+      color: "#f59e0b",
+      steps: [
+        { topicId: "afferent-receptoren", text: "1. Thermoreceptoren en nociceptoren vangen de plotselinge hitteprikkel op." },
+        { topicId: "pzs-overzicht", text: "2. Afferent sensorisch neuron (PZS) leidt het signaal naar het CZS." },
+        { topicId: "ruggenmerg", text: "3. Ruggenmerg schakelt direct (via interneuronen) voordat de hersenen pijn bewust voelen." },
+        { topicId: "efferent-divisies", text: "4. Efferent α-motorneuron geleidt het somatische terugtreksignaal naar de spier." },
+        { topicId: "motorische-eenheid", text: "5. Motorische eenheid activeert de motorische eindplaat en trekt de arm direct weg." }
+      ]
+    },
+    {
+      id: "rekreflex-spierspoeltje",
+      label: "13. Rekreflex (Spierspoeltje → α-Motorneuron)",
+      color: "#06b6d4",
+      steps: [
+        { topicId: "spierspoeltjes", text: "1. Snelle spierrek rekt intrafusale vezels (op voorspanning door γ-motorneuronen)." },
+        { topicId: "pzs-overzicht", text: "2. Afferente zenuwvezels vuren door het PZS richting ruggenmerg." },
+        { topicId: "ruggenmerg", text: "3. Directe monosynaptische stimulatie van het α-motorneuron op ruggenmergniveau." },
+        { topicId: "efferent-divisies", text: "4. Efferent somatisch α-motorneuron verlaat het CZS richting extrafusale vezels." },
+        { topicId: "motorische-eenheid", text: "5. Gerekte spier trekt reflexmatig samen om overstrekking en spierscheuring te voorkomen." }
+      ]
+    },
+    {
+      id: "autogene-inhibitie-golgi",
+      label: "14. Autogene Inhibitie (Golgi-peeslichaampje)",
+      color: "#14b8a6",
+      steps: [
+        { topicId: "golgi-peeslichaampjes", text: "1. Gevaarlijk hoge peesspanning (in serie met 5–25 vezels) prikkelt het Golgi-peeslichaampje." },
+        { topicId: "pzs-overzicht", text: "2. Krachtige remmende sensorische signalen reizen via het PZS naar het ruggenmerg." },
+        { topicId: "ruggenmerg", text: "3. Ruggenmerg remt het α-motorneuron van de agonist en activeert de antagonisten." },
+        { topicId: "efferent-divisies", text: "4. Somatische motorische aansturing verschuift direct naar ontspanning van de belaste spier." },
+        { topicId: "motorische-eenheid", text: "5. Agonistische motor-units ontspannen ter voorkoming van een peesruptuur." }
       ]
     }
   ],
@@ -828,7 +934,7 @@ window.NEURO_DATA = {
     },
     {
       id: "q23",
-      topicId: "gewrichtssensoren",
+      topicId: "spierspoeltjes",
       q: "Hoe verschilt de beschermende reflex van een spierspoeltje van die van een Golgi-peeslichaampje?",
       options: [
         "Spierspoeltje meet spierlengte/rek en laat de spier reflectief samentrekken; Golgi-peeslichaampje meet peesspanning en remt als 'veiligheidsklep' de agonistische spier",
@@ -840,7 +946,7 @@ window.NEURO_DATA = {
     },
     {
       id: "q24",
-      topicId: "efferent-divisies",
+      topicId: "motorische-eenheid",
       q: "Wat betekent de innervatieverhouding van 1:15 in extraoculaire oogspieren vergeleken met bijna 1:2.000 in de kuitspier (M. gastrocnemius)?",
       options: [
         "Oogspieren hebben grove kracht nodig • Kuitspieren hebben een gemengd I/II vezeltype per motor-unit",
@@ -873,6 +979,78 @@ window.NEURO_DATA = {
       ],
       answer: 1,
       explain: "Het parasympathische deel is dominant in rust (lagere hartfrequentie/bloeddruk, constrictie coronairvaten en luchtwegen, vertering/uitscheiding ↑). Beide autonome systemen werken altijd gezamenlijk."
+    },
+    {
+      id: "q27",
+      topicId: "czs-overzicht",
+      q: "Wat zijn in het sensomotorische integratieproces de 5 opeenvolgende stappen van prikkel tot mechanische respons?",
+      options: [
+        "Motorische respons → efferent neuron → receptor → thalamus → spierspoeltje",
+        "Perifere receptor → afferent neuron → verwerking/keuze in CZS → efferent alpha-motorneuron → motorische eindplaat en skeletspiervezels",
+        "Ruggenmerg → pariëtale kwab → hormoonafgifte → gladde spier → reflex"
+      ],
+      answer: 1,
+      explain: "Het proces verloopt in 5 vaste stappen: (1) receptor neemt prikkel waar, (2) afferent sensorisch neuron geleidt impuls naar CZS, (3) CZS integreert en kiest motorische respons, (4) efferent alpha-motorneuron verlaat CZS, (5) impuls bereikt via de motorische eindplaat de skeletspiervezels."
+    },
+    {
+      id: "q28",
+      topicId: "thalamus",
+      q: "Welk verschil bestaat er tussen de thalamus en de primaire sensorische cortex (postcentrale gyrus) binnen de integratieniveaus van het CZS?",
+      options: [
+        "In de thalamus bereiken prikkels de bewustzijnsdrempel als ruwe sensaties; de primaire sensorische cortex zorgt voor exacte bewuste lokalisatie en discriminatie",
+        "De thalamus regelt spinale rekreflexen; de postcentrale gyrus remt agonisten",
+        "Beide structuren verwerken prikkels volledig onbewust zonder betrokkenheid van het lichaam"
+      ],
+      answer: 0,
+      explain: "De thalamus is het integratiepunt waar signalen de bewustzijnsdrempel bereiken en ruwe sensaties worden herkend. De primaire sensorische cortex (postcentrale gyrus van de pariëtale kwab) zorgt voor bewuste, exacte lokalisatie en discriminatie."
+    },
+    {
+      id: "q29",
+      topicId: "ruggenmerg",
+      q: "Waarom trekt je hand bij een terugtrekreflex (zoals bij een hete kachel) al terug voordat je de hitte bewust voelt?",
+      options: [
+        "Omdat nociceptoren rechtstreeks met het hart zijn verbonden",
+        "Omdat de schakeling direct op ruggenmergniveau gebeurt (monosynaptisch of via interneuronen) zonder eerst op verwerking in de hersenen te wachten",
+        "Omdat het cerebellum eerst alle aangeleerde bewegingspatronen doorzoekt"
+      ],
+      answer: 1,
+      explain: "Een motorische reflex is een snelle, voorgeprogrammeerde en stereotype reactie die direct op ruggenmergniveau wordt geschakeld, nog voordat het signaal bewust de hersenen bereikt."
+    },
+    {
+      id: "q30",
+      topicId: "spierspoeltjes",
+      q: "Wat is de rol van gamma-motorneuronen in een spierspoeltje?",
+      options: [
+        "Ze activeren peesrupturen wanneer te zwaar wordt getild",
+        "Ze sturen de contractiele uiteinden van de 4–20 intrafusale vezels aan om het centrale sensorische deel op de juiste voorspanning te houden",
+        "Ze geleiden pijnprikkels vanuit de huid rechtstreeks naar de thalamus"
+      ],
+      answer: 1,
+      explain: "Terwijl alpha-motorneuronen de extrafusale skeletspiervezels aansturen, innerveren gamma-motorneuronen de uiteinden van intrafusale vezels zodat het centrale rekgevoelige deel altijd op voorspanning blijft."
+    },
+    {
+      id: "q31",
+      topicId: "golgi-peeslichaampjes",
+      q: "Waar liggen Golgi-peeslichaampjes en wat gebeurt er bij autogene inhibitie?",
+      options: [
+        "Parallel tussen intrafusale vezels; bij rek veroorzaken ze een krachtige spiersamentrekking",
+        "In de spierpezen (in serie met 5–25 spiervezels); bij gevaarlijk hoge spanning remmen ze het α-motorneuron van de agonist en activeren ze antagonisten",
+        "In het gewrichtskapsel; ze houden samen met het binnenoor het evenwicht"
+      ],
+      answer: 1,
+      explain: "Golgi-peeslichaampjes liggen proximaal van de musculotendineuze overgang in serie met 5–25 spiervezels. Bij te hoge spanning ontspant de agonist en spant de antagonist aan om peesrupturen te voorkomen; krachttraining kan deze drempel verhogen."
+    },
+    {
+      id: "q32",
+      topicId: "motorische-eenheid",
+      q: "Wat geldt altijd voor de spiervezels binnen één enkele motorische eenheid (motor-unit)?",
+      options: [
+        "Elke motor-unit bevat een gelijke mix van type I- en type IIx-vezels",
+        "Alle spiervezels worden aangestuurd door één enkel α-motorneuron en bezitten identieke eigenschappen en hetzelfde vezeltype",
+        "Eén spiervezel wordt tegelijk aangestuurd door zowel vijf alpha- als twee gamma-motorneuronen"
+      ],
+      answer: 1,
+      explain: "Een motorische eenheid bestaat uit één α-motorneuron en alle door dat neuron geïnnerveerde spiervezels. Al deze vezels binnen dezelfde motor-unit hebben identieke eigenschappen en hetzelfde vezeltype."
     }
   ]
 };

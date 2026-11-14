@@ -1,7 +1,7 @@
 {
-  "name": "NeuroLeer - Module 2 & 3 (CZS & PZS)",
-  "short_name": "NeuroLeer",
-  "description": "Visuele leer-app voor Hoofdstuk 3 Module 2 (CZS) & Module 3 (PZS), geschikt voor ADHD en dyslexie.",
+  "name": "CZS & PZS — Neurale Sturing van Beweging",
+  "short_name": "CZS & PZS",
+  "description": "Visuele leer-app voor Hoofdstuk 3 (CZS, PZS, sensomotorische integratie & reflexen), geschikt voor ADHD en dyslexie.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",

@@ -1,11 +1,11 @@
 // Geordende Anatomische Lichaams-Metrokaart met Prikkel-Dropdown
-// Kloppende hiërarchie: Module 2 (CZS) boven • Module 3 (PZS: 43 paar -> Afferent & Efferent -> Somatisch/Autonoom -> Sympathisch/Parasympathisch) onder
+// Kloppende hiërarchie: CZS boven • PZS (43 paar -> Afferent & Efferent -> Somatisch/Motor-unit & Autonoom) onder
 // Geen overlap tussen tekst/blokjes; eigen SVG-iconen; 100% uit samenvatting-hoofdstuk-3.txt
 
 window.NeuroVisuals = (function () {
   // Ruim raster (viewBox 0 0 820 770) met gegarandeerd >= 20px marge rond elk blokje
   const BODY_STATIONS = [
-    // --- MODULE 2: CZS (Hoofd, Brein & Ruggenmerg) ---
+    // --- CZS (Hoofd, Brein & Ruggenmerg) ---
     { id: "czs-overzicht",        label: "CZS Overzicht",            sub: ">100 mld neuronen",        x: 135, y: 58,  w: 164, h: 36, color: "#8b5cf6" },
     { id: "primaire-motorcortex", label: "Primaire motorcortex",     sub: "Precentrale gyrus",        x: 410, y: 58,  w: 192, h: 36, color: "#c084fc" },
 
@@ -28,17 +28,20 @@ window.NeuroVisuals = (function () {
 
     { id: "ruggenmerg",           label: "Ruggenmerg (CZS)",         sub: "Tractussen & reflexen",    x: 410, y: 374, w: 186, h: 36, color: "#d97706" },
 
-    // --- MODULE 3: PZS (Overkoepelende boom: 43 paar -> Afferent links, Efferent rechts) ---
+    // --- PZS (Overkoepelende boom: 43 paar -> Afferent links, Efferent rechts) ---
     { id: "pzs-overzicht",        label: "PZS: 43 paar zenuwen",     sub: "12 craniaal + 31 spinaal", x: 410, y: 470, w: 230, h: 38, color: "#38bdf8" },
 
     // Linker PZS-tak: Sensorisch (Afferent) -> gaat naar PZS / CZS
-    { id: "afferent-receptoren",  label: "Sensorisch (Afferent): 5 Receptoren", sub: "Mechano, Thermo, Noci, Foto, Chemo", x: 185, y: 556, w: 266, h: 40, color: "#38bdf8" },
-    { id: "gewrichtssensoren",    label: "Gewrichtssensoren (Afferent)",        sub: "Vrije uiteinden & Kinesthetisch",    x: 185, y: 632, w: 266, h: 38, color: "#0ea5e9" },
+    { id: "afferent-receptoren",   label: "Sensorisch (Afferent): 5 Receptoren",   sub: "Mechano, Thermo, Noci, Foto, Chemo",       x: 185, y: 548, w: 274, h: 38, color: "#38bdf8" },
+    { id: "gewrichtssensoren",     label: "Gewrichtssensoren (Afferent)",          sub: "Vrije uiteinden & Kinesthetisch",          x: 185, y: 608, w: 274, h: 38, color: "#0ea5e9" },
+    { id: "spierspoeltjes",        label: "Spierspoeltjes (Rekbewakers)",          sub: "4–20 intrafusale vezels • γ-voorspanning", x: 185, y: 668, w: 274, h: 38, color: "#06b6d4" },
+    { id: "golgi-peeslichaampjes", label: "Golgi-peeslichaampjes (Pees)",          sub: "5–25 vezels • Autogene inhibitie",         x: 185, y: 728, w: 274, h: 38, color: "#14b8a6" },
 
-    // Rechter PZS-tak: Motorisch (Efferent) -> Somatisch & Autonoom -> Sympathisch & Parasympathisch
-    { id: "efferent-divisies",    label: "Motorisch (Efferent): Somatisch & Autonoom", sub: "Skeletspier vs. Glad/Hart/Klieren", x: 635, y: 556, w: 274, h: 40, color: "#f97316" },
-    { id: "sympathisch",          label: "Autonoom: Sympathisch",    sub: "Fight or Flight • Noradrenaline", x: 635, y: 632, w: 254, h: 38, color: "#ef4444" },
-    { id: "parasympathisch",      label: "Autonoom: Parasympathisch", sub: "Rest and Digest • Acetylcholine", x: 635, y: 704, w: 254, h: 38, color: "#10b981" }
+    // Rechter PZS-tak: Motorisch (Efferent) -> Somatisch (Motor-unit) & Autonoom (Sympathisch/Parasympathisch)
+    { id: "efferent-divisies",     label: "Motorisch (Efferent): Somatisch & Autonoom", sub: "Skeletspier vs. Glad/Hart/Klieren",   x: 635, y: 548, w: 280, h: 38, color: "#f97316" },
+    { id: "motorische-eenheid",    label: "Motorische Eenheid (Motor-unit)",       sub: "1 α-neuron • Homogeen • 1:15 vs 1:2.000", x: 635, y: 608, w: 280, h: 38, color: "#fb923c" },
+    { id: "sympathisch",           label: "Autonoom: Sympathisch",                 sub: "Fight or Flight • Noradrenaline",          x: 635, y: 668, w: 280, h: 38, color: "#ef4444" },
+    { id: "parasympathisch",       label: "Autonoom: Parasympathisch",             sub: "Rest and Digest • Acetylcholine",          x: 635, y: 728, w: 280, h: 38, color: "#10b981" }
   ];
 
   // Nette orthogonaal-vloeiende verbindingslijnen
@@ -64,8 +67,11 @@ window.NeuroVisuals = (function () {
     // PZS Boomstructuur: PZS -> Afferent (links) & Efferent (rechts)
     { from: "afferent-receptoren", to: "pzs-overzicht", color: "#38bdf8", dashed: true },
     { from: "gewrichtssensoren", to: "afferent-receptoren", color: "#0ea5e9", dashed: true },
+    { from: "spierspoeltjes", to: "gewrichtssensoren", color: "#06b6d4", dashed: true },
+    { from: "golgi-peeslichaampjes", to: "spierspoeltjes", color: "#14b8a6", dashed: true },
     { from: "pzs-overzicht", to: "efferent-divisies", color: "#f97316" },
-    { from: "efferent-divisies", to: "sympathisch", color: "#ef4444" },
+    { from: "efferent-divisies", to: "motorische-eenheid", color: "#fb923c" },
+    { from: "motorische-eenheid", to: "sympathisch", color: "#ef4444" },
     { from: "sympathisch", to: "parasympathisch", color: "#10b981" }
   ];
 
@@ -180,7 +186,7 @@ window.NeuroVisuals = (function () {
       svgWrap.innerHTML = "";
 
       const svg = document.createElementNS(svgNS, "svg");
-      svg.setAttribute("viewBox", "0 0 820 755");
+      svg.setAttribute("viewBox", "0 0 820 775");
       svg.setAttribute("class", "bodymap-svg");
 
       // 1. VERZORGDE ANATOMISCHE ACHTERGRONDTEKENING (Hoofd/Brein, Wervelkolom, Organen, Spieren/Gewricht)
@@ -196,11 +202,11 @@ window.NeuroVisuals = (function () {
         <!-- Zachte Zone 1 (CZS) & Zone 2 (PZS) kaders -->
         <rect x="20" y="14" width="780" height="398" rx="22"
               fill="rgba(139, 92, 246, 0.05)" stroke="rgba(139, 92, 246, 0.25)" stroke-width="1.5" />
-        <text x="38" y="34" fill="#c4b5fd" font-size="11.5" font-weight="800">MODULE 2: CENTRAAL ZENUWSTELSEL (CZS) — Banen &amp; Tractussen</text>
+        <text x="38" y="34" fill="#c4b5fd" font-size="11.5" font-weight="800">CENTRAAL ZENUWSTELSEL (CZS) — Integratie, banen &amp; tractussen</text>
 
-        <rect x="20" y="424" width="780" height="316" rx="22"
+        <rect x="20" y="424" width="780" height="340" rx="22"
               fill="rgba(56, 189, 248, 0.05)" stroke="rgba(56, 189, 248, 0.28)" stroke-width="1.5" />
-        <text x="38" y="444" fill="#7dd3fc" font-size="11.5" font-weight="800">MODULE 3: PERIFEER ZENUWSTELSEL (PZS) — 43 paar zenuwen</text>
+        <text x="38" y="444" fill="#7dd3fc" font-size="11.5" font-weight="800">PERIFEER ZENUWSTELSEL (PZS) — 43 paar zenuwen, receptoren &amp; motor-units</text>
 
         <!-- Menselijk Lichaam & Vergrote Schedel/Brein Silhouet -->
         <path d="M 245 190
@@ -210,13 +216,13 @@ window.NeuroVisuals = (function () {
                  L 455 352
                  L 595 385
                  C 655 400, 695 450, 690 545
-                 L 668 725
-                 L 510 725
+                 L 668 748
+                 L 510 748
                  L 495 570
                  L 410 645
                  L 325 570
-                 L 310 725
-                 L 152 725
+                 L 310 748
+                 L 152 748
                  L 130 545
                  C 125 450, 165 400, 225 385
                  L 365 352
@@ -238,8 +244,8 @@ window.NeuroVisuals = (function () {
         <ellipse cx="442" cy="495" rx="28" ry="42" fill="none" stroke="rgba(249, 115, 22, 0.15)" stroke-width="1.5" />
 
         <!-- Taklabels links vs rechts onder PZS -->
-        <text x="185" y="520" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="800">▲ SENSORISCH (AFFERENT) — naar CZS</text>
-        <text x="635" y="520" text-anchor="middle" fill="#f97316" font-size="11" font-weight="800">▼ MOTORISCH (EFFERENT) — uit CZS</text>
+        <text x="185" y="514" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="800">▲ SENSORISCH (AFFERENT) — naar CZS</text>
+        <text x="635" y="514" text-anchor="middle" fill="#f97316" font-size="11" font-weight="800">▼ MOTORISCH (EFFERENT) — uit CZS</text>
       `;
       svg.appendChild(bg);
 
