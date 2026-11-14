@@ -1,0 +1,941 @@
+/* Minimalistische, niet-verspringende interface (100dvh locked layout) */
+/* Speciaal afgestemd op ADHD & dyslexie: weinig tekst, vaste vakken, geen emoji's */
+
+:root {
+  --bg: #0b101e;
+  --panel: #131b30;
+  --card: #19233d;
+  --soft: #223052;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --border: #2d3d66;
+  --accent: #38bdf8;
+  --purple: #8b5cf6;
+  --green: #10b981;
+  --red: #ef4444;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ls: 0.01em;
+  --ws: 0.02em;
+  --lh: 1.42;
+}
+
+body.dyslexia-mode {
+  --font: "Verdana", "Tahoma", system-ui, sans-serif;
+  --ls: 0.05em;
+  --ws: 0.14em;
+  --lh: 1.62;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  letter-spacing: var(--ls);
+  word-spacing: var(--ws);
+  line-height: var(--lh);
+  font-size: 15px;
+}
+
+button {
+  font-family: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+.svg-ico {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.svg-ico svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ================= VASTE SCHIL (GEEN VERSPRINGENDE WINDOWS) ================= */
+.app-shell {
+  display: grid;
+  grid-template-rows: 50px 1fr 196px;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* ================= BOVENBALK (50px vast) ================= */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+
+.view-tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.view-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.view-tab.is-active {
+  background: var(--soft);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.icon-btn.is-on {
+  background: var(--accent);
+  color: #08101f;
+  border-color: var(--accent);
+}
+
+.icon-btn.is-paused {
+  background: #f59e0b;
+  color: #08101f;
+  border-color: #f59e0b;
+}
+
+.quote-toggle-btn.is-paused {
+  background: rgba(245, 158, 11, 0.22);
+  color: #fcd34d;
+  border-color: #f59e0b;
+}
+
+.map-3d-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 34px;
+  padding: 0 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ================= HOOFDCANVAS (3D OF LICHAAMS-METROKAART) ================= */
+.stage-area {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 45%, #182342 0%, #090d19 100%);
+}
+
+.stage-pane {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+.stage-pane.is-active {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 3D Brein */
+.brain-canvas-wrap {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.brain-status-pill {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(11, 16, 30, 0.78);
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.floating-3d-bar {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.hud-chip {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 9px;
+  background: rgba(19, 27, 48, 0.88);
+  border: 1px solid var(--border);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+  backdrop-filter: blur(6px);
+}
+
+.hud-chip.is-active {
+  background: var(--purple);
+  border-color: var(--purple);
+  color: #ffffff;
+}
+
+/* Lichaams-Metrokaart */
+.bodymap-layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.stimulus-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(19, 27, 48, 0.94);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.stim-bar-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.stim-select {
+  flex: 1;
+  min-width: 0;
+  max-width: 440px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 9px;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.stim-select:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
+.stim-clear-btn {
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid var(--red);
+  color: #fca5a5;
+  font-size: 0.76rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.route-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  background: #101729;
+  border-bottom: 2px solid var(--accent);
+  flex-shrink: 0;
+}
+
+.route-step-text {
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.step-pill {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 6px;
+  color: #08101f;
+  font-weight: 900;
+  font-size: 0.74rem;
+  margin-right: 5px;
+}
+
+.route-step-controls {
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.step-ctrl-btn {
+  height: 30px;
+  padding: 0 9px;
+  border-radius: 7px;
+  background: var(--soft);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.step-ctrl-btn.primary {
+  background: var(--accent);
+  color: #08101f;
+}
+
+.bodymap-svg-wrap {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  padding: 4px;
+}
+
+.bodymap-svg {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+/* ================= COMPACTE QUIZ PANE ================= */
+#pane-quiz {
+  overflow-y: auto;
+}
+
+.quiz-pane-inner {
+  max-width: 580px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 14px;
+}
+
+.quiz-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.quiz-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.quiz-score-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.score-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 7px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+
+.score-pill.good {
+  color: #6ee7b7;
+  border-color: var(--green);
+}
+
+.score-pill.bad {
+  color: #fca5a5;
+  border-color: var(--red);
+}
+
+.quiz-retry-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 7px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid #f59e0b;
+  color: #fcd34d;
+}
+
+.quiz-q {
+  font-size: 1.04rem;
+  font-weight: 800;
+  margin: 0 0 12px;
+}
+
+.quiz-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quiz-opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 46px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 2px solid var(--border);
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.quiz-opt.correct {
+  border-color: var(--green);
+  background: rgba(16, 185, 129, 0.22);
+}
+
+.quiz-opt.wrong {
+  border-color: var(--red);
+  background: rgba(239, 68, 68, 0.22);
+}
+
+.quiz-opt-mark {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.quiz-feedback {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #0d1323;
+  border: 1px solid var(--border);
+}
+
+.quiz-feedback.is-good {
+  border-color: var(--green);
+}
+
+.quiz-feedback.is-bad {
+  border-color: var(--red);
+}
+
+.quiz-fb-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 900;
+  font-size: 0.86rem;
+  margin-bottom: 6px;
+}
+
+.quiz-feedback.is-good .quiz-fb-status {
+  color: #6ee7b7;
+}
+
+.quiz-feedback.is-bad .quiz-fb-status {
+  color: #fca5a5;
+}
+
+.quiz-fb-explain {
+  margin: 0;
+  font-size: 0.86rem;
+  color: var(--text);
+}
+
+.quiz-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quiz-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border-radius: 9px;
+  background: var(--soft);
+  border: 1px solid var(--border);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.quiz-btn.primary {
+  background: var(--accent);
+  color: #08101f;
+  border-color: var(--accent);
+}
+
+.quiz-btn.warn {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: var(--red);
+  color: #fecaca;
+}
+
+.quiz-summary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.stat-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+.stat-val {
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+
+.stat-lbl {
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.quiz-mistake-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.quiz-mistake-item {
+  background: #0d1323;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--red);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.84rem;
+}
+
+.mistake-q {
+  font-weight: 800;
+  margin: 0 0 6px;
+}
+
+.mistake-ans-bad {
+  color: #fca5a5;
+  margin: 2px 0;
+}
+
+.mistake-ans-good {
+  color: #6ee7b7;
+  margin: 2px 0 6px;
+}
+
+.mistake-explain {
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ================= DOCK ACTIES & HOOFDSTUKTEKST ================= */
+.dock-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.dock-quote-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dock-quote-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chapter-para {
+  margin: 0 0 8px;
+}
+
+.chapter-para:last-child {
+  margin-bottom: 0;
+}
+
+/* ================= FULLSCREEN HOOFDSTUKTEKST MODAL ================= */
+.chapter-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(6, 10, 20, 0.94);
+  backdrop-filter: blur(8px);
+  display: none;
+}
+
+.chapter-modal.is-open {
+  display: flex;
+  flex-direction: column;
+}
+
+.chapter-modal-dialog {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.chapter-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.chapter-modal-title-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.chapter-modal-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.chapter-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.chapter-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chapter-modal-prose {
+  width: 100%;
+  max-width: 72ch;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chapter-modal-prose .chapter-para {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+body.dyslexia-mode .chapter-modal-prose .chapter-para {
+  font-size: 1.14rem;
+  line-height: 1.8;
+}
+
+/* ================= VASTE ONDER-DOCK (VEROORZAAKT NOOIT layout-shift) ================= */
+.info-dock {
+  background: var(--panel);
+  border-top: 2px solid var(--border);
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 42px;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.dock-card {
+  padding: 10px 14px;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.dock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.quote-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 9px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.quote-toggle-btn.is-open {
+  background: var(--soft);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.dock-quote-box {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #0d1323;
+  border: 1px dashed var(--border);
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.5;
+  max-height: 92px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.dock-title-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mod-tag {
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 2px 7px;
+  border-radius: 6px;
+  color: #08101f;
+}
+
+.dock-title {
+  font-size: 1.05rem;
+  font-weight: 900;
+  margin: 0;
+}
+
+.dock-sub {
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+.dock-bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 6px;
+}
+
+.dock-bullets li {
+  background: var(--card);
+  border-left: 3px solid var(--accent);
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 0.86rem;
+}
+
+.dock-bullets b {
+  color: #7dd3fc;
+}
+
+/* Horizontale snelle kiezer onderaan */
+.quick-strip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  background: #0d1323;
+  border-top: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+.strip-pill {
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 7px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.strip-pill.is-active {
+  background: var(--soft);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+/* ================= DESKTOP BREEDBEELD (>= 900px) ================= */
+@media (min-width: 900px) {
+  .app-shell {
+    grid-template-columns: 1fr 370px;
+    grid-template-rows: 50px 1fr;
+  }
+
+  .top-bar {
+    grid-column: 1 / -1;
+  }
+
+  .stage-area {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+
+  .info-dock {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    border-top: none;
+    border-left: 1px solid var(--border);
+    grid-template-rows: minmax(0, auto) minmax(175px, 1fr);
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .dock-card {
+    justify-content: flex-start;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    max-height: 54vh;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  .dock-quote-box {
+    max-height: 175px;
+    overflow-y: auto;
+  }
+
+  .dock-bullets {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .quick-strip {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .strip-pill {
+    height: 34px;
+    flex-shrink: 0;
+    text-align: left;
+  }
+}

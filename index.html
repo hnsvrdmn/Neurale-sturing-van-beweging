@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b101e" />
+  <title>Module 2 (CZS) &amp; Module 3 (PZS)</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="app-shell">
+    <header class="top-bar">
+      <div class="view-tabs" role="tablist">
+        <button type="button" class="view-tab is-active" data-view="3d" id="tab-btn-3d">
+          <span class="svg-ico" data-icon="brain"></span>
+          <span>3D-Brein</span>
+        </button>
+        <button type="button" class="view-tab" data-view="map" id="tab-btn-map">
+          <span class="svg-ico" data-icon="map"></span>
+          <span>Lichaams-Kaart</span>
+        </button>
+        <button type="button" class="view-tab" data-view="quiz" id="tab-btn-quiz">
+          <span class="svg-ico" data-icon="quiz"></span>
+          <span>Overhoren</span>
+        </button>
+      </div>
+
+      <div class="top-actions">
+        <button type="button" class="icon-btn" id="btn-speak" title="Lees voor / Pauze / Verder">
+          <span class="svg-ico" data-icon="speaker"></span>
+          <span>Stem</span>
+        </button>
+        <button type="button" class="icon-btn" id="btn-speak-stop" title="Stop voorlezen" style="display:none;">
+          <span class="svg-ico" data-icon="stop"></span>
+          <span>Stop</span>
+        </button>
+        <button type="button" class="icon-btn" id="btn-dyslexia" title="Ruimer lettertype voor dyslexie">
+          <span>Aa</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="stage-area">
+      <!-- 1. Zelfgemaakt Anatomisch 3D-Brein -->
+      <section class="stage-pane is-active" id="pane-3d">
+        <div class="brain-canvas-wrap" id="brain3d-stage"></div>
+        <div class="floating-3d-bar">
+          <button type="button" class="hud-chip is-active" data-layer="all">Alles</button>
+          <button type="button" class="hud-chip" data-layer="cerebrum">Cerebrum</button>
+          <button type="button" class="hud-chip" data-layer="diencephalon">Diencephalon</button>
+          <button type="button" class="hud-chip" data-layer="cerebellum">Cerebellum</button>
+          <button type="button" class="hud-chip" data-layer="stem">Stam &amp; Ruggenmerg</button>
+          <button type="button" class="hud-chip" data-layer="xray">
+            <span class="svg-ico" data-icon="xray"></span>
+            <span>X-Ray</span>
+          </button>
+          <button type="button" class="hud-chip" id="btn-explode">
+            <span class="svg-ico" data-icon="explode"></span>
+            <span>Uit elkaar</span>
+          </button>
+          <button type="button" class="hud-chip" id="btn-reset-3d" title="Reset 3D-weergave">
+            <span class="svg-ico" data-icon="reset"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 2. Lichaams-Metrokaart met Prikkel-Dropdown -->
+      <section class="stage-pane" id="pane-map">
+        <div id="bodymap-container" style="width:100%; height:100%;"></div>
+      </section>
+
+      <!-- 3. Compacte Overhoring -->
+      <section class="stage-pane" id="pane-quiz">
+        <div class="quiz-pane-inner" id="quiz-container"></div>
+      </section>
+    </main>
+
+    <!-- Vaste informatie-dock (verspringt nooit) -->
+    <aside class="info-dock">
+      <div class="dock-card" id="dock-card"></div>
+      <div class="quick-strip" id="quick-strip"></div>
+    </aside>
+  </div>
+
+  <!-- Fullscreen Hoofdstuktekst Modal (veroorzaakt geen layout-shift) -->
+  <div class="chapter-modal" id="chapter-modal" aria-hidden="true">
+    <div class="chapter-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="chapter-modal-title">
+      <header class="chapter-modal-header">
+        <div class="chapter-modal-title-wrap">
+          <span class="mod-tag" id="chapter-modal-mod"></span>
+          <h2 class="chapter-modal-title" id="chapter-modal-title"></h2>
+          <span class="dock-sub" id="chapter-modal-tag"></span>
+        </div>
+        <div class="chapter-modal-actions">
+          <button type="button" class="icon-btn" id="btn-modal-speak" title="Lees voor / Pauze / Verder">
+            <span class="svg-ico" id="btn-modal-speak-ico"></span>
+            <span id="btn-modal-speak-label">Lees voor</span>
+          </button>
+          <button type="button" class="icon-btn" id="btn-modal-speak-stop" title="Stop voorlezen" style="display:none;">
+            <span class="svg-ico" data-icon="stop"></span>
+            <span>Stop</span>
+          </button>
+          <button type="button" class="icon-btn" id="btn-modal-close" title="Sluit volledig scherm">
+            <span class="svg-ico" data-icon="close"></span>
+            <span>Sluiten</span>
+          </button>
+        </div>
+      </header>
+      <div class="chapter-modal-body" id="chapter-modal-body"></div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/visuals.js"></script>
+  <script src="js/brain3d.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
