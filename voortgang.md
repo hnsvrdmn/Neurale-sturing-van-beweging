@@ -145,3 +145,27 @@
   - Lichaams-Kaart SVG: exact `25` station-blokjes binnen het `820x775` frame met `0` onderlinge overlap.
   - App-interacties & server: **Pauze / Verder** audio (`native` + `onboundary`-fallback), **Bekijk in 3D** (vanuit Kaart, Dock en Quiz), inline hoofdstuktekst, fullscreen lezer, quizfout-uitleg + **Foute vragen herhalen**, en `HTTP 200` op alle 7 kernbestanden.
 - **Volgende stap:** Committen en pushen naar `https://github.com/hnsvrdmn/Neurale-sturing-van-beweging`.
+
+
+
+### [2026-11-14 22:18:00] — Update #15 (Ronde 7 gestart): Naadloze CZS/PZS-boom, Afferent/Efferent kaartkleuring, Audio-Navigator & 3D-reparatie
+- **Feedback van de gebruiker opgepakt:**
+  1. **Geen geforceerde losse blokjes:** `gewrichtssensoren`, `spierspoeltjes`, `golgi-peeslichaampjes` en `motorische-eenheid` gaan terug naar hun natuurlijke plek onder `Sensorisch / Afferent deel` en `Somatisch` (exact volgens het Zenuwstelsel-boomschema).
+  2. **Middenhersenen, Pons & Medulla oblongata afzonderlijk:** toegevoegd aan CZS (data, Lichaams-Kaart én 3D-Brein).
+  3. **Afferent vs. Efferent kleuring:** elke stap in de prikkelroutes krijgt richting `afferent` (blauw) of `efferent` (oranje) in lijnsegmenten, puls en stap-balk.
+  4. **Audio-indicator & betere Audio-Navigator:** klein afspeel-icoontje op het spelende onderdeel (in zowel de onderdelenstrip als op de kaart) tijdens het doorklikken, plus een compacte Audio-Navigator bovenin met spelend onderdeel, zin-teller en vorige/pauze/volgende/stop-knoppen.
+  5. **Gaten in 3D-model verhelpen + visuele Chrome-controle:** winding-order/normalen (`buildLoftedSurfaceGeo`), waterdichte mediale afsluiting van de hersenkwabben (`evalBrainSurface`/`buildLobeGeometry`) en `transparent`/`depthWrite` corrigeren, gevolgd door screenshot-inspectie in Chrome via de browser-subagent.
+- **Nu bezig:** Stap 2 — `js/data.js` herstructureren (`26` onderdelen: `19` CZS incl. middenhersenen, pons, medulla oblongata + `7` PZS).
+
+
+
+### [2026-11-14 22:28:00] — Update #16 (Ronde 7 afgerond): Naadloze CZS/PZS-boom, Afferent/Efferent kaartkleuring, Audio-Navigator & waterdichte 3D-meshes
+- **Doorgevoerd in de codebase:**
+  - [`js/data.js`](js/data.js): `26` onderdelen (`19` CZS inclusief afzonderlijke onderdelen **Middenhersenen**, **Pons** en **Medulla oblongata** onder de Hersenstam, plus `7` PZS exact volgens de zenuwstelsel-boom: `pzs-overzicht` -> `afferent-receptoren` en `efferent-divisies` -> `somatisch` & `autonoom` -> `sympathisch` & `parasympathisch`). De losse tegels voor `gewrichtssensoren`, `spierspoeltjes`, `golgi-peeslichaampjes` en `motorische-eenheid` zijn verwijderd en natuurlijk ondergebracht onder **Sensorisch / Afferent deel** en **Somatisch**. Alle `14` prikkelroutes dragen nu per stap `dir: "afferent" | "efferent"`, en alle `32` overhoringsvragen zijn opgeschoond. Nieuwe custom SVG-iconen (`prev`, `next`, `wave`) toegevoegd aan `NEURO_ICONS`.
+  - [`js/visuals.js`](js/visuals.js) & [`css/style.css`](css/style.css): `Lichaams-Kaart` (`viewBox="0 0 820 775"`, `26` stations zonder overlap) kleurt actieve routelijnen, bewegende impuls, stap-badge en legenda als **blauw (`▲ Afferent`, `#38bdf8`)** of **oranje (`▼ Efferent`, `#f97316`)**, met een kleine X-offset voor retourbanen. Bovendien toont `setSpeaking(topicId, status)` een afspeel-/pauze-badge direct op de stationsknop op de kaart.
+  - [`js/brain3d.js`](js/brain3d.js): hersenstam opgesplitst in `middenhersenen`, `pons` en `medulla-oblongata` (die bij selectie van `hersenstam` alle drie tegelijk oplichten), buitengerichte driehoekswindingen en boven-/onderkappen in `buildLoftedSurfaceGeo` hersteld, corticale kwabben met `x = 0.028 * side` aan de binnenzijde dichtgemaakt, een subthalamische/tegmentale brug onder de thalamus toegevoegd, `DoubleSide` en correcte `transparent`/`depthWrite`-instelling toegepast (waardoor Z-sorting-gaten in `"Alles"` verdwijnen), en geforceerde losse spier-/peesmeshes bij het PZS weggehaald met behoud van blauwe dorsale (afferente) en oranje ventrale (efferente) wortels.
+  - [`index.html`](index.html), [`css/style.css`](css/style.css) & [`js/app.js`](js/app.js): vernieuwde `#audio-nav` bovenin (klikbare topic-pil `#btn-audio-topic` met zinsteller `i/n`, `#btn-speak-prev`, `#btn-speak`, `#btn-speak-next`, `#btn-speak-stop` met compacte mobiele weergave via `body.has-audio`), directe voorleesknop `#btn-dock-speak` in `.dock-header-actions`, en blijvende afspeel-/pauze-iconen op `.strip-pill` in de snelle balk tijdens het doorklikken.
+- **Verificatie (uitgevoerd na de laatste code-aanpassing):**
+  - `node --check` op `js/data.js`, `js/visuals.js`, `js/brain3d.js`, `js/app.js` en headless simulatiesuite `sim.js`: alle checks geslaagd (`26` onderdelen, `14` prikkelroutes met `dir`, `32` vragen, `107` 3D-meshes met uitwaartse normalen, `DoubleSide`, gesloten corticale binnenwanden, `0.000` anatomisch gat op alle 9 geteste koppelingen, `26` niet-overlappende kaartstations, Afferent/Efferent routekleuren, Audio-Navigator + blijvend afspeel-icoon, en `HTTP 200`).
+  - Browser-/screenshotcontrole via `browser`-subagent (`chrome_devtools` MCP): poging op `http://127.0.0.1:8123` meldde `DevToolsActivePort (ENOENT)` omdat er geen Chrome-instantie met ingeschakelde remote debugging (`chrome://inspect/#remote-debugging`) actief was; er zijn daarom in deze sessie geen live Chrome-screenshots kunnen worden beoordeeld.
+- **Volgende stap:** Hercontrole na deze logupdate en pushen naar `origin main`.

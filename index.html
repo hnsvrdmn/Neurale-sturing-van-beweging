@@ -28,14 +28,27 @@
       </div>
 
       <div class="top-actions">
-        <button type="button" class="icon-btn" id="btn-speak" title="Lees voor / Pauze / Verder">
-          <span class="svg-ico" data-icon="speaker"></span>
-          <span>Stem</span>
-        </button>
-        <button type="button" class="icon-btn" id="btn-speak-stop" title="Stop voorlezen" style="display:none;">
-          <span class="svg-ico" data-icon="stop"></span>
-          <span>Stop</span>
-        </button>
+        <div class="audio-nav" id="audio-nav">
+          <button type="button" class="icon-btn audio-topic-pill" id="btn-audio-topic" title="Ga naar actief voorgelezen onderdeel" style="display:none;">
+            <span class="svg-ico" data-icon="wave"></span>
+            <span class="audio-topic-label"></span>
+            <span class="audio-chunk-badge"></span>
+          </button>
+          <button type="button" class="icon-btn audio-step-btn" id="btn-speak-prev" title="Vorige zin" style="display:none;">
+            <span class="svg-ico" data-icon="prev"></span>
+          </button>
+          <button type="button" class="icon-btn" id="btn-speak" title="Lees voor / Pauze / Verder">
+            <span class="svg-ico" data-icon="speaker"></span>
+            <span>Stem</span>
+          </button>
+          <button type="button" class="icon-btn audio-step-btn" id="btn-speak-next" title="Volgende zin" style="display:none;">
+            <span class="svg-ico" data-icon="next"></span>
+          </button>
+          <button type="button" class="icon-btn" id="btn-speak-stop" title="Stop voorlezen" style="display:none;">
+            <span class="svg-ico" data-icon="stop"></span>
+            <span>Stop</span>
+          </button>
+        </div>
         <button type="button" class="icon-btn" id="btn-dyslexia" title="Ruimer lettertype voor dyslexie">
           <span>Aa</span>
         </button>

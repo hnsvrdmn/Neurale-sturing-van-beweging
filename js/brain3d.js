@@ -3,7 +3,7 @@
 // 1. Cerebrum (6 sluitende kwabben + gyri/sulci + insula + corpus callosum/fornix + caudatus/lentiformis)
 // 2. Diencephalon (thalamus + adhesio interthalamica + pulvinar/geniculata + hypothalamus/chiasma/mammillaria/hypofyse)
 // 3. Cerebellum (hemisferen + vermis + diepe folia + middelste cerebellaire pedunkels -> pons)
-// 4. Hersenstam & Ruggenmerg (pedunculi cerebri + colliculi + pons + piramiden/olijven + reticulaire formatie + ruggenmerg + spinale/craniale wortels)
+// 4. Hersenstam & Ruggenmerg (middenhersenen, pons, medulla oblongata, reticulaire formatie, ruggenmerg + spinale/craniale wortels)
 
 window.Brain3DViewer = (function () {
   const TOPIC_META = {
@@ -20,12 +20,12 @@ window.Brain3DViewer = (function () {
     "hypothalamus":         { label: "Hypothalamus (Diencephalon)",      region: "diencephalon", layer: "deep",  color: 0xfb7185, hex: "#fb7185", yaw: -0.52, pitch: 0.04, zoom: 3.0 },
     "cerebellum":           { label: "Cerebellum (Kleine hersenen)",     region: "cerebellum",   layer: "stem",  color: 0xf59e0b, hex: "#f59e0b", yaw: -2.35, pitch: -0.05, zoom: 3.3 },
     "hersenstam":           { label: "Hersenstam (Midden/Pons/Medulla)", region: "stem",         layer: "stem",  color: 0xfbbf24, hex: "#fbbf24", yaw: -0.58, pitch: -0.08, zoom: 3.6 },
+    "middenhersenen":       { label: "Middenhersenen (Mesencephalon)",   region: "stem",         layer: "stem",  color: 0xf59e0b, hex: "#f59e0b", yaw: -0.58, pitch: -0.02, zoom: 3.3 },
+    "pons":                 { label: "Pons",                             region: "stem",         layer: "stem",  color: 0xfbbf24, hex: "#fbbf24", yaw: -0.58, pitch: -0.08, zoom: 3.4 },
+    "medulla-oblongata":    { label: "Medulla oblongata (Verlengde merg)", region: "stem",       layer: "stem",  color: 0xfcd34d, hex: "#fcd34d", yaw: -0.58, pitch: -0.14, zoom: 3.5 },
     "reticulaire-formatie": { label: "Reticulaire formatie",             region: "stem",         layer: "stem",  color: 0xeab308, hex: "#eab308", yaw: -1.10, pitch: -0.08, zoom: 3.6 },
     "ruggenmerg":           { label: "Ruggenmerg",                       region: "stem",         layer: "stem",  color: 0xd97706, hex: "#d97706", yaw: -0.75, pitch: -0.18, zoom: 4.8 },
-    "pzs-overzicht":        { label: "PZS (12 craniale + 31 spinale)",   region: "stem",         layer: "pzs",   color: 0x38bdf8, hex: "#38bdf8", yaw: -0.60, pitch: -0.14, zoom: 4.7 },
-    "spierspoeltjes":       { label: "Spierspoeltjes (Rekbewakers)",     region: "stem",         layer: "pzs",   color: 0x06b6d4, hex: "#06b6d4", yaw: -0.64, pitch: -0.22, zoom: 4.9 },
-    "golgi-peeslichaampjes":{ label: "Golgi-peeslichaampjes (Pees)",     region: "stem",         layer: "pzs",   color: 0x14b8a6, hex: "#14b8a6", yaw: -0.58, pitch: -0.24, zoom: 4.9 },
-    "motorische-eenheid":   { label: "Motorische eenheid (Motor-unit)",  region: "stem",         layer: "pzs",   color: 0xfb923c, hex: "#fb923c", yaw: -0.62, pitch: -0.20, zoom: 4.9 }
+    "pzs-overzicht":        { label: "PZS (12 craniale + 31 spinale)",   region: "stem",         layer: "pzs",   color: 0x38bdf8, hex: "#38bdf8", yaw: -0.60, pitch: -0.14, zoom: 4.7 }
   };
 
   function smoothstep(edge0, edge1, x) {
@@ -122,9 +122,10 @@ window.Brain3DViewer = (function () {
 
       shade = Math.max(0.66, Math.min(1.08, 0.74 + ridge * 0.34 * lateralFade - sylvian * 0.22 - centralSulcus * 0.15));
     } else {
-      x = 0.028 + (x - 0.028) * 0.80;
-      y = 0.30 + (y - 0.30) * 0.80;
-      z *= 0.82;
+      // Sluit elke kwab naar de vlakke mediale wand (x = 0.028) zodat geen enkel kwabblok hol of open is
+      x = 0.028;
+      y = 0.34 + (y - 0.34) * 0.78;
+      z *= 0.84;
       shade = 0.72;
     }
 
@@ -232,18 +233,19 @@ window.Brain3DViewer = (function () {
         const b = a + 1;
         const c = a + stride;
         const d = c + 1;
-        indices.push(a, b, c, b, d, c);
+        // Buitengerichte winding: (a, c, b) en (b, c, d) geven uitwaartse normalen
+        indices.push(a, c, b, b, c, d);
       }
     }
 
-    // Sluit boven- en onderkap waterdicht af
+    // Sluit boven- en onderkap waterdicht af met uitwaartse normalen
     if (capTopFn) {
       const topCenter = capTopFn();
       const tcIdx = positions.length / 3;
       positions.push(topCenter.x, topCenter.y, topCenter.z);
       colors.push(topCenter.shade, topCenter.shade, topCenter.shade);
       for (let is = 0; is < segs; is++) {
-        indices.push(tcIdx, is + 1, is);
+        indices.push(tcIdx, is, is + 1);
       }
     }
     if (capBotFn) {
@@ -253,7 +255,7 @@ window.Brain3DViewer = (function () {
       colors.push(botCenter.shade, botCenter.shade, botCenter.shade);
       const lastRow = (yVals.length - 1) * stride;
       for (let is = 0; is < segs; is++) {
-        indices.push(bcIdx, lastRow + is, lastRow + is + 1);
+        indices.push(bcIdx, lastRow + is + 1, lastRow + is);
       }
     }
 
@@ -265,11 +267,11 @@ window.Brain3DViewer = (function () {
     return geo;
   }
 
-  function createBrainstemGeometry(THREE) {
-    const stepsY = 48;
+  function createBrainstemRegionGeo(THREE, yTop, yBot, stepsY) {
     const yVals = [];
+    const span = yTop - yBot;
     for (let i = 0; i <= stepsY; i++) {
-      yVals.push(0.15 - (0.99 * i) / stepsY); // +0.15 -> -0.84
+      yVals.push(yTop - (span * i) / stepsY);
     }
 
     return buildLoftedSurfaceGeo(
@@ -287,7 +289,7 @@ window.Brain3DViewer = (function () {
         let zShift = 0;
         let shade = 0.88;
 
-        // Middenhersenen (+0.15 .. -0.14): Pedunculi cerebri vooraan + Colliculi achteraan
+        // Middenhersenen (+0.17 .. -0.14): Pedunculi cerebri vooraan + Colliculi achteraan
         const midW = smoothstep(-0.18, -0.04, y);
         const peduncle = Math.pow(Math.max(0, cosT), 1.4) * (0.045 - 0.060 * Math.exp(-Math.pow(sinT / 0.28, 2))) * midW;
         const supColl = Math.exp(-Math.pow((y - 0.03) / 0.045, 2)) * smoothstep(-0.2, -0.65, cosT) * (0.034 - 0.022 * Math.exp(-Math.pow(sinT / 0.18, 2)));
@@ -322,11 +324,11 @@ window.Brain3DViewer = (function () {
         return { x, y: axis.y, z, shade };
       },
       () => {
-        const a = evalStemAxis(0.15);
+        const a = evalStemAxis(yTop);
         return { x: a.x, y: a.y, z: a.z, shade: 0.78 };
       },
       () => {
-        const a = evalStemAxis(-0.84);
+        const a = evalStemAxis(yBot);
         return { x: a.x, y: a.y, z: a.z, shade: 0.78 };
       }
     );
@@ -493,13 +495,16 @@ window.Brain3DViewer = (function () {
     renderer.domElement.style.touchAction = "none";
     container.insertBefore(renderer.domElement, container.firstChild);
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.68));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.72));
     const key = new THREE.DirectionalLight(0xffffff, 0.94);
     key.position.set(4, 6, 5);
     scene.add(key);
     const rim = new THREE.DirectionalLight(0x93c5fd, 0.56);
     rim.position.set(-5, -2, -4);
     scene.add(rim);
+    const botFill = new THREE.DirectionalLight(0xcbd5e1, 0.38);
+    botFill.position.set(0, -6, 2);
+    scene.add(botFill);
 
     const rootGroup = new THREE.Group();
     rootGroup.position.y = 0.20;
@@ -521,13 +526,14 @@ window.Brain3DViewer = (function () {
       return mesh;
     }
 
-    function makeMat(topicId, useVertexColors) {
+    function makeMat(topicId, useVertexColors, colorOverride) {
       return new THREE.MeshStandardMaterial({
-        color: TOPIC_META[topicId].color,
+        color: colorOverride != null ? colorOverride : TOPIC_META[topicId].color,
         vertexColors: Boolean(useVertexColors),
         roughness: 0.45,
         metalness: 0.06,
-        transparent: true,
+        side: THREE.DoubleSide,
+        transparent: false,
         opacity: 1
       });
     }
@@ -651,6 +657,12 @@ window.Brain3DViewer = (function () {
     pineal.position.set(0, 0.145, -0.26);
     registerMesh(pineal, "thalamus", [0, 0.06, -0.10]);
 
+    // Subthalamische/tegmentale verbindingsbrug: dicht het volledige raakvlak met hypothalamus & middenhersenen (0.00 gat)
+    const subThal = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 16), makeMat("thalamus"));
+    subThal.scale.set(0.155, 0.088, 0.145);
+    subThal.position.set(0, 0.105, -0.09);
+    registerMesh(subThal, "thalamus", [0, 0.03, -0.04]);
+
     // 6. DIENCEPHALON — HYPOTHALAMUS (Ventraal onder thalamus, sluit direct aan op thalamus + middenhersenen)
     // Hoofdmassa: trechtervormige kern onder de thalamus tot aan pedunculi cerebri
     const hypMainGeo = new THREE.SphereGeometry(1, 22, 18);
@@ -713,8 +725,10 @@ window.Brain3DViewer = (function () {
       registerMesh(new THREE.Mesh(pedGeo, makeMat("cerebellum")), "cerebellum", [0.09 * side, -0.14, -0.22]);
     });
 
-    // 8. HERSENSTAM (Waterdicht langs evalStemAxis: Pedunculi, Colliculi, Pons, Piramiden, Olijven)
-    registerMesh(new THREE.Mesh(createBrainstemGeometry(THREE), makeMat("hersenstam", true)), "hersenstam", [0, -0.16, 0]);
+    // 8. HERSENSTAM (Naadloos opgedeeld in Middenhersenen, Pons & Medulla oblongata langs evalStemAxis)
+    registerMesh(new THREE.Mesh(createBrainstemRegionGeo(THREE, 0.17, -0.14, 22), makeMat("middenhersenen", true)), "middenhersenen", [0, -0.10, 0]);
+    registerMesh(new THREE.Mesh(createBrainstemRegionGeo(THREE, -0.13, -0.46, 22), makeMat("pons", true)), "pons", [0, -0.16, 0]);
+    registerMesh(new THREE.Mesh(createBrainstemRegionGeo(THREE, -0.45, -0.84, 22), makeMat("medulla-oblongata", true)), "medulla-oblongata", [0, -0.22, 0]);
 
     // 9. RETICULAIRE FORMATIE (Meerdelige kernkolom centraal in de hersenstam langs evalStemAxis)
     const retPts = [];
@@ -765,7 +779,7 @@ window.Brain3DViewer = (function () {
         registerMesh(new THREE.Mesh(new THREE.TubeGeometry(curve, 12, 0.019, 8, false), makeMat("pzs-overzicht")), "pzs-overzicht", [0.22 * side, -0.16, 0.08]);
       });
 
-      // 5 paren spinale zenuwen langs ruggenmerg met dorsale + ventrale wortel + spinaal ganglion
+      // 5 paren spinale zenuwen langs ruggenmerg: dorsale wortel (afferent, blauw) + ventrale wortel (efferent, oranje)
       [-0.98, -1.22, -1.46, -1.70, -1.92].forEach((sy) => {
         const a = evalStemAxis(sy);
         const joinPt = new THREE.Vector3(0.24 * side, sy - 0.06, a.z);
@@ -776,9 +790,9 @@ window.Brain3DViewer = (function () {
           new THREE.Vector3(0.16 * side, sy - 0.02, a.z - 0.035),
           joinPt
         ]);
-        registerMesh(new THREE.Mesh(new THREE.TubeGeometry(dorsalCurve, 8, 0.015, 7, false), makeMat("pzs-overzicht")), "pzs-overzicht", [0.24 * side, -0.42, -0.06]);
+        registerMesh(new THREE.Mesh(new THREE.TubeGeometry(dorsalCurve, 8, 0.015, 7, false), makeMat("pzs-overzicht", false, 0x38bdf8)), "pzs-overzicht", [0.24 * side, -0.42, -0.06]);
 
-        const ganglion = new THREE.Mesh(new THREE.SphereGeometry(0.028, 10, 8), makeMat("pzs-overzicht"));
+        const ganglion = new THREE.Mesh(new THREE.SphereGeometry(0.028, 10, 8), makeMat("pzs-overzicht", false, 0x38bdf8));
         ganglion.scale.set(1.3, 0.85, 0.85);
         ganglion.position.set(0.17 * side, sy - 0.03, a.z - 0.025);
         registerMesh(ganglion, "pzs-overzicht", [0.24 * side, -0.42, -0.06]);
@@ -789,7 +803,7 @@ window.Brain3DViewer = (function () {
           new THREE.Vector3(0.16 * side, sy - 0.04, a.z + 0.035),
           joinPt
         ]);
-        registerMesh(new THREE.Mesh(new THREE.TubeGeometry(ventralCurve, 8, 0.015, 7, false), makeMat("pzs-overzicht")), "pzs-overzicht", [0.24 * side, -0.42, -0.06]);
+        registerMesh(new THREE.Mesh(new THREE.TubeGeometry(ventralCurve, 8, 0.015, 7, false), makeMat("pzs-overzicht", false, 0xf97316)), "pzs-overzicht", [0.24 * side, -0.42, -0.06]);
 
         // Gecombineerde spinale zenuw verder naar buiten
         const tipPt = new THREE.Vector3(0.49 * side, sy - 0.18, a.z + 0.05);
@@ -799,65 +813,6 @@ window.Brain3DViewer = (function () {
           tipPt
         ]);
         registerMesh(new THREE.Mesh(new THREE.TubeGeometry(nerveCurve, 10, 0.021, 8, false), makeMat("pzs-overzicht")), "pzs-overzicht", [0.24 * side, -0.42, -0.06]);
-
-        // Perifere eindorganen direct verbonden aan de spinale zenuwuiteinden (0.000 gap)
-        if (Math.abs(sy + 1.22) < 0.05) {
-          // Spierspoeltje: sensibele annulospirale wikkeling + intrafusale spoelvorm
-          const spindleCurve = new THREE.CatmullRomCurve3([
-            tipPt,
-            new THREE.Vector3(0.55 * side, sy - 0.21, a.z + 0.06),
-            new THREE.Vector3(0.62 * side, sy - 0.23, a.z + 0.07)
-          ]);
-          registerMesh(new THREE.Mesh(new THREE.TubeGeometry(spindleCurve, 8, 0.017, 8, false), makeMat("spierspoeltjes")), "spierspoeltjes", [0.30 * side, -0.44, -0.06]);
-          const spindleBody = new THREE.Mesh(new THREE.SphereGeometry(0.044, 14, 12), makeMat("spierspoeltjes"));
-          spindleBody.position.set(0.62 * side, sy - 0.23, a.z + 0.07);
-          spindleBody.scale.set(1.55, 0.72, 0.72);
-          registerMesh(spindleBody, "spierspoeltjes", [0.32 * side, -0.44, -0.06]);
-          const gammaTip = new THREE.Mesh(new THREE.SphereGeometry(0.026, 12, 10), makeMat("spierspoeltjes"));
-          gammaTip.position.set(0.69 * side, sy - 0.24, a.z + 0.07);
-          registerMesh(gammaTip, "spierspoeltjes", [0.32 * side, -0.44, -0.06]);
-        }
-
-        if (Math.abs(sy + 0.98) < 0.05 || Math.abs(sy + 1.46) < 0.05) {
-          // Motorische eenheid (motor-unit): 1 alpha-motorneuron vertakt naar eindplaten op homogene spiervezels
-          [-0.035, 0, 0.035].forEach((dz) => {
-            const branchEnd = new THREE.Vector3(0.63 * side, sy - 0.23 + dz * 0.45, a.z + 0.06 + dz);
-            const branchCurve = new THREE.CatmullRomCurve3([
-              tipPt,
-              new THREE.Vector3(0.56 * side, sy - 0.20 + dz * 0.2, a.z + 0.055 + dz * 0.5),
-              branchEnd
-            ]);
-            registerMesh(new THREE.Mesh(new THREE.TubeGeometry(branchCurve, 8, 0.013, 7, false), makeMat("motorische-eenheid")), "motorische-eenheid", [0.30 * side, -0.44, -0.06]);
-
-            const endplate = new THREE.Mesh(new THREE.SphereGeometry(0.026, 10, 9), makeMat("motorische-eenheid"));
-            endplate.position.copy(branchEnd);
-            registerMesh(endplate, "motorische-eenheid", [0.32 * side, -0.44, -0.06]);
-
-            const fiber = new THREE.Mesh(new THREE.CylinderGeometry(0.013, 0.013, 0.11, 8), makeMat("motorische-eenheid"));
-            fiber.rotation.z = Math.PI * 0.42 * side;
-            fiber.position.set(branchEnd.x + 0.04 * side, branchEnd.y - 0.01, branchEnd.z);
-            registerMesh(fiber, "motorische-eenheid", [0.32 * side, -0.44, -0.06]);
-          });
-        }
-
-        if (Math.abs(sy + 1.70) < 0.05 || Math.abs(sy + 1.92) < 0.05) {
-          // Golgi-peeslichaampje: ingekapselde peesreceptor in serie met spier-/peesbundel
-          const golgiMid = new THREE.Vector3(0.57 * side, sy - 0.22, a.z + 0.06);
-          const golgiCurve = new THREE.CatmullRomCurve3([
-            tipPt,
-            new THREE.Vector3(0.53 * side, sy - 0.20, a.z + 0.055),
-            golgiMid
-          ]);
-          registerMesh(new THREE.Mesh(new THREE.TubeGeometry(golgiCurve, 8, 0.016, 8, false), makeMat("golgi-peeslichaampjes")), "golgi-peeslichaampjes", [0.30 * side, -0.46, -0.06]);
-          const capsule = new THREE.Mesh(new THREE.SphereGeometry(0.036, 12, 10), makeMat("golgi-peeslichaampjes"));
-          capsule.position.copy(golgiMid);
-          registerMesh(capsule, "golgi-peeslichaampjes", [0.32 * side, -0.46, -0.06]);
-
-          const tendon = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.019, 0.11, 8), makeMat("golgi-peeslichaampjes"));
-          tendon.rotation.z = Math.PI * 0.45 * side;
-          tendon.position.set(0.64 * side, sy - 0.24, a.z + 0.06);
-          registerMesh(tendon, "golgi-peeslichaampjes", [0.32 * side, -0.46, -0.06]);
-        }
       });
     });
 
@@ -946,12 +901,13 @@ window.Brain3DViewer = (function () {
 
       const selectedMeta = TOPIC_META[state.selectedId];
       const selectedIsDeepCerebrum = Boolean(selectedMeta && selectedMeta.region === "cerebrum" && selectedMeta.layer === "deep");
+      const stemChildIds = new Set(["middenhersenen", "pons", "medulla-oblongata"]);
       const pulse = 0.30 + 0.22 * Math.sin(clock * 2.2);
 
       for (let i = 0; i < clickableMeshes.length; i++) {
         const m = clickableMeshes[i];
         const ud = m.userData;
-        const isSelected = ud.topicId === state.selectedId;
+        const isSelected = ud.topicId === state.selectedId || (state.selectedId === "hersenstam" && stemChildIds.has(ud.topicId));
         const isDeep = ud.layer === "deep";
         const isOuter = ud.layer === "outer";
 
@@ -972,13 +928,19 @@ window.Brain3DViewer = (function () {
         } else if (state.layerMode === "xray") {
           opacity = isOuter ? 0.14 : 1.0;
         } else {
-          // "all"
-          opacity = isDeep ? 0.85 : 0.98;
+          // "all": volledig dekkend zodat hardware Z-buffer nul sorteer-gaten toont
+          opacity = 1.0;
         }
 
+        const effectiveOpacity = isSelected ? 1.0 : opacity;
+        const nextTransparent = effectiveOpacity < 0.995;
         m.visible = visible;
-        m.material.opacity = isSelected ? 1.0 : opacity;
-        m.material.depthWrite = m.material.opacity > 0.5;
+        m.material.opacity = effectiveOpacity;
+        if (m.material.transparent !== nextTransparent) {
+          m.material.transparent = nextTransparent;
+          m.material.needsUpdate = true;
+        }
+        m.material.depthWrite = effectiveOpacity > 0.5;
 
         if (isSelected) {
           m.material.emissive.setHex(0xffffff);
@@ -1022,13 +984,12 @@ window.Brain3DViewer = (function () {
       { id: "thalamus", x: 0.15, y: 0.19, z: -0.07, r: 0.18 },
       { id: "hypothalamus", x: 0, y: 0.05, z: 0.09, r: 0.14 },
       { id: "cerebellum", x: 0, y: -0.40, z: -0.64, r: 0.38 },
-      { id: "hersenstam", x: 0, y: -0.35, z: -0.18, r: 0.20 },
+      { id: "middenhersenen", x: 0, y: 0.02, z: -0.08, r: 0.17 },
+      { id: "pons", x: 0, y: -0.29, z: -0.17, r: 0.21 },
+      { id: "medulla-oblongata", x: 0, y: -0.63, z: -0.27, r: 0.15 },
       { id: "reticulaire-formatie", x: 0, y: -0.38, z: -0.20, r: 0.09 },
       { id: "ruggenmerg", x: 0, y: -1.45, z: -0.35, r: 0.12 },
-      { id: "pzs-overzicht", x: 0.35, y: -1.45, z: -0.34, r: 0.11 },
-      { id: "spierspoeltjes", x: 0.60, y: -1.42, z: -0.28, r: 0.10 },
-      { id: "motorische-eenheid", x: 0.62, y: -1.66, z: -0.28, r: 0.10 },
-      { id: "golgi-peeslichaampjes", x: 0.60, y: -1.92, z: -0.29, r: 0.10 }
+      { id: "pzs-overzicht", x: 0.35, y: -1.45, z: -0.34, r: 0.11 }
     ];
 
     let dragging = false, moved = 0, lx = 0, ly = 0, drawn = [];

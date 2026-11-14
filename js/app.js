@@ -169,6 +169,11 @@
       startTopicSpeech(activeTopicId, state.showQuote || state.modalOpen ? "chapter" : "full");
     });
 
+    document.getElementById("btn-speak-prev").addEventListener("click", () => stepSpeechChunk(-1));
+    document.getElementById("btn-speak-next").addEventListener("click", () => stepSpeechChunk(1));
+    document.getElementById("btn-audio-topic").addEventListener("click", () => {
+      if (speech.topicId) selectTopic(speech.topicId, true);
+    });
     document.getElementById("btn-speak-stop").addEventListener("click", stopSpeaking);
   }
 
@@ -263,6 +268,7 @@
         stopSpeaking();
       } else {
         speakCurrentChunk(false);
+        updateSpeakButtons();
       }
     };
 
@@ -345,13 +351,67 @@
     startTopicSpeech(tid, "chapter");
   }
 
+  function stepSpeechChunk(delta) {
+    if (speech.status === "idle" || speech.chunks.length === 0) return;
+    const nextIdx = Math.max(0, Math.min(speech.chunks.length - 1, speech.chunkIdx + delta));
+    if (nextIdx === speech.chunkIdx && speech.charOffset === 0 && speech.baseOffset === 0) return;
+    speech.chunkIdx = nextIdx;
+    speech.charOffset = 0;
+    speech.baseOffset = 0;
+    if (speech.status === "playing") {
+      speakCurrentChunk(false);
+    } else if (speech.status === "paused") {
+      speech.pausedViaCancel = true;
+      speech.suppressEnd = true;
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+      speech.suppressEnd = false;
+    }
+    updateSpeakButtons();
+  }
+
   function updateSpeakButtons() {
     const isPlaying = speech.status === "playing";
     const isPaused = speech.status === "paused";
     const isActive = isPlaying || isPaused;
 
+    document.body.classList.toggle("has-audio", isActive);
+
+    const audioNav = document.getElementById("audio-nav");
+    const topicPill = document.getElementById("btn-audio-topic");
+    const prevBtn = document.getElementById("btn-speak-prev");
+    const nextBtn = document.getElementById("btn-speak-next");
     const topBtn = document.getElementById("btn-speak");
     const topStop = document.getElementById("btn-speak-stop");
+
+    if (audioNav) {
+      audioNav.classList.toggle("is-active", isActive);
+      audioNav.classList.toggle("is-paused", isPaused);
+    }
+
+    if (topicPill) {
+      topicPill.style.display = isActive && speech.topicId ? "inline-flex" : "none";
+      if (isActive && speech.topicId) {
+        const spTopic = getTopicById(speech.topicId);
+        const ico = topicPill.querySelector(".svg-ico");
+        const lbl = topicPill.querySelector(".audio-topic-label");
+        const badge = topicPill.querySelector(".audio-chunk-badge");
+        if (ico) ico.innerHTML = isPlaying ? ICONS.wave : ICONS.pause;
+        if (lbl) lbl.textContent = spTopic.title;
+        if (badge) badge.textContent = `${speech.chunkIdx + 1}/${Math.max(1, speech.chunks.length)}`;
+      }
+    }
+
+    if (prevBtn) {
+      prevBtn.style.display = isActive ? "inline-flex" : "none";
+      prevBtn.disabled = !isActive || speech.chunkIdx <= 0;
+    }
+    if (nextBtn) {
+      nextBtn.style.display = isActive ? "inline-flex" : "none";
+      nextBtn.disabled = !isActive || speech.chunkIdx >= speech.chunks.length - 1;
+    }
+
     if (topBtn) {
       topBtn.classList.toggle("is-on", isPlaying);
       topBtn.classList.toggle("is-paused", isPaused);
@@ -391,6 +451,23 @@
     if (modalIco) modalIco.innerHTML = modalPlaying ? ICONS.pause : (modalPaused ? ICONS.play : ICONS.speaker);
     if (modalLbl) modalLbl.textContent = modalPlaying ? "Pauze" : (modalPaused ? "Verder" : "Lees voor");
     if (modalStop) modalStop.style.display = (modalPlaying || modalPaused) ? "inline-flex" : "none";
+
+    // Toon blijvend afspeel-icoontje op het voorgelezen onderdeel (ook tijdens doorklikken)
+    document.querySelectorAll(".strip-pill").forEach((pill) => {
+      const tid = pill.dataset.tid;
+      const pillPlaying = isPlaying && tid === speech.topicId;
+      const pillPaused = isPaused && tid === speech.topicId;
+      pill.classList.toggle("is-speaking", pillPlaying);
+      pill.classList.toggle("is-paused", pillPaused);
+      const pIco = pill.querySelector(".pill-audio-ico");
+      if (pIco) {
+        pIco.innerHTML = pillPlaying ? ICONS.wave : (pillPaused ? ICONS.pause : "");
+      }
+    });
+
+    if (state.bodyMap && typeof state.bodyMap.setSpeaking === "function") {
+      state.bodyMap.setSpeaking(speech.topicId, speech.status);
+    }
   }
 
   function setupModal() {
@@ -517,6 +594,14 @@
               <span>In 3D</span>
             </button>
           ` : ""}
+          <button type="button" class="quote-toggle-btn" id="btn-dock-speak" title="Lees dit onderdeel voor">
+            <span class="svg-ico">${ICONS.speaker}</span>
+            <span>Lees voor</span>
+          </button>
+          <button type="button" class="quote-toggle-btn" id="btn-dock-speak-stop" title="Stop voorlezen" style="display:none;">
+            <span class="svg-ico">${ICONS.stop}</span>
+            <span>Stop</span>
+          </button>
           <button type="button" class="quote-toggle-btn ${state.showQuote ? "is-open" : ""}" id="btn-toggle-quote">
             <span class="svg-ico">${ICONS.doc}</span>
             <span>Hoofdstuktekst</span>
@@ -535,14 +620,6 @@
           <div class="dock-quote-toolbar">
             <strong>Uit hoofdstuk3.docx:</strong>
             <div class="dock-quote-tools">
-              <button type="button" class="quote-toggle-btn" id="btn-dock-speak">
-                <span class="svg-ico">${ICONS.speaker}</span>
-                <span>Lees voor</span>
-              </button>
-              <button type="button" class="quote-toggle-btn" id="btn-dock-speak-stop" title="Stop voorlezen" style="display:none;">
-                <span class="svg-ico">${ICONS.stop}</span>
-                <span>Stop</span>
-              </button>
               <button type="button" class="quote-toggle-btn" id="btn-open-fullscreen">
                 <span class="svg-ico">${ICONS.fullscreen}</span>
                 <span>Volledig scherm</span>
@@ -559,6 +636,11 @@
       to3dBtn.addEventListener("click", () => viewTopicIn3D(t.id));
     }
 
+    document.getElementById("btn-dock-speak").addEventListener("click", () => {
+      toggleChapterSpeech(t.id);
+    });
+    document.getElementById("btn-dock-speak-stop").addEventListener("click", stopSpeaking);
+
     document.getElementById("btn-toggle-quote").addEventListener("click", () => {
       state.showQuote = !state.showQuote;
       renderDockCard();
@@ -569,10 +651,6 @@
     });
 
     if (state.showQuote) {
-      document.getElementById("btn-dock-speak").addEventListener("click", () => {
-        toggleChapterSpeech(t.id);
-      });
-      document.getElementById("btn-dock-speak-stop").addEventListener("click", stopSpeaking);
       document.getElementById("btn-open-fullscreen").addEventListener("click", () => {
         openChapterModal(t.id);
       });
@@ -584,7 +662,8 @@
     const strip = document.getElementById("quick-strip");
     strip.innerHTML = DATA.topics.map((t) => `
       <button type="button" class="strip-pill ${t.id === state.selectedId ? "is-active" : ""}" data-tid="${t.id}" style="border-left:3px solid ${t.color};">
-        ${escapeHtml(t.title)}
+        <span class="pill-audio-ico"></span>
+        <span class="pill-label">${escapeHtml(t.title)}</span>
       </button>
     `).join("");
 
