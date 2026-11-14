@@ -169,3 +169,11 @@
   - `node --check` op `js/data.js`, `js/visuals.js`, `js/brain3d.js`, `js/app.js` en headless simulatiesuite `sim.js`: alle checks geslaagd (`26` onderdelen, `14` prikkelroutes met `dir`, `32` vragen, `107` 3D-meshes met uitwaartse normalen, `DoubleSide`, gesloten corticale binnenwanden, `0.000` anatomisch gat op alle 9 geteste koppelingen, `26` niet-overlappende kaartstations, Afferent/Efferent routekleuren, Audio-Navigator + blijvend afspeel-icoon, en `HTTP 200`).
   - Browser-/screenshotcontrole via `browser`-subagent (`chrome_devtools` MCP): poging op `http://127.0.0.1:8123` meldde `DevToolsActivePort (ENOENT)` omdat er geen Chrome-instantie met ingeschakelde remote debugging (`chrome://inspect/#remote-debugging`) actief was; er zijn daarom in deze sessie geen live Chrome-screenshots kunnen worden beoordeeld.
 - **Volgende stap:** Hercontrole na deze logupdate en pushen naar `origin main`.
+
+
+### [2026-11-14 22:32:15] — Update #17: GitHub Pages ingeschakeld & live URL geverifieerd
+- **GitHub Pages configuratie (`hnsvrdmn/Neurale-sturing-van-beweging`):**
+  - Via de GitHub Pages REST API ingesteld op branch `main` (pad `/`, root) zodat de webapp direct vanuit de browser en op mobiel (ook als PWA toe te voegen aan het startscherm via [`manifest.json`](manifest.json)) te openen is.
+- **Live verificatie:**
+  - Buildstatus: `built` op `https://hnsvrdmn.github.io/Neurale-sturing-van-beweging/`.
+  - Alle `7` app-bestanden (`/`, `/manifest.json`, `/css/style.css`, `/js/data.js`, `/js/visuals.js`, `/js/brain3d.js`, `/js/app.js`) leveren live `HTTP 200` op.
