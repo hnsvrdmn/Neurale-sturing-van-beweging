@@ -12,6 +12,8 @@
     showQuote: false,
     drawerOpen: false,
     drawerHeight: null,
+    stripSort: "category", // "category" | "name"
+    legendOpen: false,
     modalOpen: false,
     modalTopicId: null,
     viewer3D: null,
@@ -124,6 +126,7 @@
     setupTopBar();
     setupModal();
     setupDockDrawer();
+    setupQuickStripSort();
     renderQuickStrip();
     renderDockCard();
     updateSpeakButtons();
@@ -188,6 +191,7 @@
     document.getElementById("pane-3d").classList.toggle("is-active", v === "3d");
     document.getElementById("pane-map").classList.toggle("is-active", v === "map");
     document.getElementById("pane-quiz").classList.toggle("is-active", v === "quiz");
+    if (v !== "3d") set3DLegendOpen(false);
     renderDockCard();
     if (v === "map" && state.bodyMap && typeof state.bodyMap.onShow === "function") {
       state.bodyMap.onShow();
@@ -202,6 +206,19 @@
     selectTopic(DATA.topics[next].id, true);
   }
 
+  function setMobileDockCssVar(px) {
+    const rootStyle = document.documentElement && document.documentElement.style;
+    if (!rootStyle) return;
+    if (px == null) {
+      if (typeof rootStyle.removeProperty === "function") rootStyle.removeProperty("--mobile-dock-h");
+      else rootStyle["--mobile-dock-h"] = "";
+    } else {
+      const val = Math.round(px) + "px";
+      if (typeof rootStyle.setProperty === "function") rootStyle.setProperty("--mobile-dock-h", val);
+      else rootStyle["--mobile-dock-h"] = val;
+    }
+  }
+
   function syncDockDrawer() {
     const dock = document.getElementById("info-dock");
     if (!dock) return;
@@ -209,15 +226,23 @@
     if (isDesktop) {
       dock.classList.remove("is-open", "is-collapsed", "is-dragging");
       dock.style.height = "";
+      if (document.documentElement && document.documentElement.classList) {
+        document.documentElement.classList.remove("dock-is-dragging");
+      }
+      setMobileDockCssVar(null);
     } else {
       dock.classList.toggle("is-open", state.drawerOpen);
       dock.classList.toggle("is-collapsed", !state.drawerOpen);
+      const winH = window.innerHeight || 844;
+      const defaultOpenH = Math.round(winH * 0.58);
       if (state.drawerOpen && state.drawerHeight) {
-        const maxH = Math.max(240, window.innerHeight - 56);
+        const maxH = Math.max(240, winH - 56);
         const clamped = Math.min(maxH, Math.max(180, state.drawerHeight));
         dock.style.height = clamped + "px";
+        setMobileDockCssVar(clamped);
       } else {
         dock.style.height = "";
+        setMobileDockCssVar(state.drawerOpen ? defaultOpenH : 112);
       }
     }
     const toggleBtn = document.getElementById("btn-drawer-toggle");
@@ -236,7 +261,7 @@
     let dragging = false;
     let moved = false;
     let startY = 0;
-    let startH = 104;
+    let startH = 112;
     let suppressClick = false;
 
     const toggleDrawer = () => {
@@ -250,7 +275,7 @@
       dragging = true;
       moved = false;
       startY = e.clientY;
-      startH = dock.getBoundingClientRect().height || (state.drawerOpen ? 360 : 104);
+      startH = dock.getBoundingClientRect().height || (state.drawerOpen ? Math.round((window.innerHeight || 844) * 0.58) : 112);
       if (typeof handle.setPointerCapture === "function") {
         try { handle.setPointerCapture(e.pointerId); } catch (_) {}
       }
@@ -262,12 +287,16 @@
       if (!moved && Math.abs(dy) > 6) {
         moved = true;
         dock.classList.add("is-dragging");
+        if (document.documentElement && document.documentElement.classList) {
+          document.documentElement.classList.add("dock-is-dragging");
+        }
       }
       if (!moved) return;
-      const minH = 104;
-      const maxH = Math.max(260, window.innerHeight - 56);
+      const minH = 112;
+      const maxH = Math.max(260, (window.innerHeight || 844) - 56);
       const nextH = Math.round(Math.max(minH, Math.min(maxH, startH + dy)));
       dock.style.height = nextH + "px";
+      setMobileDockCssVar(nextH);
       const liveOpen = nextH > 152;
       dock.classList.toggle("is-open", liveOpen);
       dock.classList.toggle("is-collapsed", !liveOpen);
@@ -277,13 +306,16 @@
       if (!dragging) return;
       dragging = false;
       dock.classList.remove("is-dragging");
+      if (document.documentElement && document.documentElement.classList) {
+        document.documentElement.classList.remove("dock-is-dragging");
+      }
       if (!moved) {
         suppressClick = true;
         toggleDrawer();
         return;
       }
       suppressClick = true;
-      const rectH = dock.getBoundingClientRect().height || 104;
+      const rectH = dock.getBoundingClientRect().height || 112;
       if (rectH < 152) {
         state.drawerOpen = false;
         state.drawerHeight = null;
@@ -656,6 +688,64 @@
     updateSpeakButtons();
   }
 
+  function set3DLegendOpen(open) {
+    state.legendOpen = Boolean(open);
+    const btn = document.getElementById("btn-3d-legend");
+    const pop = document.getElementById("legend-3d-popover");
+    if (btn) {
+      btn.classList.toggle("is-on", state.legendOpen);
+      btn.setAttribute("aria-expanded", state.legendOpen ? "true" : "false");
+    }
+    if (pop) {
+      pop.hidden = !state.legendOpen;
+      pop.classList.toggle("is-open", state.legendOpen);
+    }
+  }
+
+  function setup3DLegend() {
+    const btn = document.getElementById("btn-3d-legend");
+    const closeBtn = document.getElementById("btn-3d-legend-close");
+    const list = document.getElementById("legend-3d-list");
+    const stage = document.getElementById("brain3d-stage");
+    const cats = window.NEURO_CATEGORIES || [];
+
+    if (list) {
+      list.innerHTML = cats.map((cat) => `
+        <button type="button" class="legend-row" data-legend-layer="${cat.layerMode}" data-legend-cat="${cat.id}">
+          <span class="legend-swatch" style="background:${cat.color};"></span>
+          <span class="legend-row-text">
+            <span class="legend-row-title">${escapeHtml(cat.title)} (${escapeHtml(cat.colorName)})</span>
+            <span class="legend-row-sub">${escapeHtml(cat.summary)}</span>
+          </span>
+        </button>
+      `).join("");
+
+      list.querySelectorAll(".legend-row").forEach((row) => {
+        row.addEventListener("click", () => {
+          const layer = row.getAttribute("data-legend-layer") || "all";
+          if (state.viewer3D) state.viewer3D.setLayerMode(layer);
+          document.querySelectorAll(".floating-3d-bar [data-layer]").forEach((b) => {
+            b.classList.toggle("is-active", b.dataset.layer === layer);
+          });
+          set3DLegendOpen(false);
+        });
+      });
+    }
+
+    if (btn) {
+      btn.addEventListener("click", () => set3DLegendOpen(!state.legendOpen));
+    }
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => set3DLegendOpen(false));
+    }
+    if (stage) {
+      stage.addEventListener("pointerdown", () => {
+        if (state.legendOpen) set3DLegendOpen(false);
+      });
+    }
+    set3DLegendOpen(false);
+  }
+
   function init3DPane() {
     const stage = document.getElementById("brain3d-stage");
     state.viewer3D = window.Brain3DViewer.create(stage, (topicId) => {
@@ -690,6 +780,8 @@
       btnExplode.classList.remove("is-active");
       state.viewer3D.resetView();
     });
+
+    setup3DLegend();
   }
 
   function selectTopic(topicId, move3DCamera) {
@@ -814,18 +906,72 @@
     updateSpeakButtons();
   }
 
+  function setupQuickStripSort() {
+    const btn = document.getElementById("btn-strip-sort");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      state.stripSort = state.stripSort === "category" ? "name" : "category";
+      renderQuickStrip();
+      const strip = document.getElementById("quick-strip");
+      if (strip) {
+        strip.scrollTop = 0;
+        strip.scrollLeft = 0;
+      }
+      if (window.innerWidth < 900 && !state.drawerOpen) {
+        state.drawerOpen = true;
+        state.drawerHeight = null;
+        syncDockDrawer();
+      }
+    });
+  }
+
+  function buildStripPillHtml(t, mode) {
+    const subCls = mode === "category" && t.isSub ? " is-sub-pill" : "";
+    const tagTxt = mode === "name" ? t.catShort : (t.isSub && t.parentLabel ? t.parentLabel : "");
+    return `
+      <button type="button" class="strip-pill ${t.id === state.selectedId ? "is-active" : ""}${subCls}" data-tid="${t.id}" style="border-left:3px solid ${t.color};">
+        <span class="pill-audio-ico"></span>
+        <span class="pill-dot" style="background:${t.color};"></span>
+        <span class="pill-label">${escapeHtml(t.title)}</span>
+        ${tagTxt ? `<span class="pill-cat-tag">${escapeHtml(tagTxt)}</span>` : ""}
+      </button>
+    `;
+  }
+
   function renderQuickStrip() {
     const strip = document.getElementById("quick-strip");
-    strip.innerHTML = DATA.topics.map((t) => `
-      <button type="button" class="strip-pill ${t.id === state.selectedId ? "is-active" : ""}" data-tid="${t.id}" style="border-left:3px solid ${t.color};">
-        <span class="pill-audio-ico"></span>
-        <span class="pill-label">${escapeHtml(t.title)}</span>
-      </button>
-    `).join("");
+    const sortLbl = document.getElementById("strip-sort-label");
+    const sortHint = document.getElementById("strip-sort-hint");
+    const mode = state.stripSort === "name" ? "name" : "category";
+
+    if (sortLbl) sortLbl.textContent = mode === "name" ? "Naam" : "Categorie";
+    if (sortHint) sortHint.textContent = mode === "name" ? "A – Z op naam" : "Per regio";
+
+    if (mode === "name") {
+      const sorted = DATA.topics.slice().sort((a, b) => a.title.localeCompare(b.title, "nl"));
+      strip.innerHTML = sorted.map((t) => buildStripPillHtml(t, "name")).join("");
+    } else {
+      const cats = window.NEURO_CATEGORIES || [];
+      const seen = new Set();
+      let html = "";
+      cats.forEach((cat) => {
+        const items = DATA.topics.filter((t) => t.catId === cat.id);
+        if (!items.length) return;
+        items.forEach((t) => seen.add(t.id));
+        html += `<div class="strip-cat-header" data-cat-group="${cat.id}"><span class="strip-cat-dot" style="background:${cat.color};"></span><span>${escapeHtml(cat.title)}</span><span class="strip-cat-count">${items.length}</span></div>`;
+        html += items.map((t) => buildStripPillHtml(t, "category")).join("");
+      });
+      const rest = DATA.topics.filter((t) => !seen.has(t.id));
+      if (rest.length) {
+        html += rest.map((t) => buildStripPillHtml(t, "category")).join("");
+      }
+      strip.innerHTML = html;
+    }
 
     strip.querySelectorAll(".strip-pill").forEach((btn) => {
       btn.addEventListener("click", () => selectTopic(btn.dataset.tid, true));
     });
+    updateSpeakButtons();
   }
 
   function updateQuickStripActive() {

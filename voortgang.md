@@ -196,3 +196,21 @@
     - Automatische camera-uitlijning voor portret-weergave (`aspect < 0.85`) zodat het hele 3D-brein netjes binnen het mobiele scherm valt boven de zwevende bedieningsknoppen.
 - **Visuele & functionele controle (headless Chrome + lokale simulatie):**
   - Headless Chrome screenshots vastgelegd en geïnspecteerd op mobiel (`390x844`, `scrollWidth = 390`) voor 3D-Brein ingeklapt/uitgeklapt, 3D `X-Ray` (`Reticulaire formatie`), en `Lichaams-Kaart` (ingezoomde prikkelroute met auto-play-icoon + uitgezoomd silhouet), én op desktop (`1280x800`, `scrollWidth = 1280`).
+
+
+### [2026-11-14 23:28:55] — Update #19 (Ronde 9): Meeschalende onder-lade & 3D-knoppen, regiokleuren met legenda-icoon en sorteerbalk Categorie / Naam
+- **Verbeteringen naar aanleiding van feedback (Ronde 9):**
+  - **Meeschalende onderdelenlijst & zwevende knoppen op mobiel ([`css/style.css`](css/style.css), [`js/app.js`](js/app.js)):**
+    - Dynamische CSS-variabele `--mobile-dock-h` bijgewerkt vanuit `syncDockDrawer()` / `setupDockDrawer()` (`112px` ingeklapt, `58dvh` uitgeklapt of live tijdens slepen aan het `-` handvat `#dock-drawer-handle`).
+    - `.floating-3d-bar` en `.bodymap-zoom-bar` verplaatsen automatisch omhoog boven de onder-lade (`bottom: calc(min(var(--mobile-dock-h, 112px), 100dvh - 122px) + 8px)`), zodat de knoppen niet langer in de verdrukking komen onderaan.
+    - De ingeklapte `#info-dock` (`112px`) geeft `#quick-strip` onderaan `54px` hoogte; bij uitklappen (`is-open`) schaalt `#quick-strip` mee naar `minmax(130px, 1fr)` (gemeten `254.7px` voor `.quick-strip-wrap` op `390x844`).
+  - **Samenhangende regiokleuren & inklapbare 3D-legenda ([`js/data.js`](js/data.js), [`js/brain3d.js`](js/brain3d.js), [`js/visuals.js`](js/visuals.js), [`index.html`](index.html)):**
+    - Alle 26 onderwerpen, 3D-onderdelen (`TOPIC_META`) en kaartstations (`BODY_STATIONS` / `BASE_LINKS`) gebruiken nu 6 consistente kleurfamilies (`NEURO_CATEGORIES`): `Cerebrum` (Paars/Violet), `Diencephalon` (Roze/Magenta), `Cerebellum` (Groen), `Hersenstam` (Geel/Amber), `Ruggenmerg` (Oranje/Koper) en `PZS` (Cyaan-blauw voor afferent, oranje/rood/teal voor efferent).
+    - Nieuw legenda-icoon (`#btn-3d-legend`) rechtsboven in het 3D-paneel opent alleen op klik de compacte `#legend-3d-popover` (`Kleuren per regio`), waarmee direct op een regio gefilterd kan worden.
+  - **Compacte sorteerbalk `Categorie` / `Naam` ([`index.html`](index.html), [`js/app.js`](js/app.js), [`css/style.css`](css/style.css)):**
+    - Boven de onderdelenlijst staat nu `#strip-sort-bar` met `#btn-strip-sort` (`Categorie` met pijltje omlaag, klikken wisselt naar `Naam` en terug).
+    - `Categorie` (standaard): groepeert alle 26 onderdelen per regio onder gekleurde groepskoppen (`.strip-cat-header`) en springt subonderdelen in (`.is-sub-pill` met `parentLabel` zoals `Frontale kwab`, `Hersenstam`, `Efferent`, `Autonoom`).
+    - `Naam`: sorteert alfabetisch A–Z (`localeCompare`) met compacte regiobadge (`catShort`) naast elk onderdeel.
+- **Verificatie & live uitrol voorbereid:**
+  - `node --check` op alle 4 JS-bestanden en de uitgebreide simulatiesuite (`sim.js`) foutloos doorlopen.
+  - Headless Chrome screenshots vastgelegd en geïnspecteerd op mobiel (`390x844`, `scrollWidth = 390`: 3D ingeklapt, 3D-legenda geopend, onder-lade uitgeklapt op `Categorie` en omgeschakeld naar `Naam`) en desktop (`1280x800`, `scrollWidth = 1280`).

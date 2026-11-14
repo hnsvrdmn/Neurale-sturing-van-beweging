@@ -59,6 +59,20 @@
       <!-- 1. Zelfgemaakt Anatomisch 3D-Brein -->
       <section class="stage-pane is-active" id="pane-3d">
         <div class="brain-canvas-wrap" id="brain3d-stage"></div>
+        <div class="legend-3d-wrap">
+          <button type="button" class="icon-btn legend-3d-btn" id="btn-3d-legend" title="Kleuren-legenda" aria-label="Kleuren-legenda" aria-expanded="false">
+            <span class="svg-ico" data-icon="legend"></span>
+          </button>
+          <div class="legend-3d-popover" id="legend-3d-popover" role="region" aria-label="Kleuren-legenda 3D-model" hidden>
+            <div class="legend-3d-head">
+              <strong>Kleuren per regio</strong>
+              <button type="button" class="icon-btn legend-close-btn" id="btn-3d-legend-close" title="Sluit legenda" aria-label="Sluit legenda">
+                <span class="svg-ico" data-icon="close"></span>
+              </button>
+            </div>
+            <div class="legend-3d-list" id="legend-3d-list"></div>
+          </div>
+        </div>
         <div class="floating-3d-bar">
           <button type="button" class="hud-chip is-active" data-layer="all">Alles</button>
           <button type="button" class="hud-chip" data-layer="cerebrum">Cerebrum</button>
@@ -96,7 +110,16 @@
         <span class="dock-handle-pill"></span>
       </div>
       <div class="dock-card" id="dock-card"></div>
-      <div class="quick-strip" id="quick-strip"></div>
+      <div class="quick-strip-wrap">
+        <div class="strip-sort-bar" id="strip-sort-bar">
+          <button type="button" class="strip-sort-btn" id="btn-strip-sort" title="Schik onderdelen op categorie of alfabetische naam">
+            <span id="strip-sort-label">Categorie</span>
+            <span class="svg-ico" data-icon="chevronDown"></span>
+          </button>
+          <span class="strip-sort-hint" id="strip-sort-hint">Per regio</span>
+        </div>
+        <div class="quick-strip" id="quick-strip"></div>
+      </div>
     </aside>
   </div>
 

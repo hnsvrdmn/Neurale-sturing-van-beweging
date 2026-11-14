@@ -26,8 +26,60 @@ window.NEURO_ICONS = {
   chevronUp: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>`,
   chevronDown: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`,
   zoomIn: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>`,
-  zoomOut: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>`
+  zoomOut: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>`,
+  legend: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="6.5" r="2" fill="currentColor"/><line x1="10.5" y1="6.5" x2="20" y2="6.5"/><circle cx="5.5" cy="12" r="2" fill="currentColor"/><line x1="10.5" y1="12" x2="20" y2="12"/><circle cx="5.5" cy="17.5" r="2" fill="currentColor"/><line x1="10.5" y1="17.5" x2="20" y2="17.5"/></svg>`
 };
+
+window.NEURO_CATEGORIES = [
+  {
+    id: "cerebrum",
+    title: "Cerebrum (Grote hersenen)",
+    layerMode: "cerebrum",
+    color: "#8b5cf6",
+    colorName: "Paars / Violet",
+    summary: "CZS Overzicht, Corpus Callosum & de 5 kwabben + Basale ganglia"
+  },
+  {
+    id: "diencephalon",
+    title: "Diencephalon (Tussenhersenen)",
+    layerMode: "diencephalon",
+    color: "#ec4899",
+    colorName: "Roze / Magenta",
+    summary: "Thalamus & Hypothalamus"
+  },
+  {
+    id: "cerebellum",
+    title: "Cerebellum (Kleine hersenen)",
+    layerMode: "cerebellum",
+    color: "#10b981",
+    colorName: "Groen",
+    summary: "Coördinatie & correctie van beweging"
+  },
+  {
+    id: "hersenstam",
+    title: "Hersenstam",
+    layerMode: "stem",
+    color: "#f59e0b",
+    colorName: "Geel / Amber",
+    summary: "Middenhersenen, Pons, Medulla oblongata & Reticulaire formatie"
+  },
+  {
+    id: "ruggenmerg",
+    title: "Ruggenmerg",
+    layerMode: "stem",
+    color: "#ea580c",
+    colorName: "Oranje / Koper",
+    summary: "Banen (tractussen) & spinale reflexen"
+  },
+  {
+    id: "pzs",
+    title: "Perifeer Zenuwstelsel (PZS)",
+    layerMode: "stem",
+    color: "#38bdf8",
+    colorName: "Blauw (Afferent) / Oranje-rood (Efferent)",
+    summary: "Sensorisch (afferent) & Motorisch (somatisch / autonoom)"
+  }
+];
 
 window.NEURO_DATA = {
   topics: [
@@ -37,6 +89,9 @@ window.NEURO_DATA = {
       module: "CZS",
       layer: "outer",
       color: "#8b5cf6",
+      catId: "cerebrum",
+      catShort: "CZS Overzicht",
+      isSub: false,
       title: "Centraal Zenuwstelsel (CZS)",
       tag: "Hersenen + Ruggenmerg • Sensomotorische integratie",
       bullets: [
@@ -57,7 +112,10 @@ window.NEURO_DATA = {
       id: "cerebrum",
       module: "CZS",
       layer: "deep",
-      color: "#d946ef",
+      color: "#a855f7",
+      catId: "cerebrum",
+      catShort: "Cerebrum",
+      isSub: false,
       title: "Cerebrum & Corpus Callosum",
       tag: "2 hemisferen • Grijze stof",
       bullets: [
@@ -78,6 +136,9 @@ window.NEURO_DATA = {
       module: "CZS",
       layer: "outer",
       color: "#8b5cf6",
+      catId: "cerebrum",
+      catShort: "Cerebrum",
+      isSub: false,
       title: "Frontale kwab",
       tag: "1e van 5 kwabben • Voorzijde",
       bullets: [
@@ -95,7 +156,11 @@ window.NEURO_DATA = {
       id: "premotorcortex",
       module: "CZS",
       layer: "outer",
-      color: "#a855f7",
+      color: "#9333ea",
+      catId: "cerebrum",
+      catShort: "Frontale kwab",
+      parentLabel: "Frontale kwab",
+      isSub: true,
       title: "Premotorcortex",
       tag: "Vóór primaire motorcortex",
       bullets: [
@@ -113,7 +178,11 @@ window.NEURO_DATA = {
       id: "primaire-motorcortex",
       module: "CZS",
       layer: "outer",
-      color: "#c084fc",
+      color: "#d8b4fe",
+      catId: "cerebrum",
+      catShort: "Frontale kwab",
+      parentLabel: "Frontale kwab",
+      isSub: true,
       title: "Primaire motorcortex",
       tag: "Precentrale gyrus (frontale kwab)",
       bullets: [
@@ -133,7 +202,10 @@ window.NEURO_DATA = {
       id: "parietale-kwab",
       module: "CZS",
       layer: "outer",
-      color: "#6366f1",
+      color: "#7c3aed",
+      catId: "cerebrum",
+      catShort: "Cerebrum",
+      isSub: false,
       title: "Pariëtale kwab",
       tag: "2e van 5 kwabben • Primaire sensorische cortex",
       bullets: [
@@ -151,7 +223,10 @@ window.NEURO_DATA = {
       id: "temporele-kwab",
       module: "CZS",
       layer: "outer",
-      color: "#3b82f6",
+      color: "#6d28d9",
+      catId: "cerebrum",
+      catShort: "Cerebrum",
+      isSub: false,
       title: "Temporele kwab",
       tag: "3e van 5 kwabben • Zijkant",
       bullets: [
@@ -167,7 +242,10 @@ window.NEURO_DATA = {
       id: "occipitale-kwab",
       module: "CZS",
       layer: "outer",
-      color: "#0ea5e9",
+      color: "#5b21b6",
+      catId: "cerebrum",
+      catShort: "Cerebrum",
+      isSub: false,
       title: "Occipitale kwab",
       tag: "4e van 5 kwabben • Achterzijde",
       bullets: [
@@ -183,7 +261,10 @@ window.NEURO_DATA = {
       id: "centrale-insula",
       module: "CZS",
       layer: "deep",
-      color: "#ec4899",
+      color: "#c084fc",
+      catId: "cerebrum",
+      catShort: "Cerebrum (5e kwab)",
+      isSub: false,
       title: "Centrale insula",
       tag: "5e hersenkwab • Diep",
       bullets: [
@@ -200,7 +281,10 @@ window.NEURO_DATA = {
       id: "basale-ganglia",
       module: "CZS",
       layer: "deep",
-      color: "#f43f5e",
+      color: "#ab47bc",
+      catId: "cerebrum",
+      catShort: "Cerebrum (diep)",
+      isSub: false,
       title: "Basale ganglia (basale kernen)",
       tag: "Grijze stof diep in witte stof",
       bullets: [
@@ -218,7 +302,10 @@ window.NEURO_DATA = {
       id: "thalamus",
       module: "CZS",
       layer: "deep",
-      color: "#e879f9",
+      color: "#ec4899",
+      catId: "diencephalon",
+      catShort: "Diencephalon",
+      isSub: false,
       title: "Thalamus (Diencephalon)",
       tag: "Sensorisch schakelstation • Bewustzijnsdrempel",
       bullets: [
@@ -237,7 +324,10 @@ window.NEURO_DATA = {
       id: "hypothalamus",
       module: "CZS",
       layer: "deep",
-      color: "#fb7185",
+      color: "#f43f5e",
+      catId: "diencephalon",
+      catShort: "Diencephalon",
+      isSub: false,
       title: "Hypothalamus (Diencephalon)",
       tag: "Primair centrum homeostase",
       bullets: [
@@ -255,7 +345,10 @@ window.NEURO_DATA = {
       id: "cerebellum",
       module: "CZS",
       layer: "stem",
-      color: "#f59e0b",
+      color: "#10b981",
+      catId: "cerebellum",
+      catShort: "Cerebellum",
+      isSub: false,
       title: "Cerebellum (Kleine hersenen)",
       tag: "Onder cerebrum, achter hersenstam",
       bullets: [
@@ -275,7 +368,10 @@ window.NEURO_DATA = {
       id: "hersenstam",
       module: "CZS",
       layer: "stem",
-      color: "#fbbf24",
+      color: "#f59e0b",
+      catId: "hersenstam",
+      catShort: "Hersenstam",
+      isSub: false,
       title: "Hersenstam",
       tag: "Boven → beneden: Middenhersenen, Pons, Medulla",
       bullets: [
@@ -296,6 +392,10 @@ window.NEURO_DATA = {
       module: "CZS",
       layer: "stem",
       color: "#f59e0b",
+      catId: "hersenstam",
+      catShort: "Hersenstam",
+      parentLabel: "Hersenstam",
+      isSub: true,
       title: "Middenhersenen",
       tag: "Hersenstam (boven) • Onder diencephalon",
       bullets: [
@@ -314,7 +414,11 @@ window.NEURO_DATA = {
       id: "pons",
       module: "CZS",
       layer: "stem",
-      color: "#fb923c",
+      color: "#fbbf24",
+      catId: "hersenstam",
+      catShort: "Hersenstam",
+      parentLabel: "Hersenstam",
+      isSub: true,
       title: "Pons (Brug)",
       tag: "Hersenstam (midden) • Tussen middenhersenen & medulla",
       bullets: [
@@ -333,7 +437,11 @@ window.NEURO_DATA = {
       id: "medulla-oblongata",
       module: "CZS",
       layer: "stem",
-      color: "#ea580c",
+      color: "#fcd34d",
+      catId: "hersenstam",
+      catShort: "Hersenstam",
+      parentLabel: "Hersenstam",
+      isSub: true,
       title: "Medulla oblongata (Verlengde merg)",
       tag: "Hersenstam (onder) • Gaat over in ruggenmerg",
       bullets: [
@@ -352,7 +460,11 @@ window.NEURO_DATA = {
       id: "reticulaire-formatie",
       module: "CZS",
       layer: "stem",
-      color: "#eab308",
+      color: "#fde047",
+      catId: "hersenstam",
+      catShort: "Hersenstam",
+      parentLabel: "Hersenstam",
+      isSub: true,
       title: "Reticulaire formatie",
       tag: "Diffuus netwerk door hersenstam",
       bullets: [
@@ -370,7 +482,10 @@ window.NEURO_DATA = {
       id: "ruggenmerg",
       module: "CZS",
       layer: "stem",
-      color: "#d97706",
+      color: "#ea580c",
+      catId: "ruggenmerg",
+      catShort: "CZS • Ruggenmerg",
+      isSub: false,
       title: "Ruggenmerg",
       tag: "Vanuit medulla oblongata door wervelkanaal",
       bullets: [
@@ -393,6 +508,9 @@ window.NEURO_DATA = {
       module: "PZS",
       layer: "pzs",
       color: "#38bdf8",
+      catId: "pzs",
+      catShort: "PZS Overzicht",
+      isSub: false,
       title: "PZS: 43 paar zenuwen",
       tag: "Verbindt CZS met periferie • Afferent & Efferent",
       bullets: [
@@ -411,6 +529,10 @@ window.NEURO_DATA = {
       module: "PZS",
       layer: "pzs",
       color: "#38bdf8",
+      catId: "pzs",
+      catShort: "PZS • Afferent",
+      parentLabel: "PZS → CZS",
+      isSub: true,
       title: "Sensorisch / Afferent deel",
       tag: "PZS • Zintuigen, gewrichts- & spierreceptoren → naar CZS",
       bullets: [
@@ -432,6 +554,10 @@ window.NEURO_DATA = {
       module: "PZS",
       layer: "pzs",
       color: "#f97316",
+      catId: "pzs",
+      catShort: "PZS • Efferent",
+      parentLabel: "CZS → PZS",
+      isSub: true,
       title: "Motorisch / Efferent deel",
       tag: "PZS • Van CZS naar spieren en organen",
       bullets: [
@@ -449,6 +575,10 @@ window.NEURO_DATA = {
       module: "PZS",
       layer: "pzs",
       color: "#fb923c",
+      catId: "pzs",
+      catShort: "Efferent • Somatisch",
+      parentLabel: "Efferent",
+      isSub: true,
       title: "Somatisch zenuwstelsel",
       tag: "Efferent PZS • Willekeurige skeletspieren & motor-unit",
       bullets: [
@@ -469,6 +599,10 @@ window.NEURO_DATA = {
       module: "PZS",
       layer: "pzs",
       color: "#f97316",
+      catId: "pzs",
+      catShort: "Efferent • Autonoom",
+      parentLabel: "Efferent",
+      isSub: true,
       title: "Autonoom zenuwstelsel",
       tag: "Efferent PZS • Onwillekeurige functies",
       bullets: [
@@ -488,6 +622,10 @@ window.NEURO_DATA = {
       module: "PZS",
       layer: "pzs",
       color: "#ef4444",
+      catId: "pzs",
+      catShort: "Autonoom",
+      parentLabel: "Autonoom",
+      isSub: true,
       title: "Sympathisch ('Fight or Flight')",
       tag: "Autonoom PZS • Noradrenaline (Adrenerg)",
       bullets: [
@@ -506,7 +644,11 @@ window.NEURO_DATA = {
       id: "parasympathisch",
       module: "PZS",
       layer: "pzs",
-      color: "#10b981",
+      color: "#14b8a6",
+      catId: "pzs",
+      catShort: "Autonoom",
+      parentLabel: "Autonoom",
+      isSub: true,
       title: "Parasympathisch ('Rest and Digest')",
       tag: "Autonoom PZS • Acetylcholine (Cholinerg)",
       bullets: [

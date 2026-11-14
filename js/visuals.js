@@ -6,30 +6,30 @@ window.NeuroVisuals = (function () {
   const BODY_STATIONS = [
     // --- CZS (Hoofd, Brein & Ruggenmerg) ---
     { id: "czs-overzicht",        label: "CZS Overzicht",            sub: ">100 mld neuronen",        x: 145, y: 54,  w: 168, h: 32, color: "#8b5cf6" },
-    { id: "cerebrum",             label: "Corpus callosum & Cortex", sub: "2 hemisferen • Grijze stof", x: 410, y: 54, w: 196, h: 32, color: "#d946ef" },
-    { id: "primaire-motorcortex", label: "Primaire motorcortex",     sub: "Precentrale gyrus",        x: 675, y: 54,  w: 186, h: 32, color: "#c084fc" },
+    { id: "cerebrum",             label: "Corpus callosum & Cortex", sub: "2 hemisferen • Grijze stof", x: 410, y: 54, w: 196, h: 32, color: "#a855f7" },
+    { id: "primaire-motorcortex", label: "Primaire motorcortex",     sub: "Precentrale gyrus",        x: 675, y: 54,  w: 186, h: 32, color: "#d8b4fe" },
 
     { id: "frontale-kwab",        label: "Frontale kwab",            sub: "Planning & motoriek",      x: 120, y: 106, w: 152, h: 32, color: "#8b5cf6" },
-    { id: "premotorcortex",       label: "Premotorcortex",           sub: "Opslag vaardigheden",      x: 312, y: 106, w: 154, h: 32, color: "#a855f7" },
-    { id: "parietale-kwab",       label: "Pariëtale kwab",           sub: "Tast, pijn, temp, ruimte", x: 506, y: 106, w: 156, h: 32, color: "#6366f1" },
-    { id: "occipitale-kwab",      label: "Occipitale kwab",          sub: "Zicht",                    x: 700, y: 106, w: 152, h: 32, color: "#0ea5e9" },
+    { id: "premotorcortex",       label: "Premotorcortex",           sub: "Opslag vaardigheden",      x: 312, y: 106, w: 154, h: 32, color: "#9333ea" },
+    { id: "parietale-kwab",       label: "Pariëtale kwab",           sub: "Tast, pijn, temp, ruimte", x: 506, y: 106, w: 156, h: 32, color: "#7c3aed" },
+    { id: "occipitale-kwab",      label: "Occipitale kwab",          sub: "Zicht",                    x: 700, y: 106, w: 152, h: 32, color: "#5b21b6" },
 
-    { id: "temporele-kwab",       label: "Temporele kwab",           sub: "Gehoor",                   x: 145, y: 158, w: 162, h: 32, color: "#3b82f6" },
-    { id: "basale-ganglia",       label: "Basale ganglia",           sub: "Armzwaai & spiertonus",    x: 410, y: 158, w: 176, h: 32, color: "#f43f5e" },
-    { id: "centrale-insula",      label: "Centrale insula",          sub: "5e kwab • Emoties",        x: 675, y: 158, w: 162, h: 32, color: "#ec4899" },
+    { id: "temporele-kwab",       label: "Temporele kwab",           sub: "Gehoor",                   x: 145, y: 158, w: 162, h: 32, color: "#6d28d9" },
+    { id: "basale-ganglia",       label: "Basale ganglia",           sub: "Armzwaai & spiertonus",    x: 410, y: 158, w: 176, h: 32, color: "#ab47bc" },
+    { id: "centrale-insula",      label: "Centrale insula",          sub: "5e kwab • Emoties",        x: 675, y: 158, w: 162, h: 32, color: "#c084fc" },
 
-    { id: "thalamus",             label: "Thalamus",                 sub: "Schakelstation (geen reuk)", x: 275, y: 210, w: 184, h: 32, color: "#e879f9" },
-    { id: "hypothalamus",         label: "Hypothalamus",             sub: "Homeostase",               x: 545, y: 210, w: 184, h: 32, color: "#fb7185" },
+    { id: "thalamus",             label: "Thalamus",                 sub: "Schakelstation (geen reuk)", x: 275, y: 210, w: 184, h: 32, color: "#ec4899" },
+    { id: "hypothalamus",         label: "Hypothalamus",             sub: "Homeostase",               x: 545, y: 210, w: 184, h: 32, color: "#f43f5e" },
 
-    { id: "reticulaire-formatie", label: "Reticulaire formatie",     sub: "Arousal & pijncontrole",   x: 135, y: 264, w: 168, h: 34, color: "#eab308" },
+    { id: "reticulaire-formatie", label: "Reticulaire formatie",     sub: "Arousal & pijncontrole",   x: 135, y: 264, w: 168, h: 34, color: "#fde047" },
     { id: "middenhersenen",       label: "Middenhersenen",           sub: "Hersenstam (boven)",       x: 322, y: 264, w: 158, h: 34, color: "#f59e0b" },
-    { id: "pons",                 label: "Pons (Brug)",              sub: "Hersenstam (midden)",      x: 498, y: 264, w: 146, h: 34, color: "#fb923c" },
-    { id: "cerebellum",           label: "Cerebellum",               sub: "Coördinatie & correctie",  x: 680, y: 264, w: 168, h: 34, color: "#f59e0b" },
+    { id: "pons",                 label: "Pons (Brug)",              sub: "Hersenstam (midden)",      x: 498, y: 264, w: 146, h: 34, color: "#fbbf24" },
+    { id: "cerebellum",           label: "Cerebellum",               sub: "Coördinatie & correctie",  x: 680, y: 264, w: 168, h: 34, color: "#10b981" },
 
-    { id: "hersenstam",           label: "Hersenstam (Overzicht)",   sub: "10 van 12 paar zenuwen",   x: 275, y: 320, w: 184, h: 34, color: "#fbbf24" },
-    { id: "medulla-oblongata",    label: "Medulla oblongata",        sub: "Verlengde merg • Autonoom", x: 545, y: 320, w: 194, h: 34, color: "#ea580c" },
+    { id: "hersenstam",           label: "Hersenstam (Overzicht)",   sub: "10 van 12 paar zenuwen",   x: 275, y: 320, w: 184, h: 34, color: "#f59e0b" },
+    { id: "medulla-oblongata",    label: "Medulla oblongata",        sub: "Verlengde merg • Autonoom", x: 545, y: 320, w: 194, h: 34, color: "#fcd34d" },
 
-    { id: "ruggenmerg",           label: "Ruggenmerg (CZS)",         sub: "Tractussen & reflexen",    x: 410, y: 376, w: 192, h: 34, color: "#d97706" },
+    { id: "ruggenmerg",           label: "Ruggenmerg (CZS)",         sub: "Tractussen & reflexen",    x: 410, y: 376, w: 192, h: 34, color: "#ea580c" },
 
     // --- PZS (Exacte boomstructuur: Afferent vs. Efferent -> Somatisch & Autonoom -> Sympathisch & Parasympathisch) ---
     { id: "pzs-overzicht",        label: "Perifeer Zenuwstelsel (PZS)", sub: "43 paar: 12 craniaal + 31 spinaal", x: 410, y: 470, w: 236, h: 36, color: "#38bdf8" },
@@ -41,28 +41,28 @@ window.NeuroVisuals = (function () {
     { id: "autonoom",             label: "Autonoom (Onwillekeurig)",    sub: "Glad spierweefsel, hart & klieren",     x: 682, y: 632, w: 206, h: 40, color: "#f97316" },
 
     { id: "sympathisch",          label: "Sympathisch",                 sub: "Fight or Flight • Noradrenaline",       x: 440, y: 714, w: 224, h: 38, color: "#ef4444" },
-    { id: "parasympathisch",      label: "Parasympathisch",             sub: "Rest and Digest • Acetylcholine",       x: 682, y: 714, w: 206, h: 38, color: "#10b981" }
+    { id: "parasympathisch",      label: "Parasympathisch",             sub: "Rest and Digest • Acetylcholine",       x: 682, y: 714, w: 206, h: 38, color: "#14b8a6" }
   ];
 
   // Nette orthogonaal-vloeiende verbindingslijnen
   const BASE_LINKS = [
     // CZS verbindingen
     { from: "czs-overzicht", to: "cerebrum", color: "#8b5cf6" },
-    { from: "frontale-kwab", to: "premotorcortex", color: "#a855f7" },
-    { from: "premotorcortex", to: "primaire-motorcortex", color: "#c084fc" },
+    { from: "frontale-kwab", to: "premotorcortex", color: "#9333ea" },
+    { from: "premotorcortex", to: "primaire-motorcortex", color: "#d8b4fe" },
     { from: "primaire-motorcortex", to: "middenhersenen", color: "#c084fc" },
-    { from: "cerebrum", to: "thalamus", color: "#d946ef" },
-    { from: "basale-ganglia", to: "thalamus", color: "#f43f5e" },
-    { from: "thalamus", to: "parietale-kwab", color: "#6366f1" },
-    { from: "thalamus", to: "occipitale-kwab", color: "#0ea5e9" },
-    { from: "thalamus", to: "temporele-kwab", color: "#3b82f6" },
-    { from: "thalamus", to: "middenhersenen", color: "#e879f9" },
-    { from: "hypothalamus", to: "middenhersenen", color: "#fb7185" },
-    { from: "hersenstam", to: "middenhersenen", color: "#fbbf24" },
-    { from: "hersenstam", to: "reticulaire-formatie", color: "#eab308" },
+    { from: "cerebrum", to: "thalamus", color: "#a855f7" },
+    { from: "basale-ganglia", to: "thalamus", color: "#ab47bc" },
+    { from: "thalamus", to: "parietale-kwab", color: "#7c3aed" },
+    { from: "thalamus", to: "occipitale-kwab", color: "#5b21b6" },
+    { from: "thalamus", to: "temporele-kwab", color: "#6d28d9" },
+    { from: "thalamus", to: "middenhersenen", color: "#ec4899" },
+    { from: "hypothalamus", to: "middenhersenen", color: "#f43f5e" },
+    { from: "hersenstam", to: "middenhersenen", color: "#f59e0b" },
+    { from: "hersenstam", to: "reticulaire-formatie", color: "#fde047" },
     { from: "middenhersenen", to: "pons", color: "#f59e0b" },
-    { from: "pons", to: "cerebellum", color: "#f59e0b" },
-    { from: "pons", to: "medulla-oblongata", color: "#fb923c" },
+    { from: "pons", to: "cerebellum", color: "#10b981" },
+    { from: "pons", to: "medulla-oblongata", color: "#fbbf24" },
     { from: "medulla-oblongata", to: "ruggenmerg", color: "#ea580c" },
 
     // Brug CZS <-> PZS
@@ -74,7 +74,7 @@ window.NeuroVisuals = (function () {
     { from: "efferent-divisies", to: "somatisch", color: "#fb923c" },
     { from: "efferent-divisies", to: "autonoom", color: "#f97316" },
     { from: "autonoom", to: "sympathisch", color: "#ef4444" },
-    { from: "autonoom", to: "parasympathisch", color: "#10b981" }
+    { from: "autonoom", to: "parasympathisch", color: "#14b8a6" }
   ];
 
   function getStation(id) {

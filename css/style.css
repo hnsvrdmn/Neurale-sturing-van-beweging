@@ -371,11 +371,116 @@ button {
   pointer-events: none;
 }
 
+.legend-3d-wrap {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 22;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.legend-3d-btn {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.legend-3d-popover {
+  width: min(310px, calc(100vw - 20px));
+  max-height: min(370px, 56dvh);
+  overflow-y: auto;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  border-radius: 14px;
+  padding: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.58);
+}
+
+.legend-3d-popover[hidden] {
+  display: none;
+}
+
+.legend-3d-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.84rem;
+}
+
+.legend-close-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.legend-3d-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.legend-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  width: 100%;
+  text-align: left;
+  padding: 7px 8px;
+  border-radius: 9px;
+  background: rgba(30, 41, 59, 0.72);
+  border: 1px solid rgba(51, 65, 85, 0.7);
+  color: var(--text);
+}
+
+.legend-row:hover {
+  border-color: var(--accent);
+}
+
+.legend-swatch {
+  width: 13px;
+  height: 13px;
+  margin-top: 2px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.legend-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.legend-row-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.legend-row-sub {
+  font-size: 0.69rem;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
 .floating-3d-bar {
   position: absolute;
   bottom: 10px;
   left: 10px;
   right: 10px;
+  z-index: 12;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -1119,21 +1224,107 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
   color: #7dd3fc;
 }
 
-/* Horizontale snelle kiezer onderaan */
+/* Snelle onderdelenkiezer met Categorie/Naam-schakelaar */
+.quick-strip-wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  background: #0d1323;
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.strip-sort-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 28px;
+  padding: 0 10px;
+  background: #0b101e;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.55);
+  flex-shrink: 0;
+}
+
+.strip-sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: var(--card);
+  border: 1px solid rgba(56, 189, 248, 0.42);
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.strip-sort-btn .svg-ico svg {
+  width: 13px;
+  height: 13px;
+  color: var(--accent);
+}
+
+.strip-sort-hint {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .quick-strip {
+  flex: 1;
+  min-height: 0;
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 0 10px;
+  padding: 4px 10px;
   background: #0d1323;
-  border-top: 1px solid var(--border);
   overflow-x: auto;
+}
+
+.strip-cat-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 6px 3px;
+  margin-top: 4px;
+  font-size: 0.69rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #cbd5e1;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.48);
+  flex-shrink: 0;
+}
+
+.strip-cat-header:first-child {
+  margin-top: 0;
+}
+
+.strip-cat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.strip-cat-count {
+  margin-left: auto;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--muted);
 }
 
 .strip-pill {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   height: 28px;
   padding: 0 10px;
   border-radius: 7px;
@@ -1143,6 +1334,36 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
   font-weight: 700;
   white-space: nowrap;
   color: var(--muted);
+  min-width: 0;
+}
+
+.strip-pill.is-sub-pill {
+  margin-left: 10px;
+}
+
+.pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.pill-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pill-cat-tag {
+  flex-shrink: 0;
+  font-size: 0.63rem;
+  font-weight: 700;
+  color: var(--muted);
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(51, 65, 85, 0.65);
+  padding: 1px 5px;
+  border-radius: 5px;
 }
 
 .strip-pill.is-active {
@@ -1192,10 +1413,16 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
   }
 
   .floating-3d-bar {
-    bottom: 112px;
+    bottom: calc(min(var(--mobile-dock-h, 112px), 100dvh - 122px) + 8px);
     left: 6px;
     right: 6px;
     gap: 4px;
+    transition: bottom 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  :root.dock-is-dragging .floating-3d-bar,
+  :root.dock-is-dragging .bodymap-zoom-bar {
+    transition: none;
   }
 
   .hud-chip {
@@ -1207,12 +1434,13 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
   }
 
   .bodymap-zoom-bar {
-    bottom: 114px;
+    bottom: calc(min(var(--mobile-dock-h, 112px), 100dvh - 122px) + 10px);
     right: 8px;
+    transition: bottom 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .quiz-pane-inner {
-    padding: 10px 10px 124px;
+    padding: 10px 10px 128px;
   }
 
   .info-dock {
@@ -1221,14 +1449,14 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
     right: 0;
     bottom: 0;
     z-index: 45;
-    height: 104px;
+    height: 112px;
     max-height: calc(100dvh - 54px);
     background: rgba(19, 27, 48, 0.97);
     backdrop-filter: blur(12px);
     border-top: 2px solid rgba(56, 189, 248, 0.42);
     border-radius: 18px 18px 0 0;
     box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.55);
-    grid-template-rows: 22px minmax(0, 1fr) 38px;
+    grid-template-rows: 20px 38px 54px;
     transition: height 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -1237,21 +1465,12 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
   }
 
   .info-dock.is-open {
-    height: 54dvh;
+    height: 58dvh;
+    grid-template-rows: 22px minmax(0, auto) minmax(130px, 1fr);
   }
 
   .dock-drawer-handle {
     display: flex;
-  }
-
-  .quick-strip {
-    padding: 0 8px;
-  }
-
-  .strip-pill {
-    height: 26px;
-    padding: 0 9px;
-    font-size: 0.72rem;
   }
 
   .info-dock.is-collapsed .dock-card {
@@ -1314,12 +1533,85 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
     display: none;
   }
 
+  .info-dock.is-collapsed .quick-strip-wrap {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    padding: 0 8px 4px;
+  }
+
+  .info-dock.is-collapsed .strip-sort-bar {
+    height: 32px;
+    padding: 0 6px 0 0;
+    background: transparent;
+    border-bottom: none;
+    border-right: 1px solid var(--border);
+  }
+
+  .info-dock.is-collapsed .strip-sort-btn {
+    height: 28px;
+    padding: 0 7px;
+  }
+
+  .info-dock.is-collapsed .strip-sort-hint,
+  .info-dock.is-collapsed .strip-cat-header,
+  .info-dock.is-collapsed .pill-cat-tag {
+    display: none;
+  }
+
+  .info-dock.is-collapsed .quick-strip {
+    flex-direction: row;
+    align-items: center;
+    padding: 2px 2px;
+    gap: 6px;
+    border-top: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .info-dock.is-collapsed .strip-pill {
+    height: 32px;
+    padding: 0 10px;
+    font-size: 0.74rem;
+    flex-shrink: 0;
+  }
+
+  .info-dock.is-collapsed .strip-pill.is-sub-pill {
+    margin-left: 0;
+  }
+
+  .info-dock.is-collapsed .pill-label {
+    flex: 0 1 auto;
+  }
+
   .info-dock.is-open .dock-card {
-    padding: 4px 12px 10px;
+    padding: 4px 12px 8px;
+    max-height: 28dvh;
+    overflow-y: auto;
+    border-bottom: 1px solid var(--border);
   }
 
   .info-dock.is-open .dock-header-actions {
     gap: 5px;
+  }
+
+  .info-dock.is-open .quick-strip {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+    padding: 6px 10px 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .info-dock.is-open .strip-pill {
+    height: auto;
+    min-height: 34px;
+    padding: 5px 10px;
+    font-size: 0.78rem;
+    flex-shrink: 0;
+    text-align: left;
+    justify-content: flex-start;
   }
 }
 
@@ -1344,7 +1636,7 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
     grid-row: 2 / 3;
     border-top: none;
     border-left: 1px solid var(--border);
-    grid-template-rows: minmax(0, auto) minmax(175px, 1fr);
+    grid-template-rows: minmax(0, auto) minmax(200px, 1fr);
     min-height: 0;
     overflow: hidden;
   }
@@ -1358,7 +1650,7 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
     justify-content: flex-start;
     padding: 14px 16px;
     border-bottom: 1px solid var(--border);
-    max-height: 54vh;
+    max-height: 50vh;
     min-height: 0;
     overflow-y: auto;
   }
@@ -1377,15 +1669,18 @@ body.dyslexia-mode .chapter-modal-prose .chapter-para {
   .quick-strip {
     flex-direction: column;
     align-items: stretch;
-    padding: 10px;
+    padding: 8px 10px 12px;
     min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
   }
 
   .strip-pill {
-    height: 34px;
+    height: auto;
+    min-height: 34px;
+    padding: 5px 10px;
     flex-shrink: 0;
     text-align: left;
+    justify-content: flex-start;
   }
 }
